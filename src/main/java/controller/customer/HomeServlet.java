@@ -46,6 +46,9 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String jspPath = "/WEB-INF/View/customer/homePage/index.jsp";
+
+        request.getRequestDispatcher(jspPath).forward(request, response);
 
     }
 
