@@ -1,5 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@ page isELIgnored="false" %>
+=======
+<%
+// Lấy đường dẫn hiện tại, ví dụ: /PT_Online/Thu-vien hoặc /PT_Online/index.jsp
+String uri = request.getRequestURI();
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,7 +134,9 @@
 <div class="header-main">
     <nav class="navbar navbar-expand-md custom-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/home">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="<%= request.getContextPath() %>/home">
+                <img src = "">
+              
                 <span style="color: white;">HARDCORE<span style="color: var(--primary)">GYM</span></span>
             </a>
 
@@ -137,11 +146,19 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav mx-auto gap-4">
-                    <a class="nav-link-custom active" href="${pageContext.request.contextPath}/home">Trang chủ</a>
-                    <a class="nav-link-custom" href="#">Thư viện</a>
-                    <a class="nav-link-custom" href="#">Gói tập</a>
-                    <a class="nav-link-custom" href="#">Tin tức</a>
-                    <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập mục tiêu</a>
+                  
+                    <a class="nav-link-custom <%= (uri.contains("home")) ? "active" : "" %>"
+                    href="<%= request.getContextPath() %>/home">Trang chủ</a>
+
+                    <a class="nav-link-custom <%= (uri.contains("/package")) ? "active" : "" %>"
+                    href="<%= request.getContextPath() %>/package">Gói tập</a>
+
+                    <a class="nav-link-custom <%= (uri.contains("/library")) ? "active" : "" %>"
+                    href="<%= request.getContextPath() %>/library">Thư viện</a>
+
+                    <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
+                    href="<%= request.getContextPath() %>/news">Tin tức</a>
+
                 </div>
 
                 <div class="d-flex align-items-center">
