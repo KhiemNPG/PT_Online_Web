@@ -1,14 +1,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ page isELIgnored="false" %>
+=======
 <%
 // Lấy đường dẫn hiện tại, ví dụ: /PT_Online/Thu-vien hoặc /PT_Online/index.jsp
 String uri = request.getRequestURI();
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardcore Gym Header</title>
 
-    <title>Header</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -20,7 +27,7 @@ String uri = request.getRequestURI();
             font-family: 'Inter', sans-serif;
         }
 
-        /* Header mờ ảo (Glassmorphism) */
+        /* Header Glassmorphism */
         .custom-nav {
             background-color: rgba(0, 0, 0, 0.9) !important;
             backdrop-filter: blur(12px);
@@ -29,7 +36,7 @@ String uri = request.getRequestURI();
             height: 80px;
         }
 
-        /* Logo Hardcore Gym */
+        /* Logo */
         .navbar-brand {
             font-weight: 900;
             font-style: italic;
@@ -63,20 +70,73 @@ String uri = request.getRequestURI();
             text-transform: uppercase;
             border: none;
             transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-hardcore:hover {
             background-color: #d60505;
             box-shadow: 0 4px 15px rgba(249, 6, 6, 0.3);
+            color: white;
+        }
+
+        /* User Avatar Style */
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .user-avatar:hover {
+            box-shadow: 0 0 12px var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Dropdown Customization */
+        .dropdown-menu-dark {
+            background-color: #111;
+            border: 1px solid rgba(249, 6, 6, 0.2);
+            margin-top: 15px !important;
+            border-radius: 8px;
+        }
+
+        .dropdown-item {
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 10px 20px;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary);
+        }
+
+        .dropdown-toggle::after {
+            display: none; /* Ẩn mũi tên mặc định */
+        }
+        /* Ẩn mũi tên tam giác mặc định của Bootstrap */
+        .dropdown-toggle::after {
+            display: none !important;
+        }
+
+        /* Đảm bảo avatar không có gạch chân khi di chuột vào */
+        .dropdown-toggle {
+            text-decoration: none !important;
+            outline: none !important;
         }
     </style>
 </head>
 <body>
+
 <div class="header-main">
     <nav class="navbar navbar-expand-md custom-nav sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="<%= request.getContextPath() %>/home">
                 <img src = "">
+              
                 <span style="color: white;">HARDCORE<span style="color: var(--primary)">GYM</span></span>
             </a>
 
@@ -86,6 +146,7 @@ String uri = request.getRequestURI();
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav mx-auto gap-4">
+                  
                     <a class="nav-link-custom <%= (uri.contains("home")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/home">Trang chủ</a>
 
@@ -97,14 +158,47 @@ String uri = request.getRequestURI();
 
                     <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/news">Tin tức</a>
+
                 </div>
 
-                <div class="d-flex">
-                    <button class="btn-hardcore">Đăng nhập</button>
+                <div class="d-flex align-items-center">
+                    <%
+                        String sessionUser = (String) session.getAttribute("username");
+
+                        if (sessionUser == null) {
+                    %>
+                    <a href="${pageContext.request.contextPath}/auth?action=login" class="btn-hardcore">Đăng nhập</a>
+                    <%
+                    } else {
+                    %>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name=<%= sessionUser %>&background=f90606&color=fff"
+                                 alt="Avatar" class="user-avatar">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                            <li><h6 class="dropdown-header text-white-50">Xin chào, <%= sessionUser %>!</h6></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/auth?action=changePassword">Đổi mật khẩu</a></li>
+
+                            <% if("ADMIN".equalsIgnoreCase((String)session.getAttribute("role"))) { %>
+                            <li><a class="dropdown-item text-warning" href="${pageContext.request.contextPath}/admin/home">Quản trị hệ thống</a></li>
+                            <% } %>
+
+                            <li><hr class="dropdown-divider" style="background-color: rgba(255,255,255,0.1)"></li>
+                            <li><a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/auth?action=logout">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>
     </nav>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
