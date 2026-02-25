@@ -79,9 +79,8 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path>
                         </svg>
                     </div>
-                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Công nghệ Computer Vision</h3>
-                    <p class="text-secondary small-text">Theo dõi chuyển động cơ thể theo thời gian thực, đảm bảo mỗi
-                        rep tập đều đạt chuẩn kỹ thuật tuyệt đối.</p>
+                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Chuyên gia Sửa lỗi AI 24/7</h3>
+                    <p class="text-secondary small-text">Biến video tập luyện thành bài học kinh nghiệm. Công nghệ nhận diện thông minh giúp bạn nhận ra lỗi sai trong từng chuyển động và hướng dẫn khắc phục ngay lập tức.</p>
                 </div>
             </div>
 
@@ -92,9 +91,8 @@
                             <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"></path>
                         </svg>
                     </div>
-                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Luyện tập Động</h3>
-                    <p class="text-secondary small-text">Giáo án tự động thay đổi dựa trên tiến độ thực tế của bạn.
-                        Không bao giờ đứng yên một chỗ.</p>
+                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Tập trung vào sự linh hoạt</h3>
+                    <p class="text-secondary small-text">Tự động thiết kế buổi tập phù hợp với mọi điều kiện không gian và thời gian. Chỉ cần mở ứng dụng và tập luyện ngay lập tức, bất kể bạn đang ở đâu.</p>
                 </div>
             </div>
 
@@ -105,9 +103,8 @@
                             <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"></path>
                         </svg>
                     </div>
-                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Dinh dưỡng Thông minh</h3>
-                    <p class="text-secondary small-text">AI tính toán lượng Macro và gợi ý thực đơn tối ưu cho mục tiêu
-                        tăng cơ hoặc giảm mỡ của riêng bạn.</p>
+                    <h3 class="h5 fw-bold text-white text-uppercase mb-3">Trợ lý Dinh dưỡng AI 24/7</h3>
+                    <p class="text-secondary small-text">Trò chuyện trực tiếp với AI để thiết kế bữa ăn mỗi ngày. Dựa trên tiến trình tập luyện thực tế của bạn, AI sẽ tư vấn thực đơn chính xác nhất cho từng giai đoạn.</p>
                 </div>
             </div>
         </div>

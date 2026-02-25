@@ -326,16 +326,16 @@
 
 <main class="main">
     <%
-        Object success = request.getAttribute("success");
-        Object error = request.getAttribute("error");
+    Object success = request.getAttribute("success");
+    Object error = request.getAttribute("error");
 
-        boolean lockCreate = false;
-        if (error != null) {
-            String errText = String.valueOf(error);
-            if (errText.contains("chưa hoàn thành")) lockCreate = true;
-        }
+    boolean lockCreate = false;
+    if (error != null) {
+    String errText = String.valueOf(error);
+    if (errText.contains("chưa hoàn thành")) lockCreate = true;
+    }
 
-        if (success != null) {
+    if (success != null) {
     %>
     <div class="toast success" id="toast">
         <span><%= success %></span>
@@ -349,7 +349,7 @@
         <span class="small">Vui lòng thử lại.</span>
     </div>
     <%
-        }
+    }
     %>
 
     <div class="container">
@@ -359,18 +359,18 @@
         </header>
 
         <%
-            model.entity.TrainingRequirement tr =
-                    (model.entity.TrainingRequirement) request.getAttribute("trainingRequirement");
-            model.entity.HealthProfile hp =
-                    (model.entity.HealthProfile) request.getAttribute("healthProfile");
+        model.entity.TrainingRequirement tr =
+        (model.entity.TrainingRequirement) request.getAttribute("trainingRequirement");
+        model.entity.HealthProfile hp =
+        (model.entity.HealthProfile) request.getAttribute("healthProfile");
 
-            String currentGoal = (tr != null && tr.getGoal() != null) ? tr.getGoal() : "";
-            String currentAvailableTime = (tr != null && tr.getAvailableTime() != null) ? tr.getAvailableTime() : "";
-            String currentPreferredDays = (tr != null && tr.getPreferredDays() != null) ? tr.getPreferredDays() : "";
+        String currentGoal = (tr != null && tr.getGoal() != null) ? tr.getGoal() : "";
+        String currentAvailableTime = (tr != null && tr.getAvailableTime() != null) ? tr.getAvailableTime() : "";
+        String currentPreferredDays = (tr != null && tr.getPreferredDays() != null) ? tr.getPreferredDays() : "";
 
-            String currentAgeRange = (hp != null && hp.getAgeRange() != null) ? hp.getAgeRange() : "";
-            String currentGender   = (hp != null && hp.getGender() != null) ? hp.getGender() : "";
-            String currentJoint    = (hp != null && hp.getJointIssues() != null) ? hp.getJointIssues() : "";
+        String currentAgeRange = (hp != null && hp.getAgeRange() != null) ? hp.getAgeRange() : "";
+        String currentGender   = (hp != null && hp.getGender() != null) ? hp.getGender() : "";
+        String currentJoint    = (hp != null && hp.getJointIssues() != null) ? hp.getJointIssues() : "";
         %>
 
         <form method="post" action="${pageContext.request.contextPath}/setup/goal" id="wizardForm">
@@ -385,27 +385,27 @@
 
                 <div class="goal-grid">
                     <button class="card <%= "GIAM_MO".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="GIAM_MO">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">local_fire_department</span></div>
-                        <div><h3>Giảm mỡ</h3><p>Ưu tiên đốt mỡ, cardio, thâm hụt calo.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">local_fire_department</span></div>
+                    <div><h3>Giảm mỡ</h3><p>Ưu tiên đốt mỡ, cardio, thâm hụt calo.</p></div>
                     </button>
 
                     <button class="card <%= "TANG_CO".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="TANG_CO">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">fitness_center</span></div>
-                        <div><h3>Tăng cơ</h3><p>Phì đại cơ, tăng sức mạnh.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">fitness_center</span></div>
+                    <div><h3>Tăng cơ</h3><p>Phì đại cơ, tăng sức mạnh.</p></div>
                     </button>
 
                     <button class="card <%= "DUY_TRI".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="DUY_TRI">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">balance</span></div>
-                        <div><h3>Duy trì</h3><p>Giữ dáng, cải thiện thể lực tổng thể.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">balance</span></div>
+                    <div><h3>Duy trì</h3><p>Giữ dáng, cải thiện thể lực tổng thể.</p></div>
                     </button>
 
                     <button class="card <%= "SUC_BEN".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="SUC_BEN">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">speed</span></div>
-                        <div><h3>Sức bền</h3><p>Ưu tiên tim mạch, tăng thể lực.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">speed</span></div>
+                    <div><h3>Sức bền</h3><p>Ưu tiên tim mạch, tăng thể lực.</p></div>
                     </button>
                 </div>
 
@@ -420,28 +420,28 @@
                 <h4>Bước 2: Chọn khung tuổi</h4>
 
                 <div class="goal-grid">
-                    <button class="card <%= "18-24".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="18-24">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">cake</span></div>
-                        <div><h3>18–24</h3><p>Nhóm tuổi trẻ, dễ thích nghi.</p></div>
+                    <button class="card <%= "18-29".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="18-29">
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">cake</span></div>
+                    <div><h3>18–29</h3><p>Nhóm tuổi trẻ, dễ thích nghi.</p></div>
                     </button>
 
-                    <button class="card <%= "25-34".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="25-34">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">timeline</span></div>
-                        <div><h3>25–34</h3><p>Cân bằng công việc & tập luyện.</p></div>
+                    <button class="card <%= "30-39".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="30-39">
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">timeline</span></div>
+                    <div><h3>30-39</h3><p>Cân bằng công việc & tập luyện.</p></div>
                     </button>
 
-                    <button class="card <%= "35-44".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="35-44">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">health_and_safety</span></div>
-                        <div><h3>35–44</h3><p>Ưu tiên bền vững & an toàn khớp.</p></div>
+                    <button class="card <%= "40-49".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="40-49">
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">health_and_safety</span></div>
+                    <div><h3>40-49</h3><p>Ưu tiên bền vững & an toàn khớp.</p></div>
                     </button>
 
-                    <button class="card <%= "45+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="45+">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">favorite</span></div>
-                        <div><h3>45+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>
+                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+">
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>
+                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>
                     </button>
                 </div>
 
@@ -457,21 +457,21 @@
 
                 <div class="goal-grid">
                     <button class="card <%= "Nam".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Nam">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">man</span></div>
-                        <div><h3>Nam</h3><p>Cá nhân hoá theo thể trạng.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">man</span></div>
+                    <div><h3>Nam</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
 
                     <button class="card <%= "Nữ".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Nữ">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">woman</span></div>
-                        <div><h3>Nữ</h3><p>Cá nhân hoá theo thể trạng.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">woman</span></div>
+                    <div><h3>Nữ</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
 
                     <button class="card <%= "Khác".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Khác">
-                        <span class="material-icons checkmark">check_circle</span>
-                        <div class="icon-box"><span class="material-icons icon">diversity_3</span></div>
-                        <div><h3>Khác</h3><p>Cá nhân hoá theo thể trạng.</p></div>
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">diversity_3</span></div>
+                    <div><h3>Khác</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
                 </div>
 
@@ -492,67 +492,67 @@
                     <div class="chip-wrap">
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Không" data-track required
-                                <%= ("".equals(currentJoint) || "Không".equals(currentJoint)) ? "checked" : "" %>>
+                            <%= ("".equals(currentJoint) || "Không".equals(currentJoint)) ? "checked" : "" %>>
                             Không
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Cột sống Cổ (Cervical Spine)" data-track
-                                <%= "Cột sống Cổ (Cervical Spine)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Cột sống Cổ (Cervical Spine)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Cổ (Cervical Spine)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Cột sống Lưng trên (Upper Back/Thoracic)" data-track
-                                <%= "Cột sống Lưng trên (Upper Back/Thoracic)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Cột sống Lưng trên (Upper Back/Thoracic)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Lưng trên (Upper Back/Thoracic)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Cột sống Lưng dưới (Lower Back/Lumbar)" data-track
-                                <%= "Cột sống Lưng dưới (Lower Back/Lumbar)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Cột sống Lưng dưới (Lower Back/Lumbar)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Lưng dưới (Lower Back/Lumbar)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Vai (Shoulder)" data-track
-                                <%= "Khớp Vai (Shoulder)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Vai (Shoulder)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Vai (Shoulder)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Khuỷu tay (Elbow)" data-track
-                                <%= "Khớp Khuỷu tay (Elbow)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Khuỷu tay (Elbow)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Khuỷu tay (Elbow)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Cổ tay (Wrist)" data-track
-                                <%= "Khớp Cổ tay (Wrist)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Cổ tay (Wrist)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Cổ tay (Wrist)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Háng & Xương chậu (Hip & Pelvis)" data-track
-                                <%= "Khớp Háng & Xương chậu (Hip & Pelvis)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Háng & Xương chậu (Hip & Pelvis)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Háng & Xương chậu (Hip & Pelvis)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Gối (Knee)" data-track
-                                <%= "Khớp Gối (Knee)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Gối (Knee)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Gối (Knee)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Khớp Cổ chân (Ankle)" data-track
-                                <%= "Khớp Cổ chân (Ankle)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Khớp Cổ chân (Ankle)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Cổ chân (Ankle)
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="jointIssues" value="Bàn chân & Ngón chân (Foot & Toes)" data-track
-                                <%= "Bàn chân & Ngón chân (Foot & Toes)".equals(currentJoint) ? "checked" : "" %>>
+                            <%= "Bàn chân & Ngón chân (Foot & Toes)".equals(currentJoint) ? "checked" : "" %>>
                             Bàn chân & Ngón chân (Foot & Toes)
                         </label>
                     </div>
@@ -598,41 +598,41 @@
                     <div class="chip-wrap">
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T2" data-track required
-                                <%= "T2".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 2
+                            <%= "T2".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 2
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T3" data-track required
-                                <%= "T3".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 3
+                            <%= "T3".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 3
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T4" data-track required
-                                <%= "T4".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 4
+                            <%= "T4".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 4
 
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T5" data-track required
-                                <%= "T5".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 5
+                            <%= "T5".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 5
 
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T6" data-track required
-                                <%= "T6".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 6
+                            <%= "T6".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 6
 
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="T7" data-track required
-                                <%= "T7".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 7
+                            <%= "T7".equals(currentPreferredDays) ? "checked" : "" %>> Thứ 7
 
                         </label>
 
                         <label class="chip">
                             <input type="radio" name="preferredDays" value="CN" data-track required
-                                <%= "CN".equals(currentPreferredDays) ? "checked" : "" %>> Chủ Nhật
+                            <%= "CN".equals(currentPreferredDays) ? "checked" : "" %>> Chủ Nhật
                         </label>
                     </div>
                 </div>

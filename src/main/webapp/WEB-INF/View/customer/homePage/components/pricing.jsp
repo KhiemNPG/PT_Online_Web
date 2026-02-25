@@ -119,11 +119,10 @@
                     <h3 class="h5 fw-bold text-white text-uppercase mb-4">Cơ bản</h3>
                     <div class="price-tag text-white mb-4">Miễn phí</div>
                     <ul class="list-unstyled pricing-features mb-5">
-                        <li>5 bài tập AI mỗi tháng</li>
-                        <li>Theo dõi tiến độ cơ bản</li>
-                        <li>Cộng đồng hỗ trợ</li>
+                        <li>3 Video sửa lỗi AI/tháng</li>
+                        <li>Giáo án linh hoạt cơ bản</li>
                     </ul>
-                    <button class="btn btn-outline-light w-100 fw-bold py-3 text-uppercase">Bắt đầu ngay</button>
+                    <button class="btn btn-outline-light w-100 fw-bold py-2 text-uppercase" style="font-size: 11px;">Bắt đầu ngay</button>
                 </div>
             </div>
 
@@ -131,30 +130,26 @@
                 <div class="pricing-card featured text-center position-relative">
                     <div class="badge-featured">PHỔ BIẾN NHẤT</div>
                     <h3 class="h5 fw-bold text-white text-uppercase mb-4">Pro</h3>
-                    <div class="price-tag text-white mb-4">19$<span class="fs-6 fw-normal text-secondary">/tháng</span>
-                    </div>
+                    <div class="price-tag text-white mb-4">19$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
                     <ul class="list-unstyled pricing-features mb-5">
-                        <li>Không giới hạn bài tập AI</li>
-                        <li>Sửa tư thế nâng cao</li>
-                        <li>Kế hoạch dinh dưỡng cá nhân</li>
-                        <li>Phân tích dữ liệu chuyên sâu</li>
+                        <li>Sửa lỗi Video không giới hạn</li>
+
+                        <li>Dời lịch tập (Tối đa 2 lần/tuần)</li>
                     </ul>
-                    <button class="btn btn-brand-red w-100 fw-bold py-3 text-uppercase">Bắt đầu ngay</button>
+                    <button class="btn btn-brand-red w-100 fw-bold py-2 text-uppercase" style="font-size: 11px;">Nâng cấp ngay</button>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="pricing-card text-center">
                     <h3 class="h5 fw-bold text-white text-uppercase mb-4">Elite</h3>
-                    <div class="price-tag text-white mb-4">49$<span class="fs-6 fw-normal text-secondary">/tháng</span>
-                    </div>
+                    <div class="price-tag text-white mb-4">49$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
                     <ul class="list-unstyled pricing-features mb-5">
-                        <li>Mọi tính năng gói Pro</li>
-                        <li>Hỗ trợ 1-1 từ chuyên gia</li>
-                        <li>Tùy chỉnh giáo án linh hoạt</li>
-                        <li>Phụ kiện tracking đi kèm</li>
+                        <li>Sửa lỗi Video không giới hạn</li>
+                        <li>Trợ lý Dinh dưỡng AI 24/7</li>
+                        <li>Dời lịch tự do 100%</li>
                     </ul>
-                    <button class="btn btn-outline-light w-100 fw-bold py-3 text-uppercase">Bắt đầu ngay</button>
+                    <button class="btn btn-outline-light w-100 fw-bold py-2 text-uppercase" style="font-size: 11px;">Liên hệ ngay</button>
                 </div>
             </div>
 

@@ -15,6 +15,16 @@ public class TrainingRequirement {
 
     public TrainingRequirement() {}
 
+    public TrainingRequirement(int requirementId, int userId, String goal, String availableTime, String preferredDays, boolean isCompleted, Timestamp createdAt) {
+        this.requirementId = requirementId;
+        this.userId = userId;
+        this.goal = goal;
+        this.availableTime = availableTime;
+        this.preferredDays = preferredDays;
+        this.isCompleted = isCompleted;
+        this.createdAt = createdAt;
+    }
+
     public int getRequirementId() { return requirementId; }
     public void setRequirementId(int requirementId) { this.requirementId = requirementId; }
 

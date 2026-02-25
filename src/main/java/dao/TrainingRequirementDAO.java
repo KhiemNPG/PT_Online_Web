@@ -92,4 +92,33 @@ public class TrainingRequirementDAO extends DBContext {
             ps.executeUpdate();
         }
     }
+
+    public TrainingRequirement getTrainingRequirementByUserId(int userId) {
+        TrainingRequirement trainingRequirement = null;
+        String sql = "SELECT * FROM TrainingRequirement WHERE userId = ?";
+
+        // Khai báo ps và rs ngay trong ngoặc của try để tự động close
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { // Dùng if thay vì while vì userId thường là duy nhất
+                    int requirementId = rs.getInt("requirementId");
+                    String goal = rs.getString("goal");
+                    String availableTime = rs.getString("availableTime");
+                    String preferredDays = rs.getString("preferredDays");
+                    boolean isCompleted = rs.getBoolean("isCompleted");
+                    Timestamp createdAt = rs.getTimestamp("createdAt");
+
+                    trainingRequirement = new TrainingRequirement(
+                            requirementId, userId, goal, availableTime, preferredDays, isCompleted, createdAt
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Trong dự án thực tế, người ta thường dùng Logger thay vì e.printStackTrace()
+        }
+        return trainingRequirement;
+    }
 }

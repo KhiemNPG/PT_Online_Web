@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@ page isELIgnored="false" %>
-=======
 <%
 // Lấy đường dẫn hiện tại, ví dụ: /PT_Online/Thu-vien hoặc /PT_Online/index.jsp
 String uri = request.getRequestURI();
@@ -136,8 +135,9 @@ String uri = request.getRequestURI();
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="<%= request.getContextPath() %>/home">
                 <img src = "">
-              
-                <span style="color: white;">HARDCORE<span style="color: var(--primary)">GYM</span></span>
+
+
+                <span style="color: white;">Smart-<span style="color: var(--primary)">PT</span></span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -146,7 +146,7 @@ String uri = request.getRequestURI();
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav mx-auto gap-4">
-                  
+
                     <a class="nav-link-custom <%= (uri.contains("home")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/home">Trang chủ</a>
 
@@ -159,13 +159,15 @@ String uri = request.getRequestURI();
                     <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/news">Tin tức</a>
 
+                    <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập mục tiêu</a>
+
                 </div>
 
                 <div class="d-flex align-items-center">
                     <%
-                        String sessionUser = (String) session.getAttribute("username");
+                    String sessionUser = (String) session.getAttribute("username");
 
-                        if (sessionUser == null) {
+                    if (sessionUser == null) {
                     %>
                     <a href="${pageContext.request.contextPath}/auth?action=login" class="btn-hardcore">Đăng nhập</a>
                     <%
@@ -179,6 +181,7 @@ String uri = request.getRequestURI();
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="userDropdown">
                             <li><h6 class="dropdown-header text-white-50">Xin chào, <%= sessionUser %>!</h6></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/MySchedule">Lộ trình của tôi</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/auth?action=changePassword">Đổi mật khẩu</a></li>
 
                             <% if("ADMIN".equalsIgnoreCase((String)session.getAttribute("role"))) { %>
@@ -190,7 +193,7 @@ String uri = request.getRequestURI();
                         </ul>
                     </div>
                     <%
-                        }
+                    }
                     %>
                 </div>
             </div>
