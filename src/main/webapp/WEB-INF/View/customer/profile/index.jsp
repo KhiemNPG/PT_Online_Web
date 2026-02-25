@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi" class="dark">
 <head>
@@ -236,6 +237,29 @@
             background:rgba(45,22,22,1);
             border:1px solid rgba(249,6,6,.2);
         }
+        .bmi-radio{
+            padding:8px 14px;
+            border-radius:999px;
+            border:1px solid rgba(249,6,6,.3);
+            font-size:12px;
+            font-weight:800;
+            cursor:pointer;
+            color:var(--slate-400);
+            transition:.2s;
+            user-select:none;
+        }
+
+        .bmi-radio input{
+            display:none;
+        }
+
+        .bmi-radio.active{
+            background:rgba(249,6,6,.2);
+            border:1px solid #f90606;
+            color:#fff;
+            box-shadow:0 0 12px rgba(249,6,6,.3);
+        }
+
     </style>
 </head>
 
@@ -256,7 +280,7 @@
 <% if(errorSession!=null){ %>
 <div class="toast toast-error"><%= errorSession %></div>
 <% } %>
-
+<c:set var="standard" value="${bmiStandard}" />
 <div class="container">
     <a href="<%= request.getContextPath() %>/home"
        class="back-btn"
@@ -272,7 +296,22 @@
         <div>
             <h1 class="title">${empty user.name ? "CHƯA ĐẶT TÊN" : user.name}</h1>
             <p class="sub">Cập nhật thông tin để hệ thống đề xuất lộ trình tập phù hợp</p>
-            <div class="badge">${empty user.fitnessLevel ? "Beginner" : user.fitnessLevel}</div>
+            <div class="badge">
+                <c:choose>
+                    <c:when test="${user.fitnessLevel == 'Beginner'}">
+                        Người mới bắt đầu
+                    </c:when>
+                    <c:when test="${user.fitnessLevel == 'Intermediate'}">
+                        Trung cấp
+                    </c:when>
+                    <c:when test="${user.fitnessLevel == 'Advanced'}">
+                        Trình độ cao
+                    </c:when>
+                    <c:otherwise>
+                        Người mới bắt đầu
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
 
@@ -304,25 +343,46 @@
                         <label class="label">Trình độ</label>
                         <select class="select" name="fitnessLevel">
                             <option value="">-- Chọn --</option>
-                            <option value="Beginner" ${user.fitnessLevel=='Beginner'?'selected':''}>Beginner</option>
-                            <option value="Intermediate" ${user.fitnessLevel=='Intermediate'?'selected':''}>Intermediate</option>
-                            <option value="Advanced" ${user.fitnessLevel=='Advanced'?'selected':''}>Advanced</option>
+                            <option value="Beginner" ${user.fitnessLevel=='Beginner'?'selected':''}>Người mới bắt đầu</option>
+                            <option value="Intermediate" ${user.fitnessLevel=='Intermediate'?'selected':''}>Trung cấp</option>
+                            <option value="Advanced" ${user.fitnessLevel=='Advanced'?'selected':''}>Trình độ cao</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="label">Tuổi</label>
-                        <input class="input" name="age" type="number" value="${user.age}">
+                        <input class="input"
+                               name="age"
+                               type="number"
+                               min="2"
+                               max="120"
+                               step="1"
+                               required
+                               value="${user.age}">
                     </div>
 
                     <div>
                         <label class="label">Chiều cao (cm)</label>
-                        <input class="input" name="height" type="number" step="0.1" value="${user.height}">
+                        <input class="input"
+                               name="height"
+                               type="number"
+                               min="30"
+                               max="300"
+                               step="0.1"
+                               required
+                               value="${user.height}">
                     </div>
 
                     <div>
                         <label class="label">Cân nặng (kg)</label>
-                        <input class="input" name="weight" type="number" step="0.1" value="${user.weight}">
+                        <input class="input"
+                               name="weight"
+                               type="number"
+                               min="2"
+                               max="500"
+                               step="0.1"
+                               required
+                               value="${user.weight}">
                     </div>
                 </div>
 
@@ -335,11 +395,93 @@
 
         <!-- RIGHT -->
         <aside class="aside-card">
-            <h3 class="label">Gợi ý</h3>
-            <p style="font-size:13px;color:var(--slate-500);">
-                Điền đủ tuổi, chiều cao, cân nặng để hệ thống tính BMI và gợi ý bài tập.
-            </p>
+            <h3 class="label">Chỉ số BMI</h3>
+
+            <!-- CHỌN CHUẨN -->
+            <form method="get"
+                  action="${pageContext.request.contextPath}/profile"
+                  style="margin-bottom:15px;">
+
+                <div style="display:flex;gap:12px;">
+
+                    <label class="bmi-radio ${standard=='ASIA'?'active':''}">
+                        <input type="radio" name="bmiStandard" value="ASIA"
+                        ${standard=='ASIA'?'checked':''}
+                               onchange="this.form.submit()">
+                        Chuẩn Châu Á
+                    </label>
+
+                    <label class="bmi-radio ${standard=='WHO'?'active':''}">
+                        <input type="radio" name="bmiStandard" value="WHO"
+                        ${standard=='WHO'?'checked':''}
+                               onchange="this.form.submit()">
+                        Chuẩn Quốc tế
+                    </label>
+
+                </div>
+
+            </form>
+
+            <!-- HIỂN THỊ BMI -->
+            <c:if test="${not empty user.bmi}">
+
+                <div style="font-size:34px;
+                        font-weight:900;
+                        color:${user.bmiColor};
+                        margin:10px 0;">
+                        ${user.bmi}
+                </div>
+
+                <div style="font-weight:700;
+                        font-size:14px;
+                        color:${user.bmiColor};">
+                        ${user.getBmiStatus(standard)}
+                </div>
+
+                <!-- PROGRESS BAR -->
+                <div style="margin-top:15px;
+                    background:#1a0a0a;
+                    height:10px;
+                    border-radius:10px;
+                    overflow:hidden;">
+
+                    <div style="height:100%;
+                            width:${user.bmiPercent}%;
+                            background:${user.bmiColor};
+                            transition:0.5s;">
+                    </div>
+                </div>
+
+                <!-- TƯ VẤN -->
+                <div style="margin-top:15px;
+                    font-size:13px;
+                    color:#94a3b8;
+                    line-height:1.6;">
+                        ${user.getBmiAdvice(standard)}
+                </div>
+
+                <!-- CẢNH BÁO -->
+                <c:if test="${user.bmi >= 30}">
+                    <div style="margin-top:15px;
+                        padding:12px;
+                        border-radius:12px;
+                        background:rgba(239,68,68,0.15);
+                        color:#f87171;
+                        font-weight:600;">
+                        ⚠ Nguy cơ tim mạch và huyết áp cao. Hãy cải thiện chế độ ăn và tập luyện ngay.
+                    </div>
+                </c:if>
+
+            </c:if>
+
+            <c:if test="${empty user.bmi}">
+                <p style="font-size:13px;color:var(--slate-500);">
+                    Điền chiều cao và cân nặng để hệ thống tính BMI.
+                </p>
+            </c:if>
+
         </aside>
+
 
     </main>
 

@@ -402,11 +402,11 @@
                     <div><h3>Duy trì</h3><p>Giữ dáng, cải thiện thể lực tổng thể.</p></div>
                     </button>
 
-                    <button class="card <%= "SUC_BEN".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="SUC_BEN">
-                    <span class="material-icons checkmark">check_circle</span>
-                    <div class="icon-box"><span class="material-icons icon">speed</span></div>
-                    <div><h3>Sức bền</h3><p>Ưu tiên tim mạch, tăng thể lực.</p></div>
-                    </button>
+<%--                    <button class="card <%= "SUC_BEN".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="SUC_BEN">--%>
+<%--                        <span class="material-icons checkmark">check_circle</span>--%>
+<%--                        <div class="icon-box"><span class="material-icons icon">speed</span></div>--%>
+<%--                        <div><h3>Sức bền</h3><p>Ưu tiên tim mạch, tăng thể lực.</p></div>--%>
+<%--                    </button>--%>
                 </div>
 
                 <div class="actions">
@@ -468,11 +468,11 @@
                     <div><h3>Nữ</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
 
-                    <button class="card <%= "Khác".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Khác">
-                    <span class="material-icons checkmark">check_circle</span>
-                    <div class="icon-box"><span class="material-icons icon">diversity_3</span></div>
-                    <div><h3>Khác</h3><p>Cá nhân hoá theo thể trạng.</p></div>
-                    </button>
+<%--                    <button class="card <%= "Khác".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Khác">--%>
+<%--                        <span class="material-icons checkmark">check_circle</span>--%>
+<%--                        <div class="icon-box"><span class="material-icons icon">diversity_3</span></div>--%>
+<%--                        <div><h3>Khác</h3><p>Cá nhân hoá theo thể trạng.</p></div>--%>
+<%--                    </button>--%>
                 </div>
 
                 <div class="actions">
