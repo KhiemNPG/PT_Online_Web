@@ -1,8 +1,6 @@
 package controller.customer;
 
-import dao.HealthProfileDAO;
-import dao.TrainingRequirementDAO;
-import dao.UserDAO;
+import dao.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -10,8 +8,12 @@ import jakarta.servlet.http.*;
 import model.entity.HealthProfile;
 import model.entity.TrainingRequirement;
 import model.entity.User;
+import model.training.TrainingDay;
+import model.training.TrainingSchedule;
+import model.training.TrainingWorkoutExercise;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "GoalSetupServlet", urlPatterns = {"/setup/goal"})
 public class GoalSetupServlet extends HttpServlet {
@@ -125,7 +127,42 @@ public class GoalSetupServlet extends HttpServlet {
 
             hpDAO.insertNew(hp);
 
+            TrainingRequirementDAO trainingRequirementDAO = new TrainingRequirementDAO();
+            HealthProfileDAO healthProfileDAO = new HealthProfileDAO();
+            TrainingScheduleDAO trainingScheduleDAO = new TrainingScheduleDAO();
+            ProgressScheduleDAO progressScheduleDAO = new ProgressScheduleDAO();
+            TrainingDayDAO trainingDayDAO = new TrainingDayDAO();
+
+            TrainingRequirement trainingRequirement= trainingRequirementDAO.getTrainingRequirementByUserId(user.getUserId());
+            HealthProfile healthProfile = healthProfileDAO.getHealthProfileByUserId(user.getUserId());
+            TrainingSchedule trainingSchedule = trainingScheduleDAO.getOneTrainingScheduleFromTemplate(trainingRequirement.getGoal(), healthProfile.getGender(), healthProfile.getAgeRange());
+
+            int userScheduleId = trainingScheduleDAO.createTrainingSchedule(trainingSchedule, user.getUserId());
+
+            if (userScheduleId != -1){
+
+                List<TrainingDay> trainingDayList = trainingDayDAO.getOneTrainingDayFromTemplate(trainingSchedule.getMasterScheduleId());
+
+                if (trainingDayList != null ){
+                    int masterScheduleIdTemp = trainingDayList.get(0).getUserScheduleId();
+
+                    List<TrainingDay> checkTrainingDayList = trainingDayDAO.createTrainingDay(trainingDayList, tr.getPreferredDays(), userScheduleId);
+                    if (checkTrainingDayList != null && !checkTrainingDayList.isEmpty()) {
+                        java.sql.Timestamp originalDate = checkTrainingDayList.get(0).getScheduledDate();
+                        // Ép kiểu về java.sql.Date
+                        java.sql.Date sqlDate = new java.sql.Date(originalDate.getTime());
+                        progressScheduleDAO.createProgressSchedule(user.getUserId(), userScheduleId, sqlDate);
+
+                        //TrainingWorkoutExerciseDAO trainingWorkoutExerciseDAO = new TrainingWorkoutExerciseDAO();
+                        List<TrainingWorkoutExercise> trainingWorkoutExerciseList = trainingDayDAO.getTrainingWorkoutExercise(masterScheduleIdTemp);
+                        if (trainingWorkoutExerciseList != null){
+                            trainingDayDAO.createTrainingWorkoutExercise(trainingWorkoutExerciseList, checkTrainingDayList);
+                        }
+                    }
+                }
+            }
             request.getSession().setAttribute("success", "Tạo mục tiêu mới thành công!");
+
             response.sendRedirect(request.getContextPath() + "/home");
 
         } catch (Exception e) {

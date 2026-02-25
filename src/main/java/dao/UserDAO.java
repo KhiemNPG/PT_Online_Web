@@ -1,6 +1,7 @@
 package dao;
 
 import model.entity.User;
+import model.training.TrainingSchedule;
 import utils.DBContext;
 
 import java.sql.*;
@@ -40,6 +41,24 @@ public class UserDAO extends DBContext {
                 return null;
             }
         }
+    }
+
+    public int getUserIdByAccountId(int accountId){
+        int userId = 0;
+        String sql = "select userId from [User] where accountId = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("userId");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userId;
     }
 
     public int insert(User u) throws Exception {

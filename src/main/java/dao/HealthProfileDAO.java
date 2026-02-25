@@ -1,6 +1,7 @@
 package dao;
 
 import model.entity.HealthProfile;
+import model.entity.TrainingRequirement;
 import utils.DBContext;
 
 import java.sql.*;
@@ -56,6 +57,35 @@ public class HealthProfileDAO extends DBContext {
 
             ps.executeUpdate();
         }
+    }
+
+    public HealthProfile getHealthProfileByUserId(int userId) {
+        HealthProfile healthProfile = null; // Khởi đầu là null
+        String sql = "SELECT * FROM HealthProfile WHERE userId = ?";
+
+        // Tự động đóng ps và rs sau khi kết thúc khối try
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { // Dùng IF vì 1 user chỉ có 1 Profile
+                    healthProfile = new HealthProfile(
+                            rs.getInt("healthProfileId"),
+                            rs.getInt("userId"),
+                            rs.getInt("requirementId"),
+                            rs.getString("ageRange"),
+                            rs.getString("gender"),
+                            rs.getString("jointIssues"),
+                            rs.getTimestamp("updatedAt")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            // Ghi log lỗi để dễ debug
+            System.err.println("Lỗi khi lấy HealthProfile: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return healthProfile;
     }
 
 }

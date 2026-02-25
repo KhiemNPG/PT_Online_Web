@@ -133,20 +133,21 @@
             </div>
 
             <div class="col-lg-6 ps-lg-5">
-                <h2 class="display-5 fw-bold text-white text-uppercase italic mb-4 leading-tight">
-                    Sửa tư thế<br>
-                    <span class="text-brand-red">Thời gian thực</span>
+                <h2 style = "font-size: 40px;" class="display-5 fw-bold text-white text-uppercase italic mb-4 leading-tight">
+                    Phân tích kỹ thuật<br>
+                    <span class="text-brand-red">Qua Video</span>
                 </h2>
 
                 <p class="text-secondary mb-5 fs-5 opacity-75">
-                    Sử dụng thuật toán học sâu tiên tiến nhất, PT AI phân tích 17 điểm khớp nối trên cơ thể để phát hiện
-                    sai lệch chỉ trong 0.03 giây. Ngăn ngừa chấn thương và tối đa hóa hiệu quả tập luyện ngay lập tức.
+                    Chỉ cần tải lên video tập luyện của bạn, PT AI sẽ quét sâu từng khung hình để phát hiện các sai lệch
+                    về tư thế. Nhận ngay báo cáo chi tiết về lỗi sai và hướng dẫn khắc phục để bảo vệ xương khớp
+                    và bùng nổ hiệu suất.
                 </p>
 
                 <ul class="list-unstyled custom-list">
-                    <li>Phân tích góc độ xương khớp</li>
-                    <li>Cảnh báo bằng giọng nói tức thì</li>
-                    <li>Đánh giá chất lượng Rep-by-Rep</li>
+                    <li>Tự động nhận diện 17 điểm khớp nối</li>
+                    <li>Chỉ rõ lỗi sai và mô phỏng tư thế chuẩn</li>
+                    <li>Chấm điểm kỹ thuật và lưu trữ tiến trình</li>
                 </ul>
             </div>
 
