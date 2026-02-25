@@ -64,7 +64,6 @@ public class GoalSetupServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        // ====== LẤY DỮ LIỆU ======
         String goal = trimOrNull(request.getParameter("goal"));
         String availableTime = defaultIfBlank(request.getParameter("availableTime"), DEFAULT_TEXT);
         String preferredDays = defaultIfBlank(request.getParameter("preferredDays"), DEFAULT_TEXT);
@@ -73,7 +72,6 @@ public class GoalSetupServlet extends HttpServlet {
         String gender = trimOrNull(request.getParameter("gender"));
         String jointIssues = defaultIfBlank(request.getParameter("jointIssues"), DEFAULT_TEXT);
 
-        // ====== VALIDATE ======
         if (!isValidGoal(goal)) {
             request.getSession().setAttribute("error", "Bạn chưa chọn mục tiêu hợp lệ.");
             response.sendRedirect(request.getContextPath() + "/setup/goal");
@@ -95,7 +93,6 @@ public class GoalSetupServlet extends HttpServlet {
         try {
             User user = ensureUserExists(request, accountId);
 
-            // ❗ Nếu đang có goal active thì không cho tạo mới
             TrainingRequirement active = trDAO.findActiveByUserId(user.getUserId());
             if (active != null) {
                 request.getSession().setAttribute("error",
@@ -104,23 +101,17 @@ public class GoalSetupServlet extends HttpServlet {
                 return;
             }
 
-            // =========================
-            // 1️⃣ INSERT TrainingRequirement
-            // =========================
             TrainingRequirement tr = new TrainingRequirement();
             tr.setUserId(user.getUserId());
             tr.setGoal(goal);
             tr.setAvailableTime(availableTime);
             tr.setPreferredDays(preferredDays);
 
-            int newRequirementId = trDAO.insertNew(tr); // phải return ID
+            int newRequirementId = trDAO.insertNew(tr);
 
-            // =========================
-            // 2️⃣ INSERT HealthProfile (gắn requirementId)
-            // =========================
             HealthProfile hp = new HealthProfile();
             hp.setUserId(user.getUserId());
-            hp.setRequirementId(newRequirementId); // 🔥 QUAN TRỌNG
+            hp.setRequirementId(newRequirementId);
             hp.setAgeRange(ageRange);
             hp.setGender(gender);
             hp.setJointIssues(jointIssues);

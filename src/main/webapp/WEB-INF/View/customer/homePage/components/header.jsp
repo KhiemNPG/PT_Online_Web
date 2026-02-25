@@ -126,6 +126,36 @@ String uri = request.getRequestURI();
             text-decoration: none !important;
             outline: none !important;
         }
+        .dropdown-menu-dark {
+            background-color: #111 !important;
+            border: 1px solid rgba(249,6,6,0.3) !important;
+            border-radius: 10px !important;
+            padding: 12px 0 !important;
+            min-width: 220px !important;   /* TĂNG WIDTH */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6) !important;
+        }
+
+        .dropdown-menu-dark .dropdown-item {
+            font-size: 15px !important;    /* TĂNG SIZE */
+            font-weight: 600 !important;
+            padding: 12px 22px !important; /* TĂNG PADDING */
+            line-height: 1.5 !important;
+        }
+
+        .dropdown-header {
+            font-size: 14px !important;
+            padding: 12px 22px !important;
+        }
+
+        .dropdown-menu-dark .dropdown-item:hover {
+            background-color: #f90606 !important;
+            color: #fff !important;
+        }
+        .dropdown-menu {
+            opacity: 1 !important;
+            filter: none !important;
+        }
+
     </style>
 </head>
 <body>
@@ -157,7 +187,7 @@ String uri = request.getRequestURI();
                     href="<%= request.getContextPath() %>/library">Thư viện</a>
 
                     <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
-                    href="<%= request.getContextPath() %>/news">Tin tức</a>
+                    href="<%= request.getContextPath() %>/news">Blog</a>
 
                     <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập mục tiêu</a>
 

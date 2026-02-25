@@ -16,6 +16,7 @@
     <jsp:include page="/WEB-INF/View/customer/homePage/components/heroSection.jsp"/>
     <jsp:include page="/WEB-INF/View/customer/homePage/components/statistics.jsp"/>
     <jsp:include page="/WEB-INF/View/customer/homePage/components/coreFeatures.jsp"/>
+    <jsp:include page="/WEB-INF/View/customer/homePage/components/bmiGuest.jsp"/>
     <jsp:include page="/WEB-INF/View/customer/homePage/components/comparison.jsp"/>
     <jsp:include page="/WEB-INF/View/customer/homePage/components/technologyDemo.jsp"/>
     <jsp:include page="/WEB-INF/View/customer/homePage/components/pricing.jsp"/>
