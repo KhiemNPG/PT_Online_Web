@@ -236,7 +236,7 @@
       </div>
     </div>
 
-    <h1 class="title">Hardcore<span class="accent">Gym</span></h1>
+    <h1 class="title">Smart-<span class="accent">PT</span></h1>
     <p class="subtitle">Bản lĩnh chiến binh</p>
   </div>
 

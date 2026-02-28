@@ -40,4 +40,44 @@ public class MasterScheduleDetailDAO extends DBContext {
         }
         return masterScheduleDetail;
     }
+    //tracking
+    public MasterScheduleDetail getMasterScheduleDetailForTracking(int masterScheduleId) {
+
+        MasterScheduleDetail masterScheduleDetail = null;
+
+        String sql = "SELECT masterDetailId, masterScheduleId, totalPlannedWorkouts, " +
+                "totalPlannedCalories, totalPlannedMinutes, estimatedWeightLoss " +
+                "FROM MasterScheduleDetail WHERE masterScheduleId = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, masterScheduleId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    int masterScheduleDetailId = rs.getInt("masterDetailId"); //
+                    int totalPlannedWorkouts = rs.getInt("totalPlannedWorkouts");
+                    double totalPlannedCalories = rs.getDouble("totalPlannedCalories");
+                    int totalPlannedMinutes = rs.getInt("totalPlannedMinutes");
+                    double estimatedWeightLoss = rs.getDouble("estimatedWeightLoss");
+
+                    masterScheduleDetail = new MasterScheduleDetail(
+                            masterScheduleDetailId,
+                            masterScheduleId,
+                            totalPlannedWorkouts,
+                            totalPlannedCalories,
+                            totalPlannedMinutes,
+                            estimatedWeightLoss
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return masterScheduleDetail;
+    }
 }

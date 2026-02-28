@@ -438,11 +438,11 @@
                     <div><h3>40-49</h3><p>Ưu tiên bền vững & an toàn khớp.</p></div>
                     </button>
 
-                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+">
-                    <span class="material-icons checkmark">check_circle</span>
-                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>
-                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>
-                    </button>
+<%--                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+">--%>
+<%--                    <span class="material-icons checkmark">check_circle</span>--%>
+<%--                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>--%>
+<%--                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>--%>
+<%--                    </button>--%>
                 </div>
 
                 <div class="actions">
@@ -881,7 +881,6 @@
                     "GIAM_MO": "Giảm mỡ",
                     "TANG_CO": "Tăng cơ",
                     "DUY_TRI": "Duy trì",
-                    "SUC_BEN": "Sức bền"
                 };
 
                 document.getElementById("summaryGoal").textContent =
