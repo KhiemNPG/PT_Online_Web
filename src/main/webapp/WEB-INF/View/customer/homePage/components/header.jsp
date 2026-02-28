@@ -189,7 +189,7 @@ String uri = request.getRequestURI();
                     <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/news">Blog</a>
 
-                    <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập mục tiêu</a>
+                    <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập lộ trình</a>
 
                 </div>
 
@@ -212,6 +212,7 @@ String uri = request.getRequestURI();
                             <li><h6 class="dropdown-header text-white-50">Xin chào, <%= sessionUser %>!</h6></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Hồ sơ cá nhân</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/MySchedule">Lộ trình của tôi</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tracking">Theo dõi</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/auth?action=changePassword">Đổi mật khẩu</a></li>
 
                             <% if("ADMIN".equalsIgnoreCase((String)session.getAttribute("role"))) { %>

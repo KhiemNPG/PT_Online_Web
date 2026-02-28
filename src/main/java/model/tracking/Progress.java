@@ -3,6 +3,7 @@ package model.tracking;
 import java.sql.Timestamp;
 
 public class Progress {
+
     private int progressId;
     private int userId;
     private int userScheduleId;
@@ -12,10 +13,21 @@ public class Progress {
     private String status;
     private Timestamp lastUpdate;
 
+    private Double finalWeight;
+
     public Progress() {
     }
 
-    public Progress(int progressId, int userId, int userScheduleId, int completedWorkouts, int skippedWorkouts, double totalCaloriesBurned, String status, Timestamp lastUpdate) {
+    public Progress(int progressId,
+                    int userId,
+                    int userScheduleId,
+                    int completedWorkouts,
+                    int skippedWorkouts,
+                    double totalCaloriesBurned,
+                    String status,
+                    Timestamp lastUpdate,
+                    Double finalWeight) {
+
         this.progressId = progressId;
         this.userId = userId;
         this.userScheduleId = userScheduleId;
@@ -24,6 +36,7 @@ public class Progress {
         this.totalCaloriesBurned = totalCaloriesBurned;
         this.status = status;
         this.lastUpdate = lastUpdate;
+        this.finalWeight = finalWeight;
     }
 
     public int getProgressId() {
@@ -88,5 +101,13 @@ public class Progress {
 
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public Double getFinalWeight() {
+        return finalWeight;
+    }
+
+    public void setFinalWeight(Double finalWeight) {
+        this.finalWeight = finalWeight;
     }
 }

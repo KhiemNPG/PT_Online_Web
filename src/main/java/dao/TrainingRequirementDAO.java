@@ -95,7 +95,7 @@ public class TrainingRequirementDAO extends DBContext {
 
     public TrainingRequirement getTrainingRequirementByUserId(int userId) {
         TrainingRequirement trainingRequirement = null;
-        String sql = "SELECT * FROM TrainingRequirement WHERE userId = ?";
+        String sql = "SELECT * FROM TrainingRequirement WHERE userId = ? ORDER BY requirementId DESC";
 
         // Khai báo ps và rs ngay trong ngoặc của try để tự động close
         try (PreparedStatement ps = conn.prepareStatement(sql)) {

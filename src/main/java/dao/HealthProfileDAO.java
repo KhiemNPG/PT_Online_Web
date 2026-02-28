@@ -61,9 +61,8 @@ public class HealthProfileDAO extends DBContext {
 
     public HealthProfile getHealthProfileByUserId(int userId) {
         HealthProfile healthProfile = null; // Khởi đầu là null
-        String sql = "SELECT * FROM HealthProfile WHERE userId = ?";
+        String sql = "SELECT * FROM HealthProfile WHERE userId = ? ORDER BY healthProfileId DESC";
 
-        // Tự động đóng ps và rs sau khi kết thúc khối try
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
 
