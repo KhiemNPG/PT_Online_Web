@@ -1,15 +1,21 @@
 package controller.customer;
 
 import dao.ExerciseDAO;
+import dao.TrainingDayDAO;
+import dao.TrainingScheduleDAO;
+import dao.TrainingWorkoutExerciseDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.training.Exercise;
+import model.training.TrainingWorkoutExercise;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -52,25 +58,66 @@ public class ExerciseDetailServlet extends HttpServlet {
         String jspPath = "/WEB-INF/View/customer/schedule/ExerciseDetail/index.jsp";
         String idString = request.getParameter("id");
         String userDayIdString = request.getParameter("userDayId");
+
+        List<Exercise> exerciseList = new ArrayList<>();
+        List<TrainingWorkoutExercise> trainingWorkoutExerciseList = new ArrayList<>();
+        TrainingWorkoutExerciseDAO trainingWorkoutExerciseDAO = new TrainingWorkoutExerciseDAO();
+
+        boolean isCompleted = false;
         int id = -1, userDayId = -1;
         Exercise exercise = new Exercise();
 
         if ( idString != null && userDayIdString != null){
             id = Integer.parseInt(idString);
             userDayId = Integer.parseInt(userDayIdString);
+            TrainingDayDAO trainingDayDAO = new TrainingDayDAO();
+            isCompleted = trainingDayDAO.getStatusByUserDayId(userDayId);
         }
 
         if ( id != -1 && userDayId != -1){
             ExerciseDAO exDAO = new ExerciseDAO();
             exercise = exDAO.getExerciseByExerciseId(id);
+            trainingWorkoutExerciseList = trainingWorkoutExerciseDAO.getTrainingWorkoutExerciseByUserDayId(userDayId);
+            exerciseList = trainingWorkoutExerciseDAO.getExerciseByExerciseId(trainingWorkoutExerciseList);
+
         }
+
+        if (exerciseList != null && !exerciseList.isEmpty()) {
+            Exercise lastExercise = exerciseList.get(exerciseList.size() - 1);
+            request.setAttribute("lastId", lastExercise.getExerciseId());
+        }
+
+        request.setAttribute("exerciseList", exerciseList);
         request.setAttribute("exercise", exercise);
+        request.setAttribute("isCompleted", isCompleted);
+
         request.getRequestDispatcher(jspPath).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String userDayIdStr = request.getParameter("userDayId");
+        boolean checkUpdate2 = false;
+        int userDayId = 0;
+        if (userDayIdStr != null){
+            userDayId = Integer.parseInt(userDayIdStr);
+        }
+
+        if (userDayId != 0){
+            TrainingDayDAO trainingDayDAO = new TrainingDayDAO();
+            boolean checkUpdate = trainingDayDAO.updateUserDayByUserDayId(userDayId);
+            if(checkUpdate){
+                TrainingScheduleDAO trainingScheduleDAO = new TrainingScheduleDAO();
+                int userScheduleIdTemp = trainingScheduleDAO.getUserScheduleIdByUserDayId(userDayId);
+                checkUpdate2 = trainingScheduleDAO.updateProgress(userScheduleIdTemp);
+            }
+        }
+
+        if (checkUpdate2) {
+            response.setStatus(HttpServletResponse.SC_OK); // Trả về 200 nếu mọi thứ ok
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Update progress failed");
+        }
     }
 }

@@ -17,7 +17,7 @@ public class MasterScheduleDetailDAO extends DBContext {
             ps.setInt(1, masterScheduleId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) { // Dùng if vì chỉ có 1 dòng dữ liệu
-                    int masterScheduleDetailId = rs.getInt("masterScheduleDetailId");
+                    int masterScheduleDetailId = rs.getInt("masterDetailId");
                     int totalPlannedWorkouts = rs.getInt("totalPlannedWorkouts");
 
                     // Sửa thành getDouble vì SQL là FLOAT

@@ -287,4 +287,41 @@ public class TrainingDayDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public boolean updateUserDayByUserDayId(int userDayId){
+        String sql = "UPDATE UserDay SET isCompleted = 1, completedDate = GETDATE() WHERE userDayId = ?";
+
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userDayId);
+
+            int affectedRows = stmt.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean getStatusByUserDayId(int userDayId){
+        boolean status = false;
+        String sql = "SELECT isCompleted FROM UserDay WHERE userDayId = ?";
+
+        try (Connection conn = new DBContext().getConnection(); // Mở kết nối
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userDayId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    status = rs.getBoolean("isCompleted");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi ra console để dễ debug
+        }
+
+        return status;
+    }
 }

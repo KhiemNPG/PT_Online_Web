@@ -19,9 +19,9 @@
     boolean isCompleted = false;
 
     if (trainingDayList != null && !trainingDayList.isEmpty()) {
-        //LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now();
 
-        LocalDate today = LocalDate.of(2026, 4, 30);
+        //LocalDate today = LocalDate.of(2026, 3, 2);
         if (trainingDayList.get(0).getScheduledDate() != null) {
             firstDate = trainingDayList.get(0).getScheduledDate().toLocalDateTime().toLocalDate();
                 if (today.isBefore(firstDate)) {
@@ -515,6 +515,7 @@
                         if ( dayType.equalsIgnoreCase("Rest") ){
 
                     %>
+                    <h1><%= userDayId%></h1>
                     <div class="btn-rest-day">
                         <div class="d-flex align-items-center">
                             <span class="material-symbols-outlined me-2">spa</span>

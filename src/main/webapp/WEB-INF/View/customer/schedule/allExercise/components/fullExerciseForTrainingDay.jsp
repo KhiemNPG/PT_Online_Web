@@ -17,7 +17,8 @@
 
     List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
     List<TrainingWorkoutExercise> trainingWorkoutExerciseList = (List) request.getAttribute("trainingWorkoutExerciseList");
-        %>
+
+         %>
         <style>
             :root {
                 --bg-dark: #0a0a0a;
@@ -220,6 +221,7 @@
 
                 // Lấy userDayId từ JSP ném vào JS
                 const userDayId = "<%= userDayIdTemp %>";
+
 
                 cards.forEach(card => {
                     card.addEventListener('click', function() {
