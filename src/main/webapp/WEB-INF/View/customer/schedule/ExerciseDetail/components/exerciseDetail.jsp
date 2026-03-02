@@ -2,8 +2,41 @@
 <%@ page import="model.training.Exercise" %> <%-- QUAN TRỌNG: Phải import cái này --%>
 <%@ page import="model.training.Video" %>
 <%@ page isELIgnored="false" %>
+<%@ page import="java.util.List" %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <%
+String userDayIdStr = request.getParameter("userDayId");
+int userDayId = 0;
+if (userDayIdStr != null && !userDayIdStr.isEmpty()) {
+    userDayId = Integer.parseInt(userDayIdStr);
+}
+double percentExercise = 0;
+int currentIndex = 0, nextIdExercise = 0;
 Exercise exercise = (Exercise) request.getAttribute("exercise");
+int lastId = (int) request.getAttribute("lastId");
+boolean isCompleted = (boolean) request.getAttribute("isCompleted");
+List< Exercise> exerciseList = (List< Exercise>) request.getAttribute("exerciseList");
+if (exercise != null && exerciseList != null && !exerciseList.isEmpty()) {
+    for (int i = 0; i < exerciseList.size(); i++){
+        Exercise ex = exerciseList.get(i);
+        if (exercise.getExerciseId() == ex.getExerciseId()){
+            currentIndex = i;
+            if(currentIndex < exerciseList.size() - 1){
+                Exercise ex2 = exerciseList.get(currentIndex + 1);
+                nextIdExercise = ex2.getExerciseId();
+            } else {
+                //Exercise ex2 = exerciseList.get(currentIndex);
+                nextIdExercise = -1;
+            }
+            currentIndex += 1;
+            break;
+        }
+
+    }
+    if (currentIndex > 0) {
+        percentExercise = ((double) currentIndex / exerciseList.size()) * 100;
+    }
+}
 %>
     <style>
         :root {
@@ -329,6 +362,67 @@ Exercise exercise = (Exercise) request.getAttribute("exercise");
             font-style: italic;
             font-weight: 500;
         }
+
+        .progress-info {
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .progress-info:hover {
+            background-color: #f0fdf4; /* Màu xanh lá nhạt */
+            border: 1px solid #22c55e;
+        }
+
+        .progress-dot-checkbox i {
+            font-size: 1.2rem;
+            color: #22c55e;
+        }
+
+        .next-btn-final {
+        display: inline-flex;
+        align-items: center;
+        background-color: #0984e3; /* Màu xanh dương thể thao, có thể đổi thành #00b894 (Mint) */
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .next-btn-final:hover {
+        background-color: #0773c5;
+        transform: translateY(-2px);
+    }
+
+    .final-content {
+        text-align: right;
+        line-height: 1.2;
+    }
+
+    .final-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.9;
+    }
+
+    .final-main-text {
+        font-size: 14px;
+        font-weight: 600;
+        display: block;
+    }
+
+    .final-sub-text {
+        font-size: 10px;
+        opacity: 0.8;
+        font-weight: 300;
+        display: block;
+        margin-top: 2px;
+    }
     </style>
 
 <header class="video-header" style="padding: 0; overflow: hidden; background: black;">
@@ -435,23 +529,165 @@ Exercise exercise = (Exercise) request.getAttribute("exercise");
     </div>
 </div>
 
-<button class="ai-float-btn">
+<a href="${pageContext.request.contextPath}/UpLoadVideo" class="ai-float-btn" style="text-decoration: none; display: inline-block;">
     📷 PHÂN TÍCH TƯ THẾ (AI)
-</button>
+</a>
+
 
 <footer class="bottom-nav">
-    <div class="progress-info d-flex align-items-center gap-2">
-        <div class="progress-dot"></div>
-        <span class="progress-text">Bạn đã hoàn thành 80% lộ trình hôm nay</span>
+    <%
+    if (isCompleted == false) {
+    // Trường hợp chưa hoàn thành và là bài tập cuối cùng
+    if (exercise != null && exercise.getExerciseId() == lastId) {
+    %>
+    <div class="progress-info d-flex align-items-center gap-2"
+         id="finish-session-btn"
+         style="cursor: pointer;"
+         onclick="confirmCompletion()">
+        <div class="progress-dot-checkbox">
+            <i class="bi bi-circle" id="check-icon" style="font-size: 1.2rem; color: #0fbcf9;"></i>
+        </div>
+        <span class="progress-text">
+            Bạn đã xong <%= percentExercise %>% buổi tập?
+            <strong style="color: #0fbcf9;">Nhấn vào đây để xác nhận hoàn thành</strong>
+        </span>
     </div>
+    <%
+    } else {
+    // Trường hợp chưa hoàn thành nhưng chưa đến bài cuối
+    %>
+    <div class="progress-info d-flex align-items-center gap-2">
+        <div class="progress-dot" style="background-color: #ffd32a;"></div>
+        <span class="progress-text">Bạn đã hoàn thành <%= percentExercise %>% lộ trình hôm nay</span>
+    </div>
+    <%
+    }
+    } else {
+    // TRƯỜNG HỢP ĐÃ PHÁ ĐẢO (isCompleted == true)
+    %>
+    <div class="progress-info d-flex align-items-center gap-2">
+        <div class="progress-dot-checkbox">
+            <i class="bi bi-check-circle-fill" style="font-size: 1.2rem; color: #05c46b;"></i>
+        </div>
+        <span class="progress-text" style="color: #05c46b; font-weight: bold;">
+            🔥 Đã phá đảo lộ trình hôm nay! (100%)
+        </span>
+    </div>
+    <%
+    }
+    %>
 
-    <button class="next-btn">
+    <% if (nextIdExercise != -1) { %>
+    <a href="${pageContext.request.contextPath}/ExerciseDetail?id=<%= nextIdExercise %>&userDayId=<%= userDayId%>" class="next-btn" style="text-decoration: none; display: flex; align-items: center;">
         <div class="text-end me-2">
-            <div class="next-label">Tiếp theo</div>
-            <div class="next-exercise-name">Leg Extensions</div>
+            <div class="next-label" style="font-size: 0.8rem; color: #6c757d;">Tiếp theo</div>
+            <div class="next-exercise-name" style="font-weight: bold; color: white;">
+                <%= (exerciseList.get(currentIndex).getExerciseName()) %>
+            </div>
         </div>
         <div class="arrow-box">❯</div>
-    </button>
+    </a>
+    <% } else { %>
+    <div class="next-btn-final">
+        <div class="final-content">
+            <span class="final-label">Về đích 🔥</span>
+            <span class="final-main-text">Bài cuối rồi, cố lên!</span>
+        </div>
+        <div style="font-size: 20px; margin-left: 12px;">💪</div>
+    </div>
+    <% } %>
 </footer>
+
+<script>
+    function confirmCompletion() {
+        Swal.fire({
+            title: 'Hoàn thành buổi tập?',
+            text: 'Hệ thống sẽ ghi nhận nỗ lực của bạn hôm nay!',
+            icon: 'question',
+            iconColor: '#0fbcf9',
+            background: '#1e272e',
+            color: '#ffffff',
+            showCancelButton: true,
+            confirmButtonColor: '#0fbcf9',
+            cancelButtonColor: '#3d3d3d',
+            confirmButtonText: 'Xác nhận xong!',
+            cancelButtonText: 'Chưa, tập tiếp',
+            backdrop: `rgba(0,0,0,0.8)`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Bước 1: Hiện trạng thái đang xử lý (Loading)
+                Swal.fire({
+                    title: 'Đang lưu tiến độ...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    background: '#1e272e',
+                    color: '#ffffff'
+                });
+
+                // Bước 2: Chuẩn bị dữ liệu
+                const params = new URLSearchParams();
+                params.append('userDayId', '<%= userDayId %>');
+                // Check null/empty cho list để tránh lỗi JSP
+                <% if (exerciseList != null && !exerciseList.isEmpty()) { %>
+                    params.append('id', '<%= exerciseList.get(exerciseList.size() - 1).getExerciseId() %>');
+                <% } %>
+
+                // Bước 3: Gửi POST đến Servlet
+                fetch('ExerciseDetail', {
+                    method: 'POST',
+                    body: params,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // CHỈ KHI SERVER TRẢ VỀ 200 OK (checkUpdate2 = true) MỚI HIỆN TÍCH XANH
+
+                        // 1. Cập nhật icon và chữ trên giao diện
+                        const icon = document.getElementById('check-icon');
+                        if(icon) {
+                            icon.className = 'bi bi-check-circle-fill me-2'; // Đổi class nhanh
+                            icon.style.color = "#05c46b";
+                        }
+                        const text = document.querySelector('.progress-text');
+                        if(text) {
+                            text.style.color = "#05c46b";
+                            text.innerHTML = "🔥 Đã phá đảo lộ trình hôm nay!";
+                        }
+
+                        // 2. Hiện thông báo thành công
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Hệ thống đã ghi nhận nỗ lực của bạn.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            background: '#1e272e',
+                            color: '#ffffff'
+                        }).then(() => {
+                            // Quay về trang tổng sau khi lưu xong
+                            //window.location.href = 'TrainingSchedule';
+                        });
+                    } else {
+                        throw new Error('Update failed');
+                    }
+                })
+                .catch(error => {
+                    // Nếu Servlet trả về lỗi hoặc mất mạng
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: 'Không thể cập nhật Database. Vui lòng thử lại.',
+                        icon: 'error',
+                        background: '#1e272e',
+                        color: '#ffffff'
+                    });
+                });
+            }
+        })
+    }
+</script>
 
 

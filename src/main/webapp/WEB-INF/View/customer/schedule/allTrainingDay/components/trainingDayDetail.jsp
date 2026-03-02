@@ -8,7 +8,7 @@
         // Fix lỗi Generics bằng cách thêm khoảng trắng sau dấu <
         List< TrainingDay> trainingDayList = (List) request.getAttribute("trainingDayList");
         //LocalDate today = LocalDate.now();
-        LocalDate today = LocalDate.of(2026, 2, 26);
+        LocalDate today = LocalDate.of(2026, 3, 2);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM");
 
         String[] dayNames = {

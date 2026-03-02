@@ -1,6 +1,7 @@
 package controller.customer;
 
 import dao.TrainingDayDAO;
+import dao.TrainingScheduleDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -79,6 +80,6 @@ public class AllTrainingDayServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
 }

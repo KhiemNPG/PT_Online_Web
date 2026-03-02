@@ -5,10 +5,7 @@ import model.training.TrainingSchedule;
 import utils.DBContext;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +73,7 @@ public class TrainingScheduleDAO extends DBContext {
         // 1. Thêm status vào câu lệnh SQL
         String sql = "SELECT * "
                 + "FROM UserSchedule "
-                + "WHERE userId = ?";
+                + "WHERE userId = ? ORDER BY userScheduleId DESC";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -104,6 +101,49 @@ public class TrainingScheduleDAO extends DBContext {
             e.printStackTrace();
         }
         return trainingScheduleList;
+    }
+
+    public int getUserScheduleIdByUserDayId(int userDayId){
+        int userScheduleId = 0;
+        String sql = "SELECT userScheduleId FROM UserDay WHERE userDayId = ?";
+
+        try (Connection conn = new DBContext().getConnection(); // Mở kết nối
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userDayId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userScheduleId = rs.getInt("userScheduleId");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi ra console để dễ debug
+        }
+
+        return userScheduleId;
+    }
+
+    public boolean updateProgress(int userScheduleId) {
+        String sql = "UPDATE Progress SET completedWorkouts = completedWorkouts + 1, lastUpdate = GETDATE() "
+                + "WHERE userScheduleId = ?";
+
+        // Sử dụng try-with-resources để tự động đóng connection và statement
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userScheduleId);
+
+            // executeUpdate trả về số dòng bị tác động
+            int rowsAffected = ps.executeUpdate();
+
+            // Nếu có ít nhất 1 dòng được update thì trả về true
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

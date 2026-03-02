@@ -66,7 +66,6 @@ public class AllExerciseForTrainingDayServlet extends HttpServlet {
         if ( id != -1){
             trainingWorkoutExerciseList = trainingWorkoutExerciseDAO.getTrainingWorkoutExerciseByUserDayId(id);
             exerciseList = trainingWorkoutExerciseDAO.getExerciseByExerciseId(trainingWorkoutExerciseList);
-
         }
 
         request.setAttribute("trainingWorkoutExerciseList", trainingWorkoutExerciseList);
