@@ -5,9 +5,11 @@
 <%@ page import="model.tracking.Progress" %>
 
 <%
-List< UserSchedule> schedules = (List< UserSchedule>) request.getAttribute("schedules");
+List< UserSchedule> schedules =
+    (List< UserSchedule>) request.getAttribute("schedules");
 
-        List< Progress> progressList = (List< Progress>) request.getAttribute("progressList");
+        List< Progress> progressList =
+            (List< Progress>) request.getAttribute("progressList");
 
                 Map< Integer, Progress> progressMap = new HashMap<>();
 

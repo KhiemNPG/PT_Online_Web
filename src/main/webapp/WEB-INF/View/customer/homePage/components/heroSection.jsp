@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -170,13 +171,18 @@
         </h1>
 
         <p class="text-secondary mx-auto mb-5" style="max-width: 650px; font-size: 1.1rem; font-weight: 400;">
-            Cuộc cách mạng luyện tập với hệ thống AI sửa tư thế theo thời gian thực.
+            Cuộc cách mạng luyện tập với hệ thống AI sửa tư thế.<br>
             Chính xác, cá nhân hóa và tối ưu 100%.
         </p>
 
+        <p class="mx-auto" style="color: white; font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 0 15px rgba(255,255,255,0.6);">
+            Thiết lập lộ trình cá nhân ngay nào!
+        </p>
+
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-            <button class="btn btn-red">BẮT ĐẦU DÙNG THỬ MIỄN PHÍ</button>
-            <button class="btn btn-outline-white">XEM DEMO</button>
+            <a href="${pageContext.request.contextPath}/setup/goal" class="btn btn-red" style="text-decoration: none; display: inline-block;">
+                BẮT ĐẦU DÙNG THỬ MIỄN PHÍ
+            </a>
         </div>
 
     </div>

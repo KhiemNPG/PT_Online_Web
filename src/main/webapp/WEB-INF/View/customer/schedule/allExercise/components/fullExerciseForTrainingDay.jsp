@@ -4,21 +4,21 @@
 <%@ page import="model.training.Exercise" %>
 <%@ page import="model.training.TrainingWorkoutExercise" %>
 <%
-        String idParam = request.getParameter("id");
-        Object idAttr = request.getAttribute("userDayId");
+String idParam = request.getParameter("id");
+Object idAttr = request.getAttribute("userDayId");
 
-        int userDayIdTemp = -1;
+int userDayIdTemp = -1;
 
-        if (idAttr != null) {
-        userDayIdTemp = Integer.parseInt(idAttr.toString());
-        } else if (idParam != null) {
-        userDayIdTemp = Integer.parseInt(idParam);
-        }
+if (idAttr != null) {
+userDayIdTemp = Integer.parseInt(idAttr.toString());
+} else if (idParam != null) {
+userDayIdTemp = Integer.parseInt(idParam);
+}
 
-    List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
+List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
     List<TrainingWorkoutExercise> trainingWorkoutExerciseList = (List) request.getAttribute("trainingWorkoutExerciseList");
 
-         %>
+        %>
         <style>
             :root {
                 --bg-dark: #0a0a0a;
@@ -144,6 +144,7 @@
                 box-shadow: 0 10px 30px rgba(230, 30, 50, 0.3);
             }
         </style>
+
 
         <div class="container-fluid p-0">
             <div class="row g-0">

@@ -63,11 +63,7 @@
                     <span class="material-symbols-outlined text-info" style="font-size: 20px;">analytics</span> LOẠI BÀI TẬP
                 </h5>
                 <select class="custom-input" id="exercise_type">
-                    <option value="bicep_curl">Dumbbell Bicep Curl (Check biên độ & Vung vai)</option>
                     <option value="squat">Back Squat </option>
-                    <option value="deadlift">Deadlift (Check Hông & Lưng)</option>
-                    <option value="bench">Bench Press (Check biên độ tay)</option>
-                    <option value="push_up">Push Up (Check Độ sâu & Thẳng lưng)</option>
                 </select>
 
                 <button class="btn-info-custom" id="submit_btn" style="margin-top: 10px;">GỬI CLIP PHÂN TÍCH</button>
@@ -142,54 +138,40 @@
 </div>
 
 <script>
-    // 1. Cấu hình bài tập
+    // 1. Cấu hình bài tập - Đã tối ưu cho Squat
     const EXERCISE_CONFIG = {
         'squat': {
             checks: [
-                // 1. Kiểm tra Gối (Độ sâu)
                 {
-                    p: [24, 26, 28], l: 'Gối', target: 100, t: 'min', is_trigger: true,
-                    safe_min: 60,
-                    msg_min: 'Gối gập quá sâu! Hãy dừng lại khi đùi song song với sàn để bảo vệ khớp.',
-                    msg_target: 'Xuống thêm chút nữa! Hãy hạ thấp mông để đạt đủ biên độ tập luyện.'
+                    id: 'knee_depth', type: 'angle', p: [24, 26, 28], l: 'Gối',
+                    target: 100, safe_min: 70, safe_max: 115, stand: 145,
+                    msg_min: 'Gối quá sâu! Dừng lại khi đùi song song sàn.',
+                    msg_max: 'Gối còn nông! Hãy hạ thấp mông thêm nữa.'
                 },
-
-                // 2. Kiểm tra Lưng (Độ nghiêng)
                 {
-                    p: [12, 24, 26], l: 'Lưng', safe_min: 65, safe_max: 95, t: 'live',
-                    msg_min: 'Lưng đổ quá sâu! Hãy ngẩng đầu và đẩy ngực về phía trước để lưng thẳng hơn.',
-                    msg_max: 'Lưng quá đứng! Hãy đẩy mông ra sau và hạ thấp trọng tâm khi xuống.'
+                    id: 'back_angle', type: 'angle', p: [12, 24, 26], l: 'Lưng',
+                    target: 115, safe_min: 80, safe_max: 145, stand: 160,
+                    msg_min: 'Lưng quá đổ! Hãy ngẩng đầu và đẩy ngực lên.'
                 },
-
-                // 3. Kiểm tra Độ rộng gối (Check chụm gối)
                 {
-                    type: 'distance_ratio', p: [23, 24, 25, 26], l: 'Độ rộng gối',
-                    min_ratio: 0.8, max_ratio: 1.4, t: 'live',
-                    msg_min: 'Gối hơi hẹp! Hãy gồng cơ mông và đẩy đầu gối ra ngoài theo hướng mũi chân.',
-                    msg_max: 'Gối mở quá rộng! Hãy khép bớt lại để lực dồn vào đùi tốt hơn.'
-                },
-
-                // 4. Kiểm tra Độ cân bằng chân (Check đứng lệch)
-                {
-                    type: 'distance_ratio', p: [23, 24, 27, 28], l: 'Độ cân bằng chân',
-                    check_type: 'vertical_diff', max_ratio: 0.1, t: 'live',
-                    msg_max: 'Chân bị lệch! Hãy điều chỉnh lại vị trí đặt chân, tránh đứng chân trước chân sau.'
+                    id: 'knee_vagus', type: 'distance_ratio', p: [23, 24, 25, 26], l: 'Khoảng cách gối',
+                    min_ratio: 1.76, max_ratio: 3.8,
+                    msg_min: 'Gối hơi chụm! Hãy đẩy đầu gối ra ngoài.',
+                    msg_max: 'Gối mở quá rộng!'
                 }
-            ]
-        },
-        'push_up': {
-            checks: [
-                { p: [12, 14, 16], l: 'Độ sâu tay', target: 75, t: 'min' },
-                { p: [12, 24, 28], l: 'Đường thẳng lưng', safe_min: 160, t: 'live', msg: 'Đừng để võng lưng!' },
-                { type: 'distance_ratio', p: [11, 12, 13, 14], l: 'Độ rộng tay', min_ratio: 1.2, max_ratio: 1.8, t: 'live', msg_min: 'Tay quá hẹp!', msg_max: 'Tay quá rộng!' },
-                { type: 'distance_ratio', p: [23, 24, 27, 28], l: 'Độ rộng chân', min_ratio: 0.5, max_ratio: 1.2, t: 'live', msg_min: 'Mở rộng chân ra!', msg_max: 'Khép bớt chân lại!' }
+<!--                ,-->
+<!--                {-->
+<!--                    id: 'balance', type: 'vertical_diff', p: [27, 28], l: 'Cân bằng chân',-->
+<!--                    max_diff: 0.05,-->
+<!--                    msg_max: 'Chân bị lệch! Hãy đứng hai bàn chân ngang hàng nhau.'-->
+<!--                }-->
             ]
         }
     };
 
-    // 2. Khai báo biến toàn cục
     let resultsStore = {};
     let warningList = new Set();
+    let hasReachedTarget = {};
     let pose;
     let capturedThumbnail = null;
 
@@ -197,110 +179,107 @@
     const c = document.getElementById('output_canvas');
     const ctx = c.getContext('2d');
 
-    // Hàm tính góc
+    // Hàm tính góc 2D
     function getAngle(A, B, C) {
         let rel = Math.atan2(C.y - B.y, C.x - B.x) - Math.atan2(A.y - B.y, A.x - B.x);
         let ang = Math.abs(rel * 180 / Math.PI);
         return ang > 180 ? 360 - ang : ang;
     }
 
-    // Hàm đọc văn bản (TTS)
+    // Hàm đọc phản hồi giọng nói
     function speak(text) {
         if ('speechSynthesis' in window) {
-            // 1. Hủy các câu đang đọc dở để tránh bị chồng âm
             window.speechSynthesis.cancel();
-
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = text;
-            msg.lang = 'vi-VN'; // Ngôn ngữ mặc định
-
-            // 2. Lấy danh sách tất cả các giọng nói máy hỗ trợ
-            const voices = window.speechSynthesis.getVoices();
-
-            // 3. Lọc ra các giọng Tiếng Việt
-            const viVoices = voices.filter(v => v.lang.includes('vi'));
-
-            if (viVoices.length > 0) {
-                /**
-                 * CHỈNH GIỌNG Ở ĐÂY:
-                 * viVoices[0]: Thường là giọng mặc định (Nữ)
-                 * viVoices[1]: Giọng thứ 2 (nếu máy có giọng Nam hoặc giọng của hãng khác)
-                 */
-                msg.voice = viVoices[1] || viVoices[0];
-            }
-
-            // 4. Các thông số phụ để giọng hay hơn
-            msg.rate = 0.8;  // Tốc độ (0.8 - 1.0 là vừa nghe)
-            msg.pitch = 1.0; // Cao độ (1.0 là chuẩn, >1.0 là giọng cao, <1.0 là giọng trầm)
-            msg.volume = 1;  // Âm lượng (0 đến 1)
-
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'vi-VN';
+            msg.rate = 1.0;
             window.speechSynthesis.speak(msg);
         }
     }
 
-    // MẸO: Đảm bảo danh sách giọng được load sẵn khi vừa vào trang
-    window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-    };
-
-    // 3. Xử lý kết quả từ MediaPipe
     function onPoseResults(res) {
         if (!res.poseLandmarks) return;
         ctx.save();
         ctx.clearRect(0, 0, c.width, c.height);
         ctx.drawImage(res.image, 0, 0, c.width, c.height);
 
+        // Vẽ xương bằng MediaPipe
         if (window.drawConnectors && window.POSE_CONNECTIONS) {
             drawConnectors(ctx, res.poseLandmarks, POSE_CONNECTIONS, {color: '#0dcaf0', lineWidth: 2});
             drawLandmarks(ctx, res.poseLandmarks, {color: '#fff', radius: 2});
         }
 
-        const type = document.getElementById('exercise_type').value;
+        const type = document.getElementById('exercise_type').value || 'squat';
         const config = EXERCISE_CONFIG[type];
-        if (!config) return;
+        if (!config) { ctx.restore(); return; }
 
         let info = [];
-        config.checks.forEach((chk, i) => {
+        config.checks.forEach((chk) => {
             let col = '#ffffff';
-            let status = "";
+            let statusText = "";
 
-            if (chk.type === 'distance_ratio') {
-                const p1 = res.poseLandmarks[chk.p[0]], p2 = res.poseLandmarks[chk.p[1]];
-                const p3 = res.poseLandmarks[chk.p[2]], p4 = res.poseLandmarks[chk.p[3]];
-                if (p1 && p2 && p3 && p4) {
-                    const getDist = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-                    const baseW = getDist(p1, p2);
-                    let targetVal = chk.check_type === 'vertical_diff' ? Math.abs(p3.y - p4.y) : getDist(p3, p4);
-                    const ratio = targetVal / baseW;
-                    col = '#0df05b';
-                    if (chk.min_ratio && ratio < chk.min_ratio) {
-                        col = '#ff4757'; status = " (HẸP)"; warningList.add(chk.msg_min);
-                    } else if (chk.max_ratio && ratio > chk.max_ratio) {
-                        col = '#ff4757'; status = " (RỘNG)"; warningList.add(chk.msg_max);
+            // 1. XỬ LÝ CÂN BẰNG CHÂN (Lệch chân theo trục Y)
+            if (chk.type === 'vertical_diff') {
+                const p1 = res.poseLandmarks[chk.p[0]]; // Left Ankle (27)
+                const p2 = res.poseLandmarks[chk.p[1]]; // Right Ankle (28)
+                if (p1 && p2 && p1.visibility > 0.5 && p2.visibility > 0.5) {
+                    const diffY = Math.abs(p1.y - p2.y);
+                    if (diffY > chk.max_diff) {
+                        col = '#ff4757'; statusText = " (LỆCH)"; warningList.add(chk.msg_max);
+                    } else {
+                        col = '#0df05b'; statusText = " (CÂN)";
+                        warningList.delete(chk.msg_max);
                     }
-                    info.push(`<span style="color:${col};">${chk.l}: ${ratio.toFixed(2)}x${status}</span>`);
+                    info.push(`<span style="color:${col};">${chk.l}: ${diffY.toFixed(3)}${statusText}</span>`);
                 }
-            } else {
+            }
+            // 2. KHOẢNG CÁCH GỐI (Vagus)
+            else if (chk.type === 'distance_ratio') {
+                const p1 = res.poseLandmarks[chk.p[0]], p2 = res.poseLandmarks[chk.p[1]]; // Hông
+                const p3 = res.poseLandmarks[chk.p[2]], p4 = res.poseLandmarks[chk.p[3]]; // Gối
+                if (p1 && p2 && p3 && p4) {
+                    const dist = (a, b) => Math.sqrt(Math.pow(a.x-b.x,2) + Math.pow(a.y-b.y,2));
+                    const ratio = dist(p3, p4) / dist(p1, p2);
+                    if (ratio < chk.min_ratio) {
+                        col = '#ff4757'; statusText = " (CHỤM)"; warningList.add(chk.msg_min);
+                    } else if (ratio > chk.max_ratio) {
+                        col = '#ff4757'; statusText = " (RỘNG)"; warningList.add(chk.msg_max);
+                    } else {
+                        col = '#0df05b'; statusText = " (CHUẨN)";
+                    }
+                    info.push(`<span style="color:${col};">${chk.l}: ${ratio.toFixed(2)}x${statusText}</span>`);
+                }
+            }
+            // 3. XỬ LÝ GÓC GỐI & LƯNG
+            else {
                 const A = res.poseLandmarks[chk.p[0]], B = res.poseLandmarks[chk.p[1]], C = res.poseLandmarks[chk.p[2]];
                 if (A && B && C && B.visibility > 0.5) {
                     const ang = getAngle(A, B, C);
-                    resultsStore[i] = ang;
-                    if (chk.safe_min !== undefined && ang < chk.safe_min) {
-                        col = '#ff4757'; status = " (THẤP)"; warningList.add(chk.msg_min);
-                    } else if (chk.target !== undefined) {
-                        const reached = chk.t === 'min' ? (ang <= chk.target) : (ang >= chk.target);
-                        col = reached ? '#0df05b' : '#ffffff';
+                    if (ang > chk.stand) {
+                        col = '#ffffff'; statusText = (chk.id === 'knee_depth' ? " (ĐỨNG)" : " (THẲNG)");
+                        if (hasReachedTarget[chk.id]) warningList.delete(chk.msg_max);
+                    } else if (ang < chk.safe_min) {
+                        col = '#ff4757'; statusText = (chk.id === 'knee_depth' ? " (QUÁ SÂU)" : " (QUÁ ĐỔ)");
+                        warningList.add(chk.msg_min);
+                    } else if (ang <= chk.target) {
+                        col = '#0df05b'; statusText = " (CHUẨN)";
+                        hasReachedTarget[chk.id] = true;
+                        warningList.delete(chk.msg_max);
+                    } else {
+                        col = '#ffc107'; statusText = " (XUỐNG THÊM)";
+                        if (!hasReachedTarget[chk.id]) warningList.add(chk.msg_max);
                     }
-                    info.push(`<span style="color:${col};">${chk.l}: ${Math.round(ang)}°</span>`);
+                    info.push(`<span style="color:${col};">${chk.l}: ${Math.round(ang)}°${statusText}</span>`);
                 }
             }
         });
+
         document.getElementById('analysis_text').innerHTML = info.join(' | ');
-        if (v.currentTime > 1 && !capturedThumbnail) capturedThumbnail = c.toDataURL('image/jpeg');
+        if (v.currentTime > 1 && !capturedThumbnail) capturedThumbnail = c.toDataURL('image/jpeg', 0.8);
         ctx.restore();
     }
 
-    // 4. Khởi chạy
+    // --- KHỞI CHẠY ---
     window.onload = async () => {
         pose = new Pose({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`});
         pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5 });
@@ -309,60 +288,64 @@
         document.getElementById('video_upload').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                warningList.clear();
-                capturedThumbnail = null;
+                warningList.clear(); hasReachedTarget = {}; capturedThumbnail = null;
                 v.src = URL.createObjectURL(file);
                 document.getElementById('upload_section').style.display = 'none';
                 document.getElementById('analysis_section').style.display = 'block';
-                v.onloadedmetadata = () => {
-                    c.width = v.videoWidth; c.height = v.videoHeight;
-                    v.play();
-                };
+                v.onloadedmetadata = () => { c.width = v.videoWidth; c.height = v.videoHeight; v.play(); };
             }
         });
 
-        async function runAI() {
-            if (!v.paused && !v.ended) {
-                await pose.send({image: v});
-                requestAnimationFrame(runAI);
-            }
-        }
+        async function runAI() { if (!v.paused && !v.ended) { await pose.send({image: v}); requestAnimationFrame(runAI); } }
         v.addEventListener('play', runAI);
+
         v.addEventListener('ended', () => {
-            document.getElementById('final_score').innerText = warningList.size > 0 ? "⚠️ CẦN CHÚ Ý!" : "✅ HOÀN HẢO!";
+            const finalScore = document.getElementById('final_score');
+            if (warningList.size > 0) {
+                finalScore.innerText = "⚠️ CẦN CHÚ Ý!";
+                finalScore.style.color = "#ff4757";
+            } else {
+                finalScore.innerText = "✅ HOÀN HẢO!";
+                finalScore.style.color = "#0df05b";
+            }
         });
 
-        // NÚT GỬI DATA
+        // --- HÀM GỬI SERVLET CHUẨN ---
         document.getElementById('submit_btn').onclick = function() {
             if (!v.src) return alert("Vui lòng chọn video!");
 
-            const finalData = {
+            const warningsArray = Array.from(warningList);
+            const payload = {
                 type: document.getElementById('exercise_type').value,
-                warnings: Array.from(warningList),
-                results: resultsStore,
+                warnings: warningsArray,
                 thumb: capturedThumbnail
             };
+
+            console.log("Gửi dữ liệu tới Servlet:", payload);
 
             fetch('UpLoadVideo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(finalData)
+                body: JSON.stringify(payload)
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Server response error");
+                return res.json();
+            })
             .then(data => {
-            if (data.status === 'success') {
-                // Cập nhật text vào một div có id là 'final_comment' trên giao diện
-                const commentBox = document.getElementById('final_comment');
-                if(commentBox) {
-                    commentBox.innerText = data.message;
-                    commentBox.style.color = "#0df05b"; // Cho màu xanh cho đẹp
+                if (data.status === 'success') {
+                    const box = document.getElementById('final_comment');
+                    if(box) {
+                        box.innerText = "Phản hồi AI: " + data.message;
+                        box.style.color = "#0df05b";
+                    }
+                    speak(data.message);
                 }
-
-                // Gọi hàm đọc
-                speak(data.message);
-            }
-        })
-            .catch(err => alert("Lỗi kết nối Server!"));
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+                alert("Lỗi kết nối Servlet: " + err.message);
+            });
         };
     };
 </script>

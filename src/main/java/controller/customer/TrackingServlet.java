@@ -1,13 +1,18 @@
 package controller.customer;
 
-import dao.*;
-import model.tracking.UserSchedule;
+import dao.MasterScheduleDetailDAO;
+import dao.ProgressDAO;
+import dao.UserDAO;
+import dao.UserScheduleDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.tracking.MasterScheduleDetail;
 import model.tracking.Progress;
-
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import model.tracking.UserSchedule;
 
 import java.io.IOException;
 import java.util.List;

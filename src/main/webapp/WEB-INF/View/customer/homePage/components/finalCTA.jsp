@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,13 +110,13 @@
                 </p>
 
                 <div class="cta-button-wrapper mb-4">
-                    <a href="#" class="btn btn-cta-red">
-                        Tham gia ngay & Giảm 20% tháng đầu
+                    <a href="${pageContext.request.contextPath}/setup/goal" class="btn btn-cta-red">
+                        Thiết lập lộ trình riêng của bạn
                     </a>
                 </div>
 
                 <div class="text-secondary small text-uppercase fw-bold tracking-widest">
-                    Ưu đãi kết thúc sau: <span class="text-white font-mono">12:45:00</span>
+                    Công nghệ AI chuẩn hóa tư thế 1:1
                 </div>
 
             </div>

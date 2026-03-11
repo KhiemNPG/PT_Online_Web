@@ -438,11 +438,11 @@
                     <div><h3>40-49</h3><p>Ưu tiên bền vững & an toàn khớp.</p></div>
                     </button>
 
-<%--                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+">--%>
-<%--                    <span class="material-icons checkmark">check_circle</span>--%>
-<%--                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>--%>
-<%--                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>--%>
-<%--                    </button>--%>
+                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+">
+                    <span class="material-icons checkmark">check_circle</span>
+                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>
+                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>
+                    </button>
                 </div>
 
                 <div class="actions">
@@ -491,67 +491,67 @@
 
                     <div class="chip-wrap">
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Không" data-track required
+                            <input type="radio" name="jointIssues" value="Khong" data-track required
                             <%= ("".equals(currentJoint) || "Không".equals(currentJoint)) ? "checked" : "" %>>
                             Không
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Cột sống Cổ (Cervical Spine)" data-track
+                            <input type="radio" name="jointIssues" value="Co" data-track
                             <%= "Cột sống Cổ (Cervical Spine)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Cổ (Cervical Spine)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Cột sống Lưng trên (Upper Back/Thoracic)" data-track
+                            <input type="radio" name="jointIssues" value="Lung" data-track
                             <%= "Cột sống Lưng trên (Upper Back/Thoracic)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Lưng trên (Upper Back/Thoracic)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Cột sống Lưng dưới (Lower Back/Lumbar)" data-track
+                            <input type="radio" name="jointIssues" value="Lung" data-track
                             <%= "Cột sống Lưng dưới (Lower Back/Lumbar)".equals(currentJoint) ? "checked" : "" %>>
                             Cột sống Lưng dưới (Lower Back/Lumbar)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Vai (Shoulder)" data-track
+                            <input type="radio" name="jointIssues" value="Vai" data-track
                             <%= "Khớp Vai (Shoulder)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Vai (Shoulder)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Khuỷu tay (Elbow)" data-track
+                            <input type="radio" name="jointIssues" value="Tay" data-track
                             <%= "Khớp Khuỷu tay (Elbow)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Khuỷu tay (Elbow)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Cổ tay (Wrist)" data-track
+                            <input type="radio" name="jointIssues" value="Tay" data-track
                             <%= "Khớp Cổ tay (Wrist)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Cổ tay (Wrist)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Háng & Xương chậu (Hip & Pelvis)" data-track
+                            <input type="radio" name="jointIssues" value="Hang" data-track
                             <%= "Khớp Háng & Xương chậu (Hip & Pelvis)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Háng & Xương chậu (Hip & Pelvis)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Gối (Knee)" data-track
+                            <input type="radio" name="jointIssues" value="Goi" data-track
                             <%= "Khớp Gối (Knee)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Gối (Knee)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Khớp Cổ chân (Ankle)" data-track
+                            <input type="radio" name="jointIssues" value="Chan" data-track
                             <%= "Khớp Cổ chân (Ankle)".equals(currentJoint) ? "checked" : "" %>>
                             Khớp Cổ chân (Ankle)
                         </label>
 
                         <label class="chip">
-                            <input type="radio" name="jointIssues" value="Bàn chân & Ngón chân (Foot & Toes)" data-track
+                            <input type="radio" name="jointIssues" value="Chan" data-track
                             <%= "Bàn chân & Ngón chân (Foot & Toes)".equals(currentJoint) ? "checked" : "" %>>
                             Bàn chân & Ngón chân (Foot & Toes)
                         </label>
@@ -881,6 +881,7 @@
                     "GIAM_MO": "Giảm mỡ",
                     "TANG_CO": "Tăng cơ",
                     "DUY_TRI": "Duy trì",
+                    "SUC_BEN": "Sức bền"
                 };
 
                 document.getElementById("summaryGoal").textContent =

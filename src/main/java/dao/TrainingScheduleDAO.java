@@ -42,7 +42,7 @@ public class TrainingScheduleDAO extends DBContext {
         String sql = "INSERT INTO UserSchedule (userId, name, goal, fitnessLevel, gender, ageRange, totalWeeks, masterScheduleId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // 2. THÊM Statement.RETURN_GENERATED_KEYS ở đây
-        try (PreparedStatement stmtProduct = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmtProduct = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmtProduct.setInt(1, userId);
             stmtProduct.setString(2, trainingSchedule.getName());
             stmtProduct.setString(3, trainingSchedule.getGoal());

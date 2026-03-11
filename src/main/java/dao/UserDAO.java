@@ -128,4 +128,24 @@ public class UserDAO extends DBContext {
             updateByAccountId(u);
         }
     }
+
+    public int getUserIdByUserScheduleId(int userScheduleId) {
+        int userId = 0; // Trả về 0 nếu không tìm thấy
+        String sql = "SELECT userId FROM UserSchedule WHERE userScheduleId = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userScheduleId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("userId");
+                }
+            }
+        } catch (SQLException e) {
+            // Ghi log đúng tên bảng và tham số truyền vào để dễ debug
+            System.err.println("Lỗi khi lấy userId từ UserSchedule với ID " + userScheduleId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return userId;
+    }
 }
