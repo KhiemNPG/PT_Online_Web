@@ -18,6 +18,17 @@ public class Progress {
     public Progress() {
     }
 
+    public Progress(int progressId, int userId, int userScheduleId, int completedWorkouts, int skippedWorkouts, double totalCaloriesBurned, String status, Timestamp lastUpdate) {
+        this.progressId = progressId;
+        this.userId = userId;
+        this.userScheduleId = userScheduleId;
+        this.completedWorkouts = completedWorkouts;
+        this.skippedWorkouts = skippedWorkouts;
+        this.totalCaloriesBurned = totalCaloriesBurned;
+        this.status = status;
+        this.lastUpdate = lastUpdate;
+    }
+
     public Progress(int progressId,
                     int userId,
                     int userScheduleId,

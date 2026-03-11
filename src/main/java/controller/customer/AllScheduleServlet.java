@@ -13,6 +13,7 @@ import model.training.TrainingSchedule;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +57,8 @@ public class AllScheduleServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         TrainingScheduleDAO trainingScheduleDAO = new TrainingScheduleDAO();
         MasterScheduleDetailDAO masterScheduleDetailDAO = new MasterScheduleDetailDAO();
+        List<TrainingDay> trainingDayList = new ArrayList<>();
+        List<TrainingSchedule> trainingScheduleList = new ArrayList<>();
 
         // 1. Kiểm tra session xem đã đăng nhập chưa
         Integer accountId = (Integer) request.getSession().getAttribute("accountId");
@@ -72,7 +75,7 @@ public class AllScheduleServlet extends HttpServlet {
 
         if (userId != 0) {
             // 3. Lấy danh sách lịch tập
-            List<TrainingSchedule> trainingScheduleList = trainingScheduleDAO.getAllTrainingSchedule(userId);
+            trainingScheduleList = trainingScheduleDAO.getAllTrainingSchedule(userId);
             if ( trainingScheduleList != null && !trainingScheduleList.isEmpty()){
                 for (TrainingSchedule ts : trainingScheduleList){
                     if (ts.getStatus().equalsIgnoreCase("Active")){
@@ -85,8 +88,8 @@ public class AllScheduleServlet extends HttpServlet {
                         request.setAttribute("masterScheduleDetail", masterScheduleDetail);
 
                         TrainingDayDAO trainingDayDAO = new TrainingDayDAO();
-                        //List<TrainingDay> trainingDayList = trainingDayDAO.getOneTrainingDayFromUser(ts.getMasterScheduleId());
-                        List<TrainingDay> trainingDayList = trainingDayDAO.getOneTrainingDayFromUser(6);
+                        trainingDayList = trainingDayDAO.getOneTrainingDayFromUser(ts.getMasterScheduleId());
+                        //List<TrainingDay> trainingDayList = trainingDayDAO.getOneTrainingDayFromUser(6);
                         request.setAttribute("trainingDayList", trainingDayList);
 
                         break;
@@ -98,10 +101,11 @@ public class AllScheduleServlet extends HttpServlet {
             request.setAttribute("TrainingSchedule", trainingScheduleList);
             request.setAttribute("NameSchedule", nameSchedule);
             request.getRequestDispatcher(jspPath).forward(request, response);
-        } else {
-            // Trường hợp có tài khoản nhưng chưa có thông tin User trong DB
-            request.setAttribute("error", "Vui lòng hoàn tất hồ sơ sức khỏe trước khi xem lịch tập.");
-            response.sendRedirect(request.getContextPath() + "/setup-profile");
+        }
+        else {
+            request.setAttribute("TrainingSchedule", trainingScheduleList);
+            request.setAttribute("trainingDayList", trainingDayList);
+            request.getRequestDispatcher(jspPath).forward(request, response);
         }
 
     }

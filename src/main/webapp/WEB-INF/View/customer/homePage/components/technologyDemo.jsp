@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="system-status">
-                            SYSTEM LIVE: ANALYZING 17 POINTS...
+                            SYSTEM LIVE: ANALYZING 33 POINTS...
                         </div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                 </p>
 
                 <ul class="list-unstyled custom-list">
-                    <li>Tự động nhận diện 17 điểm khớp nối</li>
+                    <li>Tự động nhận diện 33 điểm khớp nối</li>
                     <li>Chỉ rõ lỗi sai và mô phỏng tư thế chuẩn</li>
                     <li>Chấm điểm kỹ thuật và lưu trữ tiến trình</li>
                 </ul>

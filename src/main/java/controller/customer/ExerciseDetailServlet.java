@@ -1,14 +1,12 @@
 package controller.customer;
 
-import dao.ExerciseDAO;
-import dao.TrainingDayDAO;
-import dao.TrainingScheduleDAO;
-import dao.TrainingWorkoutExerciseDAO;
+import dao.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.entity.HealthProfile;
 import model.training.Exercise;
 import model.training.TrainingWorkoutExercise;
 
@@ -56,42 +54,64 @@ public class ExerciseDetailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String jspPath = "/WEB-INF/View/customer/schedule/ExerciseDetail/index.jsp";
+        String jspCheck = "/WEB-INF/View/customer/homePage/index.jsp";
         String idString = request.getParameter("id");
         String userDayIdString = request.getParameter("userDayId");
 
         List<Exercise> exerciseList = new ArrayList<>();
         List<TrainingWorkoutExercise> trainingWorkoutExerciseList = new ArrayList<>();
         TrainingWorkoutExerciseDAO trainingWorkoutExerciseDAO = new TrainingWorkoutExerciseDAO();
+        Exercise lastExercise = new Exercise();
 
         boolean isCompleted = false;
         int id = -1, userDayId = -1;
         Exercise exercise = new Exercise();
+        TrainingScheduleDAO trainingScheduleDAO = new TrainingScheduleDAO();
+        String jointIssues = "None";
 
-        if ( idString != null && userDayIdString != null){
+        if (idString != null && userDayIdString != null) {
             id = Integer.parseInt(idString);
             userDayId = Integer.parseInt(userDayIdString);
             TrainingDayDAO trainingDayDAO = new TrainingDayDAO();
-            isCompleted = trainingDayDAO.getStatusByUserDayId(userDayId);
+            Object statusObj = trainingDayDAO.getStatusByUserDayId(userDayId);
+            isCompleted = (statusObj != null) ? (Boolean) statusObj : false;
+        } else {
+            request.getRequestDispatcher(jspCheck).forward(request, response);
+            return;
         }
 
-        if ( id != -1 && userDayId != -1){
+        if (id != -1 && userDayId != -1) {
             ExerciseDAO exDAO = new ExerciseDAO();
             exercise = exDAO.getExerciseByExerciseId(id);
-            trainingWorkoutExerciseList = trainingWorkoutExerciseDAO.getTrainingWorkoutExerciseByUserDayId(userDayId);
-            exerciseList = trainingWorkoutExerciseDAO.getExerciseByExerciseId(trainingWorkoutExerciseList);
+            int userScheduleId = 0, userId = 0;
+            userScheduleId = trainingScheduleDAO.getUserScheduleIdByUserDayId(userDayId);
+            if (userScheduleId != 0) {
+                UserDAO userDAO = new UserDAO();
+                userId = userDAO.getUserIdByUserScheduleId(userScheduleId);
+                if (userId != 0) {
+                    HealthProfileDAO healthProfileDAO = new HealthProfileDAO();
+                    HealthProfile healthProfile = healthProfileDAO.getHealthProfileByUserId(userId);
+                    if (healthProfile != null && healthProfile.getJointIssues() != null) {
+                        jointIssues = healthProfile.getJointIssues();
+                    }
+                }
+                trainingWorkoutExerciseList = trainingWorkoutExerciseDAO.getTrainingWorkoutExerciseByUserDayId(userDayId);
+                exerciseList = trainingWorkoutExerciseDAO.getExerciseByExerciseId(trainingWorkoutExerciseList, jointIssues);
+            }
 
+            if (exerciseList != null && !exerciseList.isEmpty()) {
+                lastExercise = exerciseList.get(exerciseList.size() - 1);
+                request.setAttribute("lastId", lastExercise.getExerciseId());
+            } else {
+                request.setAttribute("lastId", 0);
+            }
+
+            request.setAttribute("exerciseList", exerciseList);
+            request.setAttribute("exercise", exercise);
+            request.setAttribute("isCompleted", isCompleted);
+
+            request.getRequestDispatcher(jspPath).forward(request, response);
         }
-
-        if (exerciseList != null && !exerciseList.isEmpty()) {
-            Exercise lastExercise = exerciseList.get(exerciseList.size() - 1);
-            request.setAttribute("lastId", lastExercise.getExerciseId());
-        }
-
-        request.setAttribute("exerciseList", exerciseList);
-        request.setAttribute("exercise", exercise);
-        request.setAttribute("isCompleted", isCompleted);
-
-        request.getRequestDispatcher(jspPath).forward(request, response);
     }
 
     @Override

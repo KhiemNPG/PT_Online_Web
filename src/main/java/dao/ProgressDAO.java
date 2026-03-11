@@ -11,40 +11,35 @@ import java.util.List;
 
 public class ProgressDAO extends DBContext {
 
-    public Progress getProgressByUserIdAndUserScheduleId(int userId, int userScheduleId) {
-
+    public Progress getProgressByUserIdAndUserScheduleId(int userId, int userScheduleId){
         Progress progress = null;
 
-        String sql = "SELECT * FROM Progress WHERE userId = ? AND userScheduleId = ?";
+        String sql = "select * from Progress where userId = ? and userScheduleId = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement ps = conn.prepareStatement(sql)) { // Dùng try-with-resources để tự đóng ps
             ps.setInt(1, userId);
             ps.setInt(2, userScheduleId);
-
             try (ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-
-                    Double finalWeight = null;
-                    if (rs.getObject("final_weight") != null) {
-                        finalWeight = rs.getDouble("final_weight");
-                    }
+                if (rs.next()) { // Dùng if vì chỉ có 1 dòng dữ liệu
+                    int progressId = rs.getInt("progressId");
+                    int completedWorkouts = rs.getInt("completedWorkouts");
+                    int skippedWorkouts = rs.getInt("skippedWorkouts");
+                    double totalCaloriesBurned = rs.getDouble("totalCaloriesBurned");
+                    String status = rs.getString("status");
+                    java.sql.Timestamp lastUpdate = rs.getTimestamp("lastUpdate");
 
                     progress = new Progress(
-                            rs.getInt("progressId"),
+                            progressId,
                             userId,
                             userScheduleId,
-                            rs.getInt("completedWorkouts"),
-                            rs.getInt("skippedWorkouts"),
-                            rs.getDouble("totalCaloriesBurned"),
-                            rs.getString("status"),
-                            rs.getTimestamp("lastUpdate"),
-                            finalWeight
+                            completedWorkouts,
+                            skippedWorkouts,
+                            totalCaloriesBurned,
+                            status,
+                            lastUpdate
                     );
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,24 +85,5 @@ public class ProgressDAO extends DBContext {
         }
 
         return list;
-    }
-
-    public void updateFinalWeight(int userId, int userScheduleId, double weight) {
-
-        String sql = "UPDATE Progress "
-                + "SET final_weight = ? "
-                + "WHERE userId = ? AND userScheduleId = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setDouble(1, weight);
-            ps.setInt(2, userId);
-            ps.setInt(3, userScheduleId);
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

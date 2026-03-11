@@ -63,6 +63,7 @@ public class HealthProfileDAO extends DBContext {
         HealthProfile healthProfile = null; // Khởi đầu là null
         String sql = "SELECT * FROM HealthProfile WHERE userId = ? ORDER BY healthProfileId DESC";
 
+        // Tự động đóng ps và rs sau khi kết thúc khối try
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
 
@@ -85,6 +86,25 @@ public class HealthProfileDAO extends DBContext {
             e.printStackTrace();
         }
         return healthProfile;
+    }
+
+    public boolean updateJointIssues(String jointIssues, int userId){
+        String sql = "update HealthProfile set jointIssues = ? where userId = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, jointIssues);
+            stmt.setInt(2, userId);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Cập nhật chấn thương " + jointIssues + "thành công cho User ID: " + userId);
+            }
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

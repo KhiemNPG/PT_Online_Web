@@ -9,10 +9,7 @@ import utils.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TrainingWorkoutExerciseDAO extends DBContext {
 
@@ -150,11 +147,10 @@ public class TrainingWorkoutExerciseDAO extends DBContext {
         return trainingWorkoutExerciseList;
     }
 
-    public List<Exercise> getExerciseByExerciseId(List<TrainingWorkoutExercise> trainingWorkoutExerciseList) {
+    public List<Exercise> getExerciseByExerciseId(List<TrainingWorkoutExercise> trainingWorkoutExerciseList, String userContraindication) {
         List<Exercise> exerciseList = new ArrayList<>();
         if (trainingWorkoutExerciseList == null || trainingWorkoutExerciseList.isEmpty()) return exerciseList;
 
-        // Câu SQL JOIN 2 bảng Exercise và Video
         String sql = "SELECT e.*, v.title, v.url, v.thumbnailUrl, v.duration " +
                 "FROM Exercise e " +
                 "LEFT JOIN Video v ON e.videoId = v.videoId " +
@@ -166,8 +162,25 @@ public class TrainingWorkoutExerciseDAO extends DBContext {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
+                        // 1. LẤY CHUỖI CHỐNG CHỈ ĐỊNH TỪ DB
+                        String dbContra = rs.getNString("contraindications");
+
+                        // 2. KIỂM TRA LOGIC CHẤN THƯƠNG
+                         //Nếu người dùng có chấn thương và bài tập này có trong danh sách đen -> SKIP (bỏ qua)
+                        if (userContraindication != null && !userContraindication.equalsIgnoreCase("Không")
+                                && !userContraindication.equalsIgnoreCase("None") && dbContra != null) {
+
+                            // Tách chuỗi theo dấu "-"
+                            List<String> forbiddenJoints = Arrays.asList(dbContra.split("-"));
+
+                            // Nếu chấn thương của user nằm trong list này thì không add bài tập này vào list trả về
+                            if (forbiddenJoints.contains(userContraindication)) {
+                                continue;
+                            }
+                        }
+
+                        // 3. NẾU AN TOÀN THÌ MỚI KHỞI TẠO OBJECT (Tiết kiệm bộ nhớ)
                         Exercise ex = new Exercise();
-                        // Set thông tin bài tập
                         ex.setExerciseId(rs.getInt("exerciseId"));
                         ex.setExerciseName(rs.getNString("exerciseName"));
                         ex.setExerciseType(rs.getNString("exerciseType"));
@@ -175,7 +188,7 @@ public class TrainingWorkoutExerciseDAO extends DBContext {
                         ex.setPrimaryMuscle(rs.getNString("primaryMuscle"));
                         ex.setSecondaryMuscles(rs.getNString("secondaryMuscles"));
                         ex.setEquipmentRequired(rs.getNString("equipmentRequired"));
-                        ex.setContraindications(rs.getNString("contraindications"));
+                        ex.setContraindications(dbContra);
                         ex.setInjuryRiskLevel(rs.getNString("injuryRiskLevel"));
                         ex.setDefaultSets(rs.getInt("defaultSets"));
                         ex.setDefaultReps(rs.getInt("defaultReps"));
@@ -187,8 +200,7 @@ public class TrainingWorkoutExerciseDAO extends DBContext {
                         ex.setTips(rs.getNString("tips"));
                         ex.setActive(rs.getBoolean("isActive"));
 
-                        // KHỞI TẠO OBJECT VIDEO VÀ GÁN VÀO EXERCISE
-                        int videoId = rs.getInt("videoId"); // Lấy từ cột e.videoId
+                        int videoId = rs.getInt("videoId");
                         if (videoId > 0) {
                             Video v = new Video();
                             v.setVideoId(videoId);
@@ -196,8 +208,7 @@ public class TrainingWorkoutExerciseDAO extends DBContext {
                             v.setUrl(rs.getString("url"));
                             v.setThumbnailUrl(rs.getString("thumbnailUrl"));
                             v.setDuration(rs.getInt("duration"));
-
-                            ex.setVideo(v); // Gán video vào exercise
+                            ex.setVideo(v);
                         }
 
                         exerciseList.add(ex);

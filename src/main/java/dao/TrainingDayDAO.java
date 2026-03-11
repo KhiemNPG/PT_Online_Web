@@ -324,4 +324,9 @@ public class TrainingDayDAO extends DBContext {
 
         return status;
     }
+
+    public boolean updateTrainingDaySchedule(){
+
+        return false;
+    }
 }
