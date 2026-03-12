@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đăng nhập Hardcore Gym</title>
+  <title>Đăng nhập Smart PT</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -60,9 +60,11 @@
     .hero{ text-align:center; margin-bottom:40px; }
     .logo-wrap{ display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px; }
     .logo{
-      width:48px; height:48px; background:var(--primary);
-      border-radius:12px; display:flex; align-items:center; justify-content:center;
-      transform: rotate(3deg); box-shadow: var(--shadow-neon-red);
+      width:75px;
+      height:75px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
     .logo .material-icons{ font-size:32px; color:#fff; }
     .title{
@@ -204,6 +206,11 @@
       border-color: var(--primary) !important;
       box-shadow: 0 0 0 1px var(--primary), 0 0 0px 1000px rgba(10,10,10,0.50) inset !important;
     }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
   </style>
 </head>
 
@@ -232,11 +239,11 @@
   <div class="hero">
     <div class="logo-wrap">
       <div class="logo">
-        <span class="material-icons">fitness_center</span>
+        <img src="https://res.cloudinary.com/dgnyskpc3/image/upload/v1771925947/8955c440-7287-4779-b81f-ada2c991d02c-removebg-preview_holdqj.png" alt="Smart PT Logo">
       </div>
     </div>
 
-    <h1 class="title">Hardcore<span class="accent">Gym</span></h1>
+    <h1 class="title">Smart-<span class="accent">PT</span></h1>
     <p class="subtitle">Bản lĩnh chiến binh</p>
   </div>
 

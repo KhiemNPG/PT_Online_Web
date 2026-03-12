@@ -1,10 +1,12 @@
 package controller.customer;
 
+import dao.AccountDAO;
 import dao.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.entity.User;
+import model.entity.Account;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
 public class UserProfileServlet extends HttpServlet {
 
     private final UserDAO userDAO = new UserDAO();
+    private final AccountDAO accountDAO = new AccountDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -27,6 +30,7 @@ public class UserProfileServlet extends HttpServlet {
 
         try {
             User user = userDAO.findByAccountId(accountId);
+            Account account = accountDAO.findById(accountId);
 
             if (user == null) {
                 user = new User();
@@ -53,6 +57,7 @@ public class UserProfileServlet extends HttpServlet {
 
             request.setAttribute("bmiStandard", bmiStandard);
             request.setAttribute("user", user);
+            request.setAttribute("account", account);
 
             request.getRequestDispatcher("/WEB-INF/View/customer/profile/index.jsp")
                     .forward(request, response);
@@ -105,15 +110,15 @@ public class UserProfileServlet extends HttpServlet {
                     "Cân nặng"
             );
 
-            if (age < 2 || age > 120) {
+            if (age != null && (age < 2 || age > 120)) {
                 throw new Exception("Tuổi phải từ 2 - 120.");
             }
 
-            if (height < 30 || height > 300) {
+            if (height != null && (height < 30 || height > 300)) {
                 throw new Exception("Chiều cao phải từ 30 - 300 cm.");
             }
 
-            if (weight < 2 || weight > 500) {
+            if (weight != null && (weight < 2 || weight > 500)) {
                 throw new Exception("Cân nặng phải từ 2 - 500 kg.");
             }
 
@@ -144,11 +149,11 @@ public class UserProfileServlet extends HttpServlet {
     private Integer parseAge(String s) throws Exception {
 
         if (s == null || s.trim().isEmpty()) {
-            throw new Exception("Tuổi không được để trống.");
+            return null;
         }
 
         if (!s.matches("\\d+")) {
-            throw new Exception("Tuổi phải là số nguyên dương.");
+            throw new Exception("Tuổi phải là số.");
         }
 
         int value = Integer.parseInt(s);
@@ -163,7 +168,7 @@ public class UserProfileServlet extends HttpServlet {
     private Double parsePositiveDouble(String s, String fieldName) throws Exception {
 
         if (s == null || s.trim().isEmpty()) {
-            throw new Exception(fieldName + " không được để trống.");
+            return null;
         }
 
         if (!s.matches("\\d+(\\.\\d+)?")) {

@@ -24,11 +24,20 @@ public class AuthFilter implements Filter {
         String uri = req.getRequestURI();
 
         boolean authRequest = uri.contains("/auth");
-        boolean resourceRequest = uri.contains("/css")
-                || uri.contains("/js")
-                || uri.contains("/images");
 
-        if (loggedIn || authRequest || resourceRequest) {
+        boolean publicPage =
+                uri.contains("/home")
+                        || uri.contains("/library")
+                        || uri.contains("/package")
+                        || uri.contains("/news");
+
+        boolean resourceRequest =
+                uri.contains("/css")
+                        || uri.contains("/js")
+                        || uri.contains("/images")
+                        || uri.contains("/fonts");
+
+        if (loggedIn || authRequest || publicPage || resourceRequest) {
             chain.doFilter(request, response);
         } else {
             res.sendRedirect(req.getContextPath() + "/auth?action=login");

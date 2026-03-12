@@ -27,7 +27,7 @@
 
         /* Layout full height */
         .layout-wrapper{
-            min-height:100vh;
+            min-height:0vh;
             display:flex;
             flex-direction:column;
         }
@@ -35,6 +35,7 @@
         .layout-content{
             flex:1;
             width:100%;
+            padding-top:80px;
         }
     </style>
 </head>
