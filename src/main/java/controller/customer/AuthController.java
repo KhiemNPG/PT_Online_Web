@@ -2,6 +2,9 @@ package controller.customer;
 
 import dao.AccountDAO;
 import model.entity.Account;
+import dao.UserDAO;
+import model.entity.User;
+import utils.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -100,9 +103,11 @@ public class AuthController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
                         .forward(request, response);
                 break;
+            case "verify":
+                handleVerifyEmail(request, response);
+                break;
 
-
-            default:
+                default:
                 response.sendRedirect(request.getContextPath() + "/auth?action=login");
                 break;
         }
@@ -124,7 +129,11 @@ public class AuthController extends HttpServlet {
                 handleChangePassword(request, response);
             } else if ("forgotPassword".equals(action)) {
                 handleForgotPassword(request, response);
-            } else {
+            } else if ("verifyOtp".equals(action)) {
+                handleVerifyOtp(request, response);
+            }else if ("resetPassword".equals(action)) {
+            handleResetPassword(request, response);
+            }else {
                 response.sendRedirect(request.getContextPath() + "/auth?action=login");
             }
         } catch (Exception e) {
@@ -133,18 +142,28 @@ public class AuthController extends HttpServlet {
     }
 
     private void handleRegister(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirm  = request.getParameter("confirm");
+        String email = request.getParameter("email");
 
         request.setAttribute("oldUsername", username);
+        request.setAttribute("oldEmail", email);
 
-        Account exist = accountDAO.findByUsername(username);
-        if (exist != null) {
+        Account existUser = accountDAO.findByUsername(username);
+        if (existUser != null) {
             request.setAttribute("error", "Tên đăng nhập đã tồn tại.");
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/register.jsp").forward(request, response);
+            return;
+        }
+
+        Account existEmail = accountDAO.findByEmail(email);
+        if (existEmail != null) {
+            request.setAttribute("error", "Email này đã được đăng ký.");
             request.getRequestDispatcher("/WEB-INF/View/customer/auth/register.jsp").forward(request, response);
             return;
         }
@@ -157,21 +176,64 @@ public class AuthController extends HttpServlet {
 
         Account a = new Account();
         a.setUsername(username);
+        a.setEmail(email);
         a.setPasswordHash(hashPassword(password));
         a.setRole("CUSTOMER");
-        a.setActive(true);
+
+        //account chưa active
+        a.setActive(false);
 
         int newId = accountDAO.insert(a);
+
         if (newId <= 0) {
             request.setAttribute("error", "Đăng ký thất bại.");
             request.getRequestDispatcher("/WEB-INF/View/customer/auth/register.jsp").forward(request, response);
             return;
         }
 
+        UserDAO userDAO = new UserDAO();
+
+        User u = new User();
+        u.setAccountId(newId);
+        u.setName(username);
+
+        userDAO.insert(u);
+
+        //token verify
+        String token = java.util.UUID.randomUUID().toString();
+
+        HttpSession session = request.getSession();
+        session.setAttribute("verifyToken", token);
+        session.setAttribute("verifyAccountId", newId);
+
+        String verifyLink =
+                "http://localhost:8080/PT_Online/auth?action=verify&token=" + token;
+
+        String subject = "Xác minh tài khoản Smart-PT";
+
+        String content =
+                "<div style='font-family:Arial;background:#111;padding:40px'>" +
+                        "<div style='max-width:600px;margin:auto;background:#1c1c1c;border-radius:10px;padding:30px;color:white;text-align:center'>" +
+
+                        "<h2 style='color:#ff2d2d'>Smart-PT</h2>" +
+
+                        "<p>Xin chào <b>" + username + "</b>,</p>" +
+
+                        "<p>Vui lòng xác minh email để kích hoạt tài khoản:</p>" +
+
+                        "<a href='" + verifyLink + "' " +
+                        "style='background:#ff2d2d;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold'>" +
+                        "Xác minh Email</a>" +
+
+                        "<p style='margin-top:30px;font-size:12px;color:#aaa'>© Smart-PT</p>" +
+
+                        "</div></div>";
+
+        EmailService.sendEmail(email, subject, content);
+
         response.sendRedirect(
                 request.getContextPath()
-                        + "/auth?action=login&msg=register_success&username="
-                        + java.net.URLEncoder.encode(username, "UTF-8")
+                        + "/auth?action=login&msg=check_email"
         );
     }
 
@@ -189,7 +251,21 @@ public class AuthController extends HttpServlet {
 
         Account a = accountDAO.findByUsername(username);
 
-        if (a == null || !a.isActive() || !verifyPassword(password, a.getPasswordHash())) {
+        if (a == null) {
+            request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác");
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
+            return;
+        }
+
+        if (!a.isActive()) {
+            request.setAttribute("error", "Tài khoản chưa được kích hoạt. Vui lòng kiểm tra email để xác minh.");
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
+            return;
+        }
+
+        if (!verifyPassword(password, a.getPasswordHash())) {
             request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không chính xác");
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
@@ -221,6 +297,7 @@ public class AuthController extends HttpServlet {
     }
 
     private void handleChangePassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         Integer accountId = (Integer) request.getSession().getAttribute("accountId");
         if (accountId == null) {
             response.sendRedirect(request.getContextPath() + "/auth?action=login");
@@ -238,45 +315,211 @@ public class AuthController extends HttpServlet {
         }
 
         Account a = accountDAO.findById(accountId);
+
         if (a == null || current == null || !verifyPassword(current, a.getPasswordHash())) {
             request.setAttribute("error", "Mật khẩu hiện tại không đúng.");
             request.getRequestDispatcher("/WEB-INF/View/customer/auth/change_password.jsp").forward(request, response);
             return;
         }
 
-        accountDAO.updatePasswordHash(accountId, hashPassword(newPass));
+        boolean ok = accountDAO.updatePasswordHash(accountId, hashPassword(newPass));
+
+        if (!ok) {
+            request.setAttribute("error", "Không thể đổi mật khẩu. Vui lòng thử lại.");
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/change_password.jsp").forward(request, response);
+            return;
+        }
+
+        String subject = "Smart-PT - Password has been changed";
+
+        String content =
+                "<div style='font-family:Arial;background:#111;padding:40px'>" +
+                        "<div style='max-width:600px;margin:auto;background:#1c1c1c;border-radius:10px;padding:30px;color:white;text-align:center'>" +
+
+                        "<img src='https://res.cloudinary.com/dgnyskpc3/image/upload/v1771925947/8955c440-7287-4779-b81f-ada2c991d02c-removebg-preview_holdqj.png' style='width:70px;margin-bottom:20px'>" +
+
+                        "<h2 style='color:#ff2d2d'>Smart-PT</h2>" +
+
+                        "<p>Xin chào <b>" + a.getUsername() + "</b>,</p>" +
+
+                        "<p>Mật khẩu tài khoản của bạn vừa được thay đổi thành công.</p>" +
+
+                        "<p>Nếu đây không phải là bạn thực hiện, hãy đổi mật khẩu ngay lập tức hoặc liên hệ với chúng tôi.</p>" +
+
+                        "<a href='http://localhost:8080/PT_Online' " +
+                        "style='background:#ff2d2d;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold'>" +
+                        "Truy cập Website</a>" +
+
+                        "<p style='margin-top:30px;font-size:12px;color:#aaa'>© Smart-PT</p>" +
+
+                        "</div></div>";
+
+        EmailService.sendEmail(a.getEmail(), subject, content);
+
         request.setAttribute("success", "Đổi mật khẩu thành công.");
         request.getRequestDispatcher("/WEB-INF/View/customer/auth/change_password.jsp").forward(request, response);
     }
-    private void handleForgotPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String username = request.getParameter("username");
+    private void handleForgotPassword(HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+
+        String email = request.getParameter("email");
+
+        if (isBlank(email)) {
+            request.setAttribute("error","Vui lòng nhập email.");
+            request.setAttribute("step","email");
+
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
+
+            return;
+        }
+
+        Account acc = accountDAO.findByEmail(email);
+
+        if(acc == null){
+            request.setAttribute("error","Email không tồn tại.");
+            request.setAttribute("step","email");
+
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
+
+            return;
+        }
+
+        String otp = String.valueOf((int)(Math.random()*900000)+100000);
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute("resetOTP",otp);
+        session.setAttribute("resetEmail",email);
+        session.setAttribute("otpTime",System.currentTimeMillis());
+
+        EmailService.sendEmail(
+                email,
+                "SmartPT - OTP Reset Password",
+                "<h2>Mã OTP của bạn: "+otp+"</h2><p>Hết hạn sau 5 phút</p>"
+        );
+
+        request.setAttribute("step","otp");
+
+        request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                .forward(request,response);
+    }
+    private void handleVerifyOtp(HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+
+        String inputOtp = request.getParameter("otp");
+
+        HttpSession session = request.getSession();
+
+        String realOtp = (String) session.getAttribute("resetOTP");
+        Long otpTime = (Long) session.getAttribute("otpTime");
+
+        if(realOtp == null || otpTime == null){
+
+            request.setAttribute("error","OTP hết hạn.");
+            request.setAttribute("step","email");
+
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
+
+            return;
+        }
+
+        if(System.currentTimeMillis() - otpTime > 5*60*1000){
+
+            request.setAttribute("error","OTP đã hết hạn.");
+            request.setAttribute("step","email");
+
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
+
+            return;
+        }
+
+        if(!realOtp.equals(inputOtp)){
+
+            request.setAttribute("error","OTP không đúng.");
+            request.setAttribute("step","otp");
+
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
+
+            return;
+        }
+
+        request.setAttribute("step","reset");
+
+        request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp")
+                .forward(request,response);
+    }
+    private void handleResetPassword(HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
+
+        HttpSession session = request.getSession();
+
+        String email = (String) session.getAttribute("resetEmail");
+
         String newPass = request.getParameter("newPassword");
         String confirm = request.getParameter("confirmPassword");
-
-        if (isBlank(username) || newPass == null || newPass.length() < 8 || confirm == null || !newPass.equals(confirm)) {
-            request.setAttribute("error", "Vui lòng nhập username và mật khẩu mới (>= 8 ký tự), xác nhận phải khớp.");
-            request.setAttribute("oldUser", username);
-            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp").forward(request, response);
+        if(newPass == null ||
+                !newPass.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$")){
+            request.setAttribute("error",
+                    "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt.");
+            request.setAttribute("step","reset");
+            request.getRequestDispatcher(
+                            "/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
             return;
         }
-
-        Account a = accountDAO.findByUsername(username);
-        if (a == null || !a.isActive()) {
-            request.setAttribute("error", "Tài khoản không tồn tại hoặc đang bị khóa.");
-            request.setAttribute("oldUser", username);
-            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp").forward(request, response);
+        if(!newPass.equals(confirm)){
+            request.setAttribute("error","Mật khẩu xác nhận không khớp.");
+            request.setAttribute("step","reset");
+            request.getRequestDispatcher(
+                            "/WEB-INF/View/customer/auth/forgot_password.jsp")
+                    .forward(request,response);
             return;
         }
+        Account acc = accountDAO.findByEmail(email);
+        accountDAO.updatePasswordHash(
+                acc.getAccountId(),
+                hashPassword(newPass)
+        );
 
-        boolean ok = accountDAO.updatePasswordHash(a.getAccountId(), hashPassword(newPass));
-        if (!ok) {
-            request.setAttribute("error", "Không thể đổi mật khẩu. Vui lòng thử lại.");
-            request.setAttribute("oldUser", username);
-            request.getRequestDispatcher("/WEB-INF/View/customer/auth/forgot_password.jsp").forward(request, response);
-            return;
-        }
+        session.removeAttribute("resetOTP");
+        session.removeAttribute("resetEmail");
+        session.removeAttribute("otpTime");
 
-        response.sendRedirect(request.getContextPath() + "/auth?action=login&msg=reset_success&username=" + username);
+        response.sendRedirect(
+                request.getContextPath()
+                        +"/auth?action=login&msg=reset_success"
+        );
     }
+    private void handleVerifyEmail(HttpServletRequest request,
+                                   HttpServletResponse response)
+            throws ServletException, IOException {
 
+        String token = request.getParameter("token");
+
+        HttpSession session = request.getSession();
+
+        String realToken = (String) session.getAttribute("verifyToken");
+        Integer accountId =
+                (Integer) session.getAttribute("verifyAccountId");
+
+        if (realToken == null || !realToken.equals(token)) {
+            response.getWriter().write("Link xác minh không hợp lệ.");
+            return;
+        }
+
+        accountDAO.setActive(accountId, true);
+
+        session.removeAttribute("verifyToken");
+        session.removeAttribute("verifyAccountId");
+
+        response.sendRedirect(
+                request.getContextPath()
+                        + "/auth?action=login&msg=email_verified"
+        );
+    }
 }

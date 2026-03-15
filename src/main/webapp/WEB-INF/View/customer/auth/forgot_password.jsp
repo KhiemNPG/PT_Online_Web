@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quên mật khẩu | Hardcore Gym</title>
+    <title>Quên mật khẩu | Smart PT</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -19,134 +19,163 @@
             --shadow-neon-red-strong: 0 0 25px -5px rgba(249, 6, 6, 0.6);
         }
         *{ box-sizing:border-box; }
-        html, body{ height:100%; }
         body{
             margin:0;
-            font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            font-family:Inter;
             min-height:100vh;
             background-image: radial-gradient(circle at center, #230f0f 0%, #0a0a0a 100%);
             color:#fff;
             display:flex;
             align-items:center;
             justify-content:center;
-            position:relative;
-            overflow:hidden;
         }
-        .grain-overlay{
-            position:fixed; inset:0; pointer-events:none;
-            background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuCIONejYpi__NCu7OAqBPd380VyXsr_I6rrU2JAqtLnB-EVWc96E08Y-0F6w3h20VV8FTJxdMbVrxGkq1gxSy_4Bk0bV58ioLBVihhgOch7YdCxSD8LWc9OzPFXlAIzdlsdfb0KytoqlVGxctdeH8j1Cx5C5U2_M_aYCmlTxFzUM6FuH2_dNqvoc-2pAKYSkhbuk4xouUyAgR9rduVhIkTuH8U78qWHtv54vHlr80WNbflmz5Jk-ia4vXNV9PZCrQ8qiHPLI_Iomw");
-            opacity:0.03; z-index:0;
+        main{
+            width:100%;
+            max-width:520px;
+            padding:0 24px;
         }
-        .glow-blob{
-            position:absolute; width:40%; height:40%;
-            background: rgba(249, 6, 6, 0.05);
-            filter: blur(120px);
-            border-radius:9999px;
-            z-index:0;
-        }
-        .glow-blob.top-left{ top:-10%; left:-10%; }
-        .glow-blob.bottom-right{ bottom:-10%; right:-10%; }
-
-        main{ position:relative; z-index:10; width:100%; max-width:520px; padding:0 24px; }
-
-        .hero{ text-align:center; margin-bottom:26px; }
-        .logo-wrap{ display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px; }
+        .hero{text-align:center;margin-bottom:26px;}
         .logo{
-            width:48px; height:48px; background:var(--primary);
-            border-radius:12px; display:flex; align-items:center; justify-content:center;
-            transform: rotate(3deg); box-shadow: var(--shadow-neon-red);
+            width:48px;
+            height:48px;
+            background:var(--primary);
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:auto;
         }
-        .logo .material-icons{ font-size:32px; color:#fff; }
+        .logo .material-icons{
+            font-size:32px;
+            color:white;
+        }
         .title{
-            margin:0; font-size:34px; font-weight:900; letter-spacing:-0.04em;
-            text-transform:uppercase; font-style:italic; line-height:1.05;
+            font-size:34px;
+            font-weight:900;
+            text-transform:uppercase;
         }
-        .title .accent{ color:var(--primary); }
+        .title .accent{
+            color:var(--primary);
+        }
         .subtitle{
-            margin:8px 0 0; font-size:12px; font-weight:600; letter-spacing:0.18em;
-            text-transform:uppercase; color: rgba(255,255,255,0.40);
+            font-size:12px;
+            opacity:.6;
         }
-
         .card{
-            background: rgba(26,26,26,0.80);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--neutral-border);
+            background:rgba(26,26,26,0.8);
+            border:1px solid var(--neutral-border);
             padding:32px;
             border-radius:24px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.55);
         }
-
         .notice{
-            margin:0 0 18px 0;
-            padding:12px 14px;
+            margin-bottom:18px;
+            padding:12px;
             border-radius:14px;
-            background: rgba(0,0,0,0.25);
-            color: rgba(255,255,255,0.92);
+            background:rgba(0,0,0,0.25);
             font-size:12px;
-            line-height:1.35;
-            border: 1px solid rgba(255,255,255,0.14);
         }
-        .notice.error{ border-color: rgba(249,6,6,0.35); }
-
+        .notice.error{
+            border:1px solid rgba(249,6,6,0.35);
+        }
         .space-y-6 > * + *{ margin-top:24px; }
-        .field-label{
-            display:block; font-size:11px; font-weight:800; letter-spacing:0.12em;
-            text-transform:uppercase; color: rgba(255,255,255,0.60);
-            margin-left:4px; margin-bottom:8px;
-        }
 
+        .field-label{
+            font-size:11px;
+            font-weight:800;
+            text-transform:uppercase;
+            opacity:.7;
+        }
         .input-wrap{ position:relative; }
         .input-icon{
-            position:absolute; left:16px; top:50%;
-            transform:translateY(-50%); font-size:20px;
-            color: rgba(255,255,255,0.30);
-            pointer-events:none;
+            position:absolute;
+            left:16px;
+            top:50%;
+            transform:translateY(-50%);
+            opacity:.3;
         }
-
-        .toggle{
-            position:absolute; right:10px; top:50%; transform:translateY(-50%);
-            width:42px; height:42px; border:none; background:transparent; cursor:pointer;
-            color: rgba(255,255,255,0.30); border-radius:12px;
-            display:flex; align-items:center; justify-content:center;
-            transition: background .2s ease, color .2s ease;
-        }
-        .toggle:hover{ background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.75); }
-        .toggle .material-icons{ font-size:20px; }
-
         .input{
             width:100%;
             padding:16px 52px 16px 48px;
             border-radius:12px;
             border:1px solid var(--neutral-border);
-            background: rgba(10,10,10,0.50);
-            color:#fff;
-            font-size:14px;
-            font-weight:500;
-            outline:none;
+            background:#111;
+            color:white;
         }
-
+        .toggle{
+            position:absolute;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:none;
+            color:white;
+            cursor:pointer;
+        }
         .btn{
             width:100%;
+            background:var(--primary);
             border:none;
-            cursor:pointer;
-            background: var(--primary);
-            color:#fff;
-            font-weight:900;
+            color:white;
             padding:16px;
             border-radius:12px;
-            box-shadow: var(--shadow-neon-red);
-            text-transform:uppercase;
-            letter-spacing:0.18em;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:8px;
-            transition: filter .2s ease, box-shadow .2s ease, transform .08s ease;
+            font-weight:900;
+            cursor:pointer;
         }
-        .btn:hover{ filter: brightness(0.95); box-shadow: var(--shadow-neon-red-strong); }
-        .btn:active{ transform: scale(0.98); }
+        .hint{
+            font-size:11px;
+            opacity:.7;
+            margin-top:6px;
+        }
+        .strength{
+            height:8px;
+            background:#222;
+            border-radius:999px;
+            margin-top:8px;
+            overflow:hidden;
+        }
+        .strength div{
+            height:100%;
+            width:0%;
+            background:var(--primary);
+            transition:.2s;
+        }
+        .otp-container{
+            display:flex;
+            gap:10px;
+            justify-content:center;
+        }
+        .otp-input{
 
+            width:50px;
+            height:55px;
+            text-align:center;
+            font-size:20px;
+            border-radius:10px;
+            border:1px solid var(--neutral-border);
+            background:#111;
+            color:white;
+        }
+        .otp-container{
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            margin-top:10px;
+        }
+        .otp-input{
+            width:50px;
+            height:55px;
+            text-align:center;
+            font-size:20px;
+            border-radius:10px;
+            border:1px solid var(--neutral-border);
+            background:#111;
+            color:white;
+            outline:none;
+        }
+        .otp-input:focus{
+            border-color:var(--primary);
+            box-shadow:0 0 6px rgba(249,6,6,0.6);
+        }
         .footer-row{
             margin-top:18px;
             display:flex;
@@ -164,97 +193,289 @@
             text-decoration-color: rgba(249,6,6,0.30);
             text-underline-offset:4px;
             transition: color .2s ease;
-            white-space:nowrap;
         }
-        .link:hover{ color: var(--primary); }
+        .link:hover{
+            color: var(--primary);
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-text-fill-color: #fff !important;
+            -webkit-box-shadow: 0 0 0px 1000px var(--input) inset !important;
+            box-shadow: 0 0 0px 1000px var(--input) inset !important;
+            border: 1px solid var(--border-soft) !important;
+            caret-color: #fff !important;
+            transition: background-color 999999s ease-in-out 0s;
+        }
+        input:-webkit-autofill:focus{
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 1px var(--primary), 0 0 0px 1000px var(--input) inset !important;
+        }
     </style>
 </head>
 
 <body>
-<div class="grain-overlay"></div>
-<div class="glow-blob top-left"></div>
-<div class="glow-blob bottom-right"></div>
-
 <%
     String error = (String) request.getAttribute("error");
-    String oldUser = (String) request.getAttribute("oldUser");
-    if (oldUser == null) oldUser = "";
+    String step = (String) request.getAttribute("step");
+    if(step == null) step = "email";
 %>
-
 <main>
     <div class="hero">
-        <div class="logo-wrap">
-            <div class="logo">
-                <span class="material-icons">lock_reset</span>
-            </div>
+        <div class="logo">
+            <span class="material-icons">lock_reset</span>
         </div>
-
         <h1 class="title">Quên<span class="accent">Mật khẩu</span></h1>
         <p class="subtitle">Đặt lại mật khẩu</p>
     </div>
 
     <div class="card">
-        <% if (error != null && !error.trim().isEmpty()) { %>
-        <div class="notice error"><%= error %></div>
+        <% if(error!=null){ %>
+        <div class="notice error"><%=error%></div>
         <% } %>
-
-        <form method="post" action="${pageContext.request.contextPath}/auth?action=forgotPassword" class="space-y-6" autocomplete="on">
+        <% if("email".equals(step)){ %>
+        <form method="post"
+              action="${pageContext.request.contextPath}/auth?action=forgotPassword"
+              class="space-y-6">
             <div>
-                <label class="field-label" for="username">Tên đăng nhập</label>
+                <label class="field-label">Email</label>
                 <div class="input-wrap">
-                    <span class="material-icons input-icon">person</span>
-                    <input id="username" name="username" class="input" type="text" placeholder="Nhập username" required autocomplete="username" value="<%= oldUser %>" />
+                    <span class="material-icons input-icon">mail</span>
+                    <input
+                            class="input"
+                            type="email"
+                            name="email"
+                            placeholder="Nhập email đăng ký"
+                            required>
                 </div>
             </div>
-
-            <div>
-                <label class="field-label" for="newPassword">Mật khẩu mới (>= 8 ký tự)</label>
-                <div class="input-wrap">
-                    <span class="material-icons input-icon">enhanced_encryption</span>
-                    <input id="newPassword" name="newPassword" class="input" type="password" placeholder="Nhập mật khẩu mới" required minlength="8" autocomplete="new-password" />
-                    <button type="button" class="toggle" data-toggle="newPassword" aria-label="Hiện/ẩn mật khẩu mới">
-                        <span class="material-icons">visibility</span>
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <label class="field-label" for="confirmPassword">Xác nhận mật khẩu mới</label>
-                <div class="input-wrap">
-                    <span class="material-icons input-icon">verified_user</span>
-                    <input id="confirmPassword" name="confirmPassword" class="input" type="password" placeholder="Nhập lại mật khẩu mới" required minlength="8" autocomplete="new-password" />
-                    <button type="button" class="toggle" data-toggle="confirmPassword" aria-label="Hiện/ẩn xác nhận mật khẩu">
-                        <span class="material-icons">visibility</span>
-                    </button>
-                </div>
-            </div>
-
-            <button class="btn" type="submit">
-                Đặt lại mật khẩu
-                <span class="material-icons">bolt</span>
+            <button class="btn">
+                Gửi mã OTP
             </button>
-
             <div class="footer-row">
-                <a class="link" href="${pageContext.request.contextPath}/auth?action=login">← Về đăng nhập</a>
+                <a class="link"
+                   href="${pageContext.request.contextPath}/auth?action=login">
+                    ← Quay lại đăng nhập
+                </a>
             </div>
         </form>
+        <% } %>
+
+
+        <% if("otp".equals(step)){ %>
+        <form method="post"
+              action="${pageContext.request.contextPath}/auth?action=verifyOtp"
+              class="space-y-6">
+            <div>
+                <label class="field-label">Nhập OTP</label>
+                <div class="otp-container">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                    <input type="text" maxlength="1" class="otp-input">
+                </div>
+                <input type="hidden" name="otp" id="otpValue">
+            </div>
+            <button class="btn">
+                Xác nhận OTP
+            </button>
+            <div class="hint" id="otpTimer">
+                Bạn có thể gửi lại OTP sau 05:00
+            </div>
+            <a id="resendOtp"
+               style="display:none"
+               class="link"
+               href="${pageContext.request.contextPath}/auth?action=forgotPassword">
+                Gửi lại OTP
+            </a>
+        </form>
+        <% } %>
+
+
+        <% if("reset".equals(step)){ %>
+        <form method="post"
+              action="${pageContext.request.contextPath}/auth?action=resetPassword"
+              class="space-y-6">
+            <div>
+                <label class="field-label">Mật khẩu mới</label>
+                <div class="input-wrap">
+                    <span class="material-icons input-icon">enhanced_encryption</span>
+                    <input id="newPassword"
+                           name="newPassword"
+                           class="input"
+                           type="password"
+                           placeholder="Nhập mật khẩu mới"
+                           required minlength="8">
+                    <button type="button" class="toggle" data-toggle="newPassword">
+                        <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+                <div id="pwHint" class="hint">
+                    Mật khẩu ≥ 8 ký tự
+                </div>
+                <div class="strength">
+                    <div id="pwBar"></div>
+                </div>
+            </div>
+            <div>
+                <label class="field-label">Xác nhận mật khẩu</label>
+                <div class="input-wrap">
+                    <span class="material-icons input-icon">verified_user</span>
+                    <input id="confirmPassword"
+                           name="confirmPassword"
+                           class="input"
+                           type="password"
+                           placeholder="Nhập lại mật khẩu"
+                           required minlength="8">
+                    <button type="button" class="toggle" data-toggle="confirmPassword">
+                        <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+                <div id="cfHint" class="hint">
+                    Nhập lại mật khẩu cho khớp
+                </div>
+            </div>
+            <button class="btn">
+                Đặt lại mật khẩu
+            </button>
+        </form>
+        <% } %>
     </div>
 </main>
 
 <script>
+    const pw = document.getElementById("newPassword")
+    const cf = document.getElementById("confirmPassword")
+    if(pw && cf){
+        const bar = document.getElementById("pwBar")
+        const hint = document.getElementById("pwHint")
+        const cfHint = document.getElementById("cfHint")
+        function strongPassword(v){
+            return (
+                v.length >= 8 &&
+                /[A-Z]/.test(v) &&
+                /[a-z]/.test(v) &&
+                /\d/.test(v) &&
+                /[^A-Za-z0-9]/.test(v)
+            )
+        }
+        pw.oninput = () => {
+            let v = pw.value
+            let score = 0
+            if(v.length>=8) score++
+            if(/[A-Z]/.test(v)) score++
+            if(/[a-z]/.test(v)) score++
+            if(/[0-9]/.test(v)) score++
+            if(/[^A-Za-z0-9]/.test(v)) score++
+            bar.style.width = (score*20) + "%"
+            if(strongPassword(v)){
+                hint.className="hint ok"
+                hint.innerText="Mật khẩu đạt yêu cầu"
+            }else{
+                hint.className="hint bad"
+                hint.innerText="Phải có: ≥8 ký tự, chữ hoa, chữ thường, số và ký tự đặc biệt"
+            }
+        }
+        cf.oninput = () => {
+            if(cf.value === pw.value){
+                cfHint.className="hint ok"
+                cfHint.innerText="Mật khẩu khớp"
+            }else{
+                cfHint.className="hint bad"
+                cfHint.innerText="Mật khẩu không khớp"
+            }
+        }
+        const resetForm = document.querySelector("form[action*='resetPassword']")
+        if(resetForm){
+            resetForm.onsubmit = function(e){
+                if(!strongPassword(pw.value)){
+                    hint.className="hint bad"
+                    hint.innerText="Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt"
+                    e.preventDefault()
+                    return
+                }
+                if(pw.value !== cf.value){
+                    cfHint.className="hint bad"
+                    cfHint.innerText="Mật khẩu xác nhận không khớp"
+                    e.preventDefault()
+                }
+            }
+        }
+    }
+    const otpInputs = document.querySelectorAll(".otp-input")
+    if(otpInputs.length){
+        otpInputs.forEach((input,index)=>{
+            input.addEventListener("input",()=>{
+                input.value = input.value.replace(/[^0-9]/g,'')
+                if(input.value.length === 1 && index < otpInputs.length-1){
+                    otpInputs[index+1].focus()
+                }
+            })
+            input.addEventListener("keydown",(e)=>{
+
+                if(e.key==="Backspace" && !input.value && index>0){
+                    otpInputs[index-1].focus()
+                }
+            })
+            input.addEventListener("paste",(e)=>{
+                e.preventDefault()
+                const pasteData = (e.clipboardData || window.clipboardData)
+                    .getData("text")
+                    .trim()
+                if(!/^\d{6}$/.test(pasteData)) return
+                const digits = pasteData.split("")
+                otpInputs.forEach((box,i)=>{
+                    box.value = digits[i] || ""
+                })
+                otpInputs[Math.min(digits.length,5)].focus()
+            })
+        })
+        const otpForm = document.querySelector("form[action*='verifyOtp']")
+        if(otpForm){
+            otpForm.addEventListener("submit",function(){
+                let otp=""
+                otpInputs.forEach(i => otp += i.value)
+                document.getElementById("otpValue").value = otp
+            })
+        }
+    }
+    const timer = document.getElementById("otpTimer")
+    const resend = document.getElementById("resendOtp")
+    if(timer){
+        let time = 300
+        const interval = setInterval(()=>{
+            let m = Math.floor(time/60)
+            let s = time%60
+            timer.innerText =
+                "Bạn có thể gửi lại OTP sau "
+                +(m<10?"0"+m:m)+":"
+                +(s<10?"0"+s:s)
+            time--
+            if(time < 0){
+                clearInterval(interval)
+                timer.style.display="none"
+                if(resend) resend.style.display="inline"
+            }
+        },1000)
+    }
     document.querySelectorAll(".toggle").forEach(btn => {
         btn.addEventListener("click", () => {
-            const id = btn.getAttribute("data-toggle");
-            const input = document.getElementById(id);
-            const icon = btn.querySelector(".material-icons");
-            const isPw = input.type === "password";
-            input.type = isPw ? "text" : "password";
-            icon.textContent = isPw ? "visibility_off" : "visibility";
-            input.focus();
-            const len = input.value.length;
-            try { input.setSelectionRange(len, len); } catch(e) {}
-        });
-    });
+            const id = btn.getAttribute("data-toggle")
+            const input = document.getElementById(id)
+            const icon = btn.querySelector(".material-icons")
+            if (!input) return
+            if (input.type === "password") {
+                input.type = "text"
+                icon.textContent = "visibility_off"
+            } else {
+                input.type = "password"
+                icon.textContent = "visibility"
+            }
+        })
+    })
 </script>
 </body>
 </html>

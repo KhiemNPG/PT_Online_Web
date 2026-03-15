@@ -328,6 +328,15 @@
                         <label class="label">Họ và tên</label>
                         <input class="input" name="name" value="${user.name}" required>
                     </div>
+                    <div class="span-2">
+                        <label class="label">Email</label>
+
+                        <input class="input"
+                               type="email"
+                               name="email"
+                               value="${account.email}"
+                               readonly>
+                    </div>
 
                     <div>
                         <label class="label">Giới tính</label>
@@ -357,7 +366,6 @@
                                min="2"
                                max="120"
                                step="1"
-                               required
                                value="${user.age}">
                     </div>
 
@@ -369,7 +377,6 @@
                                min="30"
                                max="300"
                                step="0.1"
-                               required
                                value="${user.height}">
                     </div>
 
@@ -381,7 +388,6 @@
                                min="2"
                                max="500"
                                step="0.1"
-                               required
                                value="${user.weight}">
                     </div>
                 </div>

@@ -9,6 +9,7 @@ public class Account {
     private String role;
     private boolean isActive;
     private Timestamp createdAt;
+    private String email;
 
     public Account() {
     }
@@ -61,12 +62,21 @@ public class Account {
         this.createdAt = createdAt;
     }
 
-    public Account(int accountId, String username, String passwordHash, String role, boolean isActive, Timestamp createdAt) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Account(int accountId, String username, String passwordHash, String role, boolean isActive, Timestamp createdAt, String email) {
         this.accountId = accountId;
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.email = email;
     }
 }

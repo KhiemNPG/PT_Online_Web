@@ -267,6 +267,33 @@
       border-color: var(--primary) !important;
       box-shadow: 0 0 0 1px var(--primary), 0 0 0px 1000px rgba(10,10,10,0.50) inset !important;
     }
+    .pw-hint{
+      margin-top:6px;
+      font-size:11px;
+      color: rgba(255,255,255,0.50);
+    }
+
+    .pw-hint.ok{
+      color:#00ffa0;
+    }
+
+    .pw-hint.bad{
+      color:#ff4d4d;
+    }
+    .strength{
+      margin-top:8px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.08);
+      overflow:hidden;
+    }
+
+    .strength div{
+      height:100%;
+      width:0%;
+      background:var(--primary);
+      transition:width .2s ease;
+    }
   </style>
 </head>
 
@@ -323,10 +350,23 @@
         </div>
         <div class="input-wrap">
           <span class="material-icons input-icon">enhanced_encryption</span>
-          <input id="newPassword" name="newPassword" class="input" type="password" placeholder="Nhập mật khẩu mới" required autocomplete="new-password" minlength="8" />
-          <button type="button" class="toggle" data-toggle="newPassword" aria-label="Hiện/ẩn mật khẩu mới">
+
+          <input id="newPassword" name="newPassword" class="input"
+                 type="password"
+                 placeholder="Nhập mật khẩu mới"
+                 required autocomplete="new-password" minlength="8" />
+
+          <button type="button" class="toggle" data-toggle="newPassword">
             <span class="material-icons">visibility</span>
           </button>
+        </div>
+
+        <div id="pwHint" class="pw-hint">
+          Mật khẩu ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt
+        </div>
+
+        <div class="strength">
+          <div id="pwBar"></div>
         </div>
       </div>
 
@@ -334,13 +374,22 @@
         <div class="field-label">
           <span>Xác nhận mật khẩu mới</span>
         </div>
+
         <div class="input-wrap">
           <span class="material-icons input-icon">verified_user</span>
-          <input id="confirmPassword" name="confirmPassword" class="input" type="password" placeholder="Nhập lại mật khẩu mới" required autocomplete="new-password" minlength="8" />
-          <button type="button" class="toggle" data-toggle="confirmPassword" aria-label="Hiện/ẩn xác nhận mật khẩu">
+
+          <input id="confirmPassword" name="confirmPassword" class="input"
+                 type="password"
+                 placeholder="Nhập lại mật khẩu mới"
+                 required autocomplete="new-password" minlength="8" />
+          <button type="button" class="toggle" data-toggle="confirmPassword">
             <span class="material-icons">visibility</span>
           </button>
         </div>
+        <div id="cfHint" class="pw-hint">
+          Nhập lại mật khẩu cho khớp
+        </div>
+
       </div>
 
       <button class="btn" type="submit">
@@ -358,19 +407,99 @@
 </main>
 
 <script>
-  document.querySelectorAll(".toggle").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-toggle");
-      const input = document.getElementById(id);
-      const icon = btn.querySelector(".material-icons");
-      const isPw = input.type === "password";
-      input.type = isPw ? "text" : "password";
-      icon.textContent = isPw ? "visibility_off" : "visibility";
-      input.focus();
-      const len = input.value.length;
-      try { input.setSelectionRange(len, len); } catch(e) {}
-    });
-  });
+
+  document.querySelectorAll(".toggle").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const id=btn.dataset.toggle
+      const input=document.getElementById(id)
+      const icon=btn.querySelector(".material-icons")
+
+      const isPw=input.type==="password"
+      input.type=isPw?"text":"password"
+      icon.textContent=isPw?"visibility_off":"visibility"
+    })
+  })
+
+  const form=document.querySelector("form")
+
+  const pw=document.getElementById("newPassword")
+  const cf=document.getElementById("confirmPassword")
+
+  const pwHint=document.getElementById("pwHint")
+  const cfHint=document.getElementById("cfHint")
+  const pwBar=document.getElementById("pwBar")
+
+  function hasLower(s){return /[a-z]/.test(s)}
+  function hasUpper(s){return /[A-Z]/.test(s)}
+  function hasNumber(s){return /\d/.test(s)}
+  function hasSpecial(s){return /[^A-Za-z\d]/.test(s)}
+  function hasLen(s){return s.length>=8}
+  function strengthPercent(pw){
+    let score=0
+    if(hasLen(pw))score++
+    if(hasLower(pw))score++
+    if(hasUpper(pw))score++
+    if(hasNumber(pw))score++
+    if(hasSpecial(pw))score++
+    return (score/5)*100
+  }
+  function renderPassword(){
+    const v=pw.value
+    const ok=
+            hasLen(v)&&
+            hasLower(v)&&
+            hasUpper(v)&&
+            hasNumber(v)&&
+            hasSpecial(v)
+    pwBar.style.width=strengthPercent(v)+"%"
+    if(!v){
+      pwHint.className="pw-hint"
+      pwHint.textContent="Mật khẩu ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt"
+      return false
+    }
+    if(ok){
+      pwHint.className="pw-hint ok"
+      pwHint.textContent="Mật khẩu đạt yêu cầu"
+      return true
+    }else{
+      pwHint.className="pw-hint bad"
+      pwHint.textContent="Chưa đạt yêu cầu"
+      return false
+    }
+  }
+  function renderConfirm(){
+    const a=pw.value
+    const b=cf.value
+    if(!b){
+      cfHint.className="pw-hint"
+      cfHint.textContent="Nhập lại mật khẩu cho khớp"
+      return false
+    }
+    if(a===b){
+      cfHint.className="pw-hint ok"
+      cfHint.textContent="Mật khẩu khớp"
+      return true
+    }else{
+      cfHint.className="pw-hint bad"
+      cfHint.textContent="Mật khẩu không khớp"
+      return false
+    }
+  }
+  pw.addEventListener("input",()=>{
+    renderPassword()
+    renderConfirm()
+  })
+  cf.addEventListener("input",renderConfirm)
+  form.addEventListener("submit",function(e){
+    const okPw=renderPassword()
+    const okCf=renderConfirm()
+    if(!okPw||!okCf){
+      e.preventDefault()
+      if(!okPw) pw.focus()
+      else cf.focus()
+    }
+  })
+
 </script>
 </body>
 </html>

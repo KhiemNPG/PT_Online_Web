@@ -28,7 +28,7 @@
 
         /* Layout full height */
         .layout-wrapper{
-            min-height:100vh;
+            min-height:0vh;
             display:flex;
             flex-direction:column;
         }

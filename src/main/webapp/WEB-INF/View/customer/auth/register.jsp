@@ -76,6 +76,7 @@
       max-width:438px;
       padding:32px 16px;
       margin:auto;
+      transform: translateY(-40px);
     }
 
     .card{
@@ -175,7 +176,8 @@
     }
 
     input[type="text"],
-    input[type="password"]{
+    input[type="password"],
+    input[type="email"]{
       width:100%;
       height:44px;
       background: var(--input);
@@ -335,6 +337,7 @@
 <%
   String error = (String) request.getAttribute("error");
   String oldUsername = (String) request.getAttribute("oldUsername");
+  String oldEmail = (String) request.getAttribute("oldEmail");
   String paramUsername = request.getParameter("username");
 
   String usernameValue = "";
@@ -342,6 +345,10 @@
     usernameValue = oldUsername;
   } else if (paramUsername != null && !paramUsername.trim().isEmpty()) {
     usernameValue = paramUsername;
+  }
+  String emailValue = "";
+  if (oldEmail != null && !oldEmail.trim().isEmpty()) {
+    emailValue = oldEmail;
   }
 %>
 
@@ -375,6 +382,22 @@
                 required
                 value="<%= usernameValue %>"
                 autocomplete="username"
+        />
+      </div>
+
+      <div class="field">
+        <span class="material-icons icon">email</span>
+
+        <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                required
+                autocomplete="email"
+                value="<%= emailValue %>"
+<%--                ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$--%>
+                pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+                title="Vui lòng nhập email hợp lệ"
         />
       </div>
 
