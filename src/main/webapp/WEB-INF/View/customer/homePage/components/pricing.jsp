@@ -130,7 +130,7 @@
                 <div class="pricing-card featured text-center position-relative">
                     <div class="badge-featured">PHỔ BIẾN NHẤT</div>
                     <h3 class="h5 fw-bold text-white text-uppercase mb-4">Pro</h3>
-                    <div class="price-tag text-white mb-4">19$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
+                    <div class="price-tag text-white mb-4">10$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
                     <ul class="list-unstyled pricing-features mb-5">
                         <li>Sửa lỗi Video không giới hạn</li>
 
@@ -143,7 +143,7 @@
             <div class="col-md-4">
                 <div class="pricing-card text-center">
                     <h3 class="h5 fw-bold text-white text-uppercase mb-4">Elite</h3>
-                    <div class="price-tag text-white mb-4">49$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
+                    <div class="price-tag text-white mb-4">19$<span class="fs-6 fw-normal text-secondary">/tháng</span></div>
                     <ul class="list-unstyled pricing-features mb-5">
                         <li>Sửa lỗi Video không giới hạn</li>
                         <li>Trợ lý Dinh dưỡng AI 24/7</li>

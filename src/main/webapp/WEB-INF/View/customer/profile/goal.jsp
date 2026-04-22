@@ -812,9 +812,9 @@
 
                     // Nếu đang ở bước 6 nhưng chưa đủ → vẫn cho vào step 7 để xem
                     if (!validateStep(currentStep)){
-                        if (currentStep === 6){
-                            renderStep(7);
-                        }
+<!--                        if (currentStep === 6){-->
+<!--                            renderStep(7);-->
+<!--                        }-->
                         return;
                     }
 

@@ -464,7 +464,8 @@ percentExercise = ((double) currentIndex / exerciseList.size()) * 100;
     <%
     // Logic xử lý link Youtube từ DB (chuyển sang dạng embed)
     //String youtubeUrl = (exercise.getVideo() != null) ? exercise.getVideo().getUrl() : "";
-    String youtubeUrl = "https://www.youtube.com/watch?v=SiJuuAlEZj4";
+    //String youtubeUrl = "https://www.youtube.com/watch?v=SiJuuAlEZj4";
+    String youtubeUrl = (exercise.getVideo().getUrl() != null && !exercise.getVideo().getUrl().isEmpty() && exercise.getVideo().getUrl() != "") ? exercise.getVideo().getUrl() : "";
     String embedUrl = "";
     if (youtubeUrl.contains("v=")) {
     embedUrl = "https://www.youtube.com/embed/" + youtubeUrl.split("v=")[1].split("&")[0];

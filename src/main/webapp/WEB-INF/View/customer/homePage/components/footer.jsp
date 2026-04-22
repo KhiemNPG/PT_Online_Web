@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,6 +147,29 @@
             padding-top: 30px;
             margin-top: 50px;
         }
+
+        .footer-logo {
+            display: flex;
+            align-items: center; /* Căn giữa hình và chữ theo chiều dọc */
+            gap: 12px;           /* Khoảng cách giữa hình và chữ */
+            font-size: 24px;     /* Kích thước chữ PT AI */
+            font-weight: bold;
+            color: #fff;         /* Màu chữ trắng cho nổi trên nền đen */
+        }
+
+        .logo-box img {
+            width: 50px;         /* Bạn có thể tùy chỉnh size này */
+            height: auto;
+            display: block;
+            object-fit: contain;
+            /* Nếu logo có màu tối, bạn có thể thêm filter để làm sáng nó lên */
+            /* filter: brightness(0) invert(1); */
+        }
+
+        .text-primary-red {
+            color: #ff0000;      /* Màu đỏ đặc trưng của PT AI */
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body style="background-color: #000; color: #fff; font-family: 'Inter', sans-serif;">
@@ -164,36 +188,27 @@
 
         <footer>
             <div class="row gy-5">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="footer-logo mb-3">
                         <div class="logo-box">
-                            <svg width="16" height="16" viewBox="0 0 48 48" fill="white">
-                                <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"/>
-                            </svg>
+                            <img src="https://res.cloudinary.com/dgnyskpc3/image/upload/v1771925947/8955c440-7287-4779-b81f-ada2c991d02c-removebg-preview_holdqj.png" alt="PT AI Logo">
                         </div>
-                        PT <span class="text-primary-red">AI</span>
+                        <div class="logo-text">
+                            PT <span class="text-primary-red">AI</span>
+                        </div>
                     </div>
                     <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.6;">
                         Tương lai của thể hình. Thay đổi cơ thể bạn với công nghệ huấn luyện AI tiên tiến nhất thế giới.
                     </p>
                 </div>
 
-                <div class="col-lg-2 col-md-6 offset-lg-1">
+                <div class="col-lg-3 col-md-6 offset-lg-1">
                     <h3 class="footer-heading">Nền tảng</h3>
                     <a href="#" class="footer-link">Tính năng</a>
                     <a href="#" class="footer-link">Công nghệ AI</a>
                     <a href="#" class="footer-link">Lộ trình tập luyện</a>
                     <a href="#" class="footer-link">Bảng giá</a>
                     <a href="#" class="footer-link">Câu chuyện thành công</a>
-                </div>
-
-                <div class="col-lg-2 col-md-6">
-                    <h3 class="footer-heading">Hỗ trợ</h3>
-                    <a href="#" class="footer-link">Blog</a>
-                    <a href="#" class="footer-link">FAQ</a>
-                    <a href="#" class="footer-link">Cộng đồng</a>
-                    <a href="#" class="footer-link">Chính sách bảo mật</a>
-                    <a href="#" class="footer-link">Điều khoản dịch vụ</a>
                 </div>
 
                 <div class="col-lg-4 col-md-6">
@@ -212,7 +227,7 @@
             <div class="row bottom-bar align-items-center">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <div class="social-links">
-                        <a href="#">FB</a>
+                        <a href="https://www.facebook.com/share/14TMyZqtpq3/?mibextid=wwXIfr">FB</a>
                         <a href="#">IG</a>
                         <a href="#">YT</a>
                         <a href="#">TK</a>

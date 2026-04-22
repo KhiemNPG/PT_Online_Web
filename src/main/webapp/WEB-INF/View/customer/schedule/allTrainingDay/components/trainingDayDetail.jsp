@@ -17,7 +17,7 @@
         Object sIdObj = request.getAttribute("userScheduleId");
         int userScheduleId = (sIdObj != null) ? (int) sIdObj : 0;
         //LocalDate today = LocalDate.now();
-        LocalDate today = LocalDate.of(2026, 3, 6);
+        LocalDate today = LocalDate.of(2026, 04, 23);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM");
 
 

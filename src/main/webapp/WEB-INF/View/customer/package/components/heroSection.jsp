@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Trang Chủ</title>
+    <title>Gói tập</title>
 
     <style>
         /* Custom Variables & Base */
@@ -157,16 +157,13 @@
                         <p class="text-secondary-custom small">Dành cho người mới bắt đầu kỷ luật.</p>
                     </div>
                     <div class="price-tag mb-4">
-                        <span class="display-4 fw-black">450k</span>
-                        <span class="text-secondary-custom fw-bold small">/ THÁNG</span>
+                        <span class="display-4 fw-black">Miễn phí</span>
+
                     </div>
                     <ul class="list-unstyled flex-grow-1">
-                        <li><span class="material-icons">check_circle</span> Truy cập phòng tập 24/7</li>
-                        <li><span class="material-icons">check_circle</span> Tủ đồ cá nhân an toàn</li>
+                        <li><span class="material-icons">check_circle</span> 3 Video sửa lỗi AI/tháng</li>
+                        <li><span class="material-icons">check_circle</span> Giáo án linh hoạt cơ bản</li>
                         <li><span class="material-icons">check_circle</span> Lịch tập cơ bản hàng tháng</li>
-                        <li class="disabled-item"><span class="material-icons">radio_button_unchecked</span> Video hướng
-                            dẫn kỹ thuật
-                        </li>
                     </ul>
                     <button class="btn btn-outline-primary-custom w-100 fw-black mt-4">CHỌN GÓI</button>
                 </div>
@@ -180,24 +177,16 @@
                         <p class="text-light-custom small">Nâng tầm việc tập luyện chuyên nghiệp.</p>
                     </div>
                     <div class="price-tag mb-4 text-center text-lg-start">
-                        <span class="display-3 fw-black">850k</span>
+                        <span class="display-3 fw-black">10$</span>
                         <span class="text-secondary-custom fw-bold small">/ THÁNG</span>
                     </div>
                     <ul class="list-unstyled flex-grow-1 fw-bold">
                         <li><span class="material-icons text-primary-custom">check_circle</span> Toàn bộ quyền lợi gói
                             Cơ bản
                         </li>
-                        <li><span class="material-icons text-primary-custom">check_circle</span> Lịch tập tự động (Smart
-                            Plan)
+                        <li><span class="material-icons text-primary-custom">check_circle</span> Sửa lỗi Video không giới hạn
                         </li>
-                        <li><span class="material-icons text-primary-custom">check_circle</span> Video hướng dẫn chi
-                            tiết
-                        </li>
-                        <li><span class="material-icons text-primary-custom">check_circle</span> Thống kê tiến độ hàng
-                            tuần
-                        </li>
-                        <li><span class="material-icons text-primary-custom">check_circle</span> Phòng xông hơi &
-                            Massage
+                        <li><span class="material-icons text-primary-custom">check_circle</span> Dời lịch tập (Tối đa 2 lần/tuần)
                         </li>
                     </ul>
                     <button class="btn btn-primary-custom w-100 fw-black mt-4 shadow-lg">CHỌN GÓI NGAY</button>
@@ -207,19 +196,19 @@
             <div class="col-lg-4">
                 <div class="pricing-card h-100">
                     <div class="card-header-custom mb-4">
-                        <h3 class="fw-black text-uppercase italic">HARDCORE</h3>
+                        <h3 class="fw-black text-uppercase italic">Elite</h3>
                         <p class="text-secondary-custom small">Dành cho những chiến binh thực thụ.</p>
                     </div>
                     <div class="price-tag mb-4">
-                        <span class="display-4 fw-black">1.500k</span>
+                        <span class="display-4 fw-black">19$</span>
                         <span class="text-secondary-custom fw-bold small">/ THÁNG</span>
                     </div>
                     <ul class="list-unstyled flex-grow-1">
                         <li><span class="material-icons">check_circle</span> Toàn bộ quyền lợi gói PRO</li>
-                        <li><span class="material-icons">check_circle</span> Thống kê chuyên sâu AI</li>
-                        <li><span class="material-icons">check_circle</span> Hỗ trợ 1:1 từ PT Online</li>
-                        <li><span class="material-icons">check_circle</span> Chế độ dinh dưỡng cá nhân</li>
-                        <li><span class="material-icons">check_circle</span> Supplements miễn phí mỗi buổi</li>
+                        <li><span class="material-icons">check_circle</span> Sửa lỗi Video không giới hạn</li>
+                        <li><span class="material-icons">check_circle</span> Trợ lý Dinh dưỡng AI 24/7</li>
+                        <li><span class="material-icons">check_circle</span> Dời lịch tự do 100%</li>
+
                     </ul>
                     <button class="btn btn-outline-primary-custom w-100 fw-black mt-4">CHỌN GÓI</button>
                 </div>
