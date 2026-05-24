@@ -58,6 +58,19 @@ public class UserProfileServlet extends HttpServlet {
             request.setAttribute("bmiStandard", bmiStandard);
             request.setAttribute("user", user);
             request.setAttribute("account", account);
+            
+            // Get Plan Type
+            String planType = "FREE";
+            try {
+                dao.UserSubscriptionDAO subDAO = new dao.UserSubscriptionDAO();
+                model.entity.UserSubscription sub = subDAO.getByAccountId(accountId);
+                if (sub != null && sub.getPlanType() != null) {
+                    planType = sub.getPlanType().toUpperCase();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            request.setAttribute("planType", planType);
 
             request.getRequestDispatcher("/WEB-INF/View/customer/profile/index.jsp")
                     .forward(request, response);

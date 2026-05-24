@@ -307,6 +307,9 @@ List< Exercise> exerciseListTomorrow = (List< Exercise>) request.getAttribute("e
                     <a class="nav-link-custom <%= (uri.contains("/news")) ? "active" : "" %>"
                     href="<%= request.getContextPath() %>/news">Blog</a>
 
+                    <a class="nav-link-custom <%= (uri.contains("/nutrition-ai")) ? "active" : "" %>"
+                    href="<%= request.getContextPath() %>/nutrition-ai">AI Dinh dưỡng <span class="badge bg-danger ms-1" style="font-size:0.6rem;">HOT</span></a>
+
                     <a class="nav-link-custom" href="${pageContext.request.contextPath}/setup/goal">Thiết lập lộ trình</a>
 
                 </div>
@@ -432,6 +435,9 @@ List< Exercise> exerciseListTomorrow = (List< Exercise>) request.getAttribute("e
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<% if (session.getAttribute("accountId") != null) { %>
+<% } %>
 
 </body>
 </html>
