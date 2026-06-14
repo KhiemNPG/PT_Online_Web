@@ -1,8 +1,8 @@
 package controller.customer;
 
-import dao.AccountDAO;
+import dao.User.AccountDAO;
 import model.entity.Account;
-import dao.UserDAO;
+import dao.User.UserDAO;
 import model.entity.User;
 import utils.EmailService;
 

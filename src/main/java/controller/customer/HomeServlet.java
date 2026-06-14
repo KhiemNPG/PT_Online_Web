@@ -1,6 +1,6 @@
 package controller.customer;
 
-import dao.*;
+import dao.User.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -10,6 +10,7 @@ public class User {
     private Double height;   // cm
     private Double weight;   // kg
     private String fitnessLevel;
+    private int remainingTokens;
 
     public User() {}
 
@@ -188,5 +189,20 @@ public class User {
         this.height = height;
         this.weight = weight;
         this.fitnessLevel = fitnessLevel;
+    }
+
+    public User(int userId, int accountId, String name, Integer age,
+                String gender, Double height, Double weight,
+                String fitnessLevel, int remainingTokens) {
+
+        this.userId = userId;
+        this.accountId = accountId;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.fitnessLevel = fitnessLevel;
+        this.remainingTokens = remainingTokens;
     }
 }

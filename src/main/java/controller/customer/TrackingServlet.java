@@ -1,9 +1,9 @@
 package controller.customer;
 
-import dao.MasterScheduleDetailDAO;
-import dao.ProgressDAO;
-import dao.UserDAO;
-import dao.UserScheduleDAO;
+import dao.User.MasterScheduleDetailDAO;
+import dao.User.ProgressDAO;
+import dao.User.UserDAO;
+import dao.User.UserScheduleDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

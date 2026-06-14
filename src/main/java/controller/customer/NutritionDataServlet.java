@@ -2,8 +2,8 @@ package controller.customer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.MealHistoryDAO;
-import dao.SavedMealDAO;
+import dao.User.MealHistoryDAO;
+import dao.User.SavedMealDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -1,7 +1,8 @@
 package controller.customer;
 
-import dao.AccountDAO;
-import dao.UserDAO;
+import dao.User.AccountDAO;
+import dao.User.UserSubscriptionDAO;
+import dao.User.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -62,7 +63,7 @@ public class UserProfileServlet extends HttpServlet {
             // Get Plan Type
             String planType = "FREE";
             try {
-                dao.UserSubscriptionDAO subDAO = new dao.UserSubscriptionDAO();
+                UserSubscriptionDAO subDAO = new UserSubscriptionDAO();
                 model.entity.UserSubscription sub = subDAO.getByAccountId(accountId);
                 if (sub != null && sub.getPlanType() != null) {
                     planType = sub.getPlanType().toUpperCase();

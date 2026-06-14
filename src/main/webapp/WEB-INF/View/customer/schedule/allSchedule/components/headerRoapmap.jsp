@@ -224,7 +224,7 @@ workoutStreak++;
                     <div class="col-6">
                         <div class="stat-box">
                             <label style="font-size: 9px; color: var(--text-gray);">CÂN NẶNG</label>
-                            <div class="h5 fw-black m-0">75.4 <small>KG</small></div>
+                            <div class="h5 fw-black m-0">--- <small>KG</small></div>
                         </div>
                     </div>
                     <div class="col-6">

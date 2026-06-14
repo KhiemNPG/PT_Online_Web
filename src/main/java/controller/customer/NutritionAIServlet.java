@@ -1,5 +1,6 @@
 package controller.customer;
 
+import dao.User.UserSubscriptionDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,8 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import utils.GeminiAIService;
-import dao.UserDAO;
-import dao.TrainingRequirementDAO;
+import dao.User.UserDAO;
+import dao.User.TrainingRequirementDAO;
 import model.entity.User;
 import model.entity.TrainingRequirement;
 
@@ -80,7 +81,7 @@ public class NutritionAIServlet extends HttpServlet {
             
             boolean isPro = false;
             try {
-                dao.UserSubscriptionDAO subDAO = new dao.UserSubscriptionDAO();
+                UserSubscriptionDAO subDAO = new UserSubscriptionDAO();
                 model.entity.UserSubscription sub = subDAO.getByAccountId(accountId);
                 if (sub != null && "PRO".equalsIgnoreCase(sub.getPlanType())) {
                     isPro = true;

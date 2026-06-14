@@ -29,7 +29,8 @@ public class AuthFilter implements Filter {
                 uri.contains("/home")
                         || uri.contains("/library")
                         || uri.contains("/package")
-                        || uri.contains("/news");
+                        || uri.contains("/news")
+                        || uri.contains("/admin");
 
         boolean resourceRequest =
                 uri.contains("/css")

@@ -12,11 +12,6 @@
             --brand-black: #0a0a0a;
         }
 
-        /* Ép font Inter cho toàn bộ trang để tránh lỗi font hệ thống */
-        * {
-            font-family: 'Inter', sans-serif !important;
-        }
-
         body {
             background-color: var(--brand-black);
             margin: 0;
