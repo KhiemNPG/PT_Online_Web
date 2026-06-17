@@ -9,9 +9,8 @@ import java.util.logging.Logger;
 
 public class DBContext {
 
-    private static final String DB_URL = "workstation id=SmartPTData.mssql.somee.com;packet size=4096;user id=Khiem2704_SQLLogin_1;pwd=mj4lwo566m;data source=SmartPTData.mssql.somee.com;persist security info=False;initial catalog=SmartPTData;TrustServerCertificate=True";
+    private static final String DB_URL = "jdbc:sqlserver://SmartPTData.mssql.somee.com:1433;databaseName=Smart_PT;encrypt=true;trustServerCertificate=true;";
     private static final String DB_USER = "Khiem2704_SQLLogin_1";
-
     private static final String DB_PASSWORD = "mj4lwo566m";
 
     protected Connection conn = null;
@@ -30,7 +29,8 @@ public class DBContext {
         }
     }
 
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
+    public static Connection getConnection() throws Exception {
+        // Dòng này bắt buộc phải có để load driver
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
