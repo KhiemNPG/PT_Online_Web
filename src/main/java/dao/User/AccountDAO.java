@@ -90,15 +90,20 @@ public class AccountDAO extends DBContext {
 }
 
     public boolean updatePasswordHash(int accountId, String passwordHash) throws Exception {
-        String sql = "UPDATE Account SET passwordHash=? WHERE accountId=?";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, passwordHash);
-            ps.setInt(2, accountId);
-            return ps.executeUpdate() == 1;
-        }
+    String sql = "UPDATE Account SET passwordHash=? WHERE accountId=?";
+    Connection con = getConnection();
+    if (con == null) {
+        System.err.println("DB ERROR: Kết nối database bị null tại updatePasswordHash!");
+        return false;
     }
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, passwordHash);
+        ps.setInt(2, accountId);
+        return ps.executeUpdate() == 1;
+    } finally {
+        if (con != null) con.close();
+    }
+}
     public Account findByEmail(String email) throws Exception {
     String sql = "SELECT accountId, username, email, passwordHash, role, isActive, createdAt FROM Account WHERE email = ?";
     
