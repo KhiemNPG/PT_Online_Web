@@ -7,7 +7,7 @@ import java.util.Properties;
 public class EmailService {
 
     private static final String FROM = "dangvuongthinhstg@gmail.com";
-    private static final String PASSWORD = "jhmkchynxxpuuawk";
+    private static final String PASSWORD = "pwpmfwupkznzwarf";
 
     public static void sendEmail(String to, String subject, String content) {
 
