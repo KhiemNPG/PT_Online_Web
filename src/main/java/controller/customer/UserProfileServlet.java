@@ -1,7 +1,8 @@
 package controller.customer;
 
-import dao.AccountDAO;
-import dao.UserDAO;
+import dao.User.AccountDAO;
+import dao.User.UserSubscriptionDAO;
+import dao.User.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -58,6 +59,19 @@ public class UserProfileServlet extends HttpServlet {
             request.setAttribute("bmiStandard", bmiStandard);
             request.setAttribute("user", user);
             request.setAttribute("account", account);
+            
+            // Get Plan Type
+            String planType = "FREE";
+            try {
+                UserSubscriptionDAO subDAO = new UserSubscriptionDAO();
+                model.entity.UserSubscription sub = subDAO.getByAccountId(accountId);
+                if (sub != null && sub.getPlanType() != null) {
+                    planType = sub.getPlanType().toUpperCase();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            request.setAttribute("planType", planType);
 
             request.getRequestDispatcher("/WEB-INF/View/customer/profile/index.jsp")
                     .forward(request, response);

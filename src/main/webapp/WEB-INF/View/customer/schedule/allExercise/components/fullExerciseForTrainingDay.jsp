@@ -15,8 +15,8 @@ userDayIdTemp = Integer.parseInt(idAttr.toString());
 userDayIdTemp = Integer.parseInt(idParam);
 }
 
-List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
-    List<TrainingWorkoutExercise> trainingWorkoutExerciseList = (List) request.getAttribute("trainingWorkoutExerciseList");
+List< Exercise> exerciseList = (List) request.getAttribute("exerciseList");
+    List< TrainingWorkoutExercise> trainingWorkoutExerciseList = (List) request.getAttribute("trainingWorkoutExerciseList");
 
         %>
         <style>
@@ -163,7 +163,7 @@ List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
                     String exMuscle = (ex.getPrimaryMuscle() != null) ? ex.getPrimaryMuscle() : "Đang cập nhật";
 
                     String videoUrl = (ex.getVideo() != null) ? ex.getVideo().getUrl() : "";
-                    String thumbUrl = (ex.getVideo() != null) ? ex.getVideo().getThumbnailUrl() : "";
+                    String thumbUrl =  "https://ericflag.com/en/cdn/shop/articles/goblet_squat_92c2241a-4119-455b-b786-183903a0393a.jpg?v=1741877179&width=1024";
 
                     // Trạng thái hoàn thành
                     boolean isDone = false;
@@ -182,7 +182,7 @@ List<Exercise> exerciseList = (List) request.getAttribute("exerciseList");
                          data-video="<%= videoUrl %>"
                          data-thumb="<%= thumbUrl %>">
 
-                        <img class="thumb-box" src="<%= thumbUrl %>" alt="<%= exName %>">
+                        <img class="thumb-box" src="<%= thumbUrl%>" alt="<%= exName %>">
 
                         <div>
                             <div class="fw-bold text-uppercase small"><%= exName %></div>

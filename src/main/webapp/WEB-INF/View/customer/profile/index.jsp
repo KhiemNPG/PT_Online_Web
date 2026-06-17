@@ -296,6 +296,9 @@
         <div>
             <h1 class="title">${empty user.name ? "CHƯA ĐẶT TÊN" : user.name}</h1>
             <p class="sub">Cập nhật thông tin để hệ thống đề xuất lộ trình tập phù hợp</p>
+            <div class="badge" style="${planType == 'PRO' ? 'background: rgba(255,215,0,0.2); border-color: gold; color: gold;' : ''}">
+                ${planType == 'PRO' ? '★ ' : ''}GÓI ${planType}
+            </div>
             <div class="badge">
                 <c:choose>
                     <c:when test="${user.fitnessLevel == 'Beginner'}">

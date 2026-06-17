@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Trang Chủ</title>
+    <title>Thư viện</title>
 
     <style>
         /* Filter Buttons */

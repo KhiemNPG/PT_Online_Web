@@ -1,8 +1,8 @@
 package controller.customer;
 
-import dao.AccountDAO;
+import dao.User.AccountDAO;
 import model.entity.Account;
-import dao.UserDAO;
+import dao.User.UserDAO;
 import model.entity.User;
 import utils.EmailService;
 
@@ -107,7 +107,7 @@ public class AuthController extends HttpServlet {
                 handleVerifyEmail(request, response);
                 break;
 
-                default:
+            default:
                 response.sendRedirect(request.getContextPath() + "/auth?action=login");
                 break;
         }
@@ -132,7 +132,7 @@ public class AuthController extends HttpServlet {
             } else if ("verifyOtp".equals(action)) {
                 handleVerifyOtp(request, response);
             }else if ("resetPassword".equals(action)) {
-            handleResetPassword(request, response);
+                handleResetPassword(request, response);
             }else {
                 response.sendRedirect(request.getContextPath() + "/auth?action=login");
             }
@@ -206,8 +206,11 @@ public class AuthController extends HttpServlet {
         session.setAttribute("verifyToken", token);
         session.setAttribute("verifyAccountId", newId);
 
-        String verifyLink =
-                "http://localhost:8080/PT_Online/auth?action=verify&token=" + token;
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        String verifyLink = scheme + "://" + serverName + ":" + serverPort + contextPath + "/auth?action=verify&token=" + token;
 
         String subject = "Xác minh tài khoản Smart-PT";
 
@@ -346,7 +349,7 @@ public class AuthController extends HttpServlet {
 
                         "<p>Nếu đây không phải là bạn thực hiện, hãy đổi mật khẩu ngay lập tức hoặc liên hệ với chúng tôi.</p>" +
 
-                        "<a href='http://localhost:8080/PT_Online' " +
+                        "<a href='" + request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "' " +
                         "style='background:#ff2d2d;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold'>" +
                         "Truy cập Website</a>" +
 

@@ -1,9 +1,9 @@
 package controller.customer;
 
-import dao.HealthProfileDAO;
-import dao.TrainingScheduleDAO;
-import dao.TrainingWorkoutExerciseDAO;
-import dao.UserDAO;
+import dao.User.HealthProfileDAO;
+import dao.User.TrainingScheduleDAO;
+import dao.User.TrainingWorkoutExerciseDAO;
+import dao.User.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

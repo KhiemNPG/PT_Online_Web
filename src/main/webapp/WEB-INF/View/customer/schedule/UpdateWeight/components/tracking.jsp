@@ -4,7 +4,7 @@
 <%@ page import="model.tracking.UserSchedule" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="dao.UserDAO" %>
+<%@ page import="dao.User.UserDAO" %>
 <%@ page import="model.entity.User" %>
 
 <%
