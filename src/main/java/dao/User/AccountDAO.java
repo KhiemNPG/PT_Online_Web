@@ -69,22 +69,25 @@ public class AccountDAO extends DBContext {
     }
 
     public int insert(Account a) throws Exception {
-        String sql = "INSERT INTO Account(username, email, passwordHash, role, isActive) VALUES(?,?,?,?,?)";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, a.getUsername());
-            ps.setString(2, a.getEmail());
-            ps.setString(3, a.getPasswordHash());
-            ps.setString(4, a.getRole());
-            ps.setBoolean(5, a.isActive());
-
-            ps.executeUpdate();
-
-            ResultSet keys = ps.getGeneratedKeys();
-            return keys.next() ? keys.getInt(1) : -1;
-        }
+    String sql = "INSERT INTO Account(username, email, passwordHash, role, isActive) VALUES(?,?,?,?,?)";
+    Connection con = getConnection();
+    if (con == null) {
+        System.err.println("DB ERROR: Kết nối database bị null tại insert!");
+        return -1; // Trả về -1 để báo lỗi thay vì sập app
     }
+    try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        ps.setString(1, a.getUsername());
+        ps.setString(2, a.getEmail());
+        ps.setString(3, a.getPasswordHash());
+        ps.setString(4, a.getRole());
+        ps.setBoolean(5, a.isActive());
+        ps.executeUpdate();
+        ResultSet keys = ps.getGeneratedKeys();
+        return keys.next() ? keys.getInt(1) : -1;
+    } finally {
+        if (con != null) con.close();
+    }
+}
 
     public boolean updatePasswordHash(int accountId, String passwordHash) throws Exception {
         String sql = "UPDATE Account SET passwordHash=? WHERE accountId=?";
