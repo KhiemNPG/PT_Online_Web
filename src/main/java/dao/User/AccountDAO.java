@@ -10,12 +10,21 @@ import java.util.List;
 public class AccountDAO extends DBContext {
 
     public Account findByUsername(String username) throws Exception {
-        String sql = "SELECT accountId, username, email, passwordHash, role, isActive, createdAt FROM Account WHERE username = ?";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+    String sql = "SELECT accountId, username, email, passwordHash, role, isActive, createdAt FROM Account WHERE username = ?";
+    
+    // 1. Lấy kết nối
+    Connection con = getConnection();
+    
+    // 2. KIỂM TRA NULL NGAY TẠI ĐÂY
+    if (con == null) {
+        System.err.println("Kết nối database bị null, không thể truy vấn!");
+        return null; // Trả về null để Controller biết và xử lý
+    }
+    
+    // 3. Nếu con không null thì mới dùng try-with-resources
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, username);
+        try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 Account a = new Account();
                 a.setAccountId(rs.getInt("accountId"));
@@ -27,9 +36,13 @@ public class AccountDAO extends DBContext {
                 a.setEmail(rs.getString("email"));
                 return a;
             }
-            return null;
         }
+    } finally {
+        // Đừng quên đóng kết nối nếu bro không dùng pool connection
+        if (con != null) con.close();
     }
+    return null;
+}
 
     public Account findById(int id) throws Exception {
 
