@@ -16,22 +16,26 @@ public class DBContext {
     protected Connection conn = null;
 
     public DBContext() {
-        try {
-            conn = getConnection();
-            if (conn != null) {
+        conn = getConnection();
+        if (conn != null) {
+            try {
                 DatabaseMetaData dm = conn.getMetaData();
                 System.out.println("--- Ket noi DB thanh cong ---");
                 System.out.println("Driver name: " + dm.getDriverName());
                 System.out.println("Database: " + dm.getDatabaseProductName());
+            } catch (SQLException ex) {
+                Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, "Lỗi khởi tạo DBContext", ex);
         }
     }
 
-    public static Connection getConnection() throws Exception {
-        // Dòng này bắt buộc phải có để load driver
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    public static Connection getConnection() {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, "Lỗi kết nối DB", ex);
+            return null; // Trả về null khi có lỗi
+        }
     }
 }
