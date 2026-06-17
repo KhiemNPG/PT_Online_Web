@@ -9,10 +9,10 @@ import java.util.logging.Logger;
 
 public class DBContext {
 
-    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=Smart_PT;encrypt=true;trustServerCertificate=true;";
-    private static final String DB_USER = "sa";
+    private static final String DB_URL = "workstation id=SmartPTData.mssql.somee.com;packet size=4096;user id=Khiem2704_SQLLogin_1;pwd=mj4lwo566m;data source=SmartPTData.mssql.somee.com;persist security info=False;initial catalog=SmartPTData;TrustServerCertificate=True";
+    private static final String DB_USER = "Khiem2704_SQLLogin_1";
 
-    private static final String DB_PASSWORD = "123456";
+    private static final String DB_PASSWORD = "mj4lwo566m";
 
     protected Connection conn = null;
 
