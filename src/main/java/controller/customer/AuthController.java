@@ -293,7 +293,7 @@ public class AuthController extends HttpServlet {
         }
 
         if ("ADMIN".equalsIgnoreCase(a.getRole())) {
-            response.sendRedirect(request.getContextPath() + "/admin/home");
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else {
             response.sendRedirect(request.getContextPath() + "/home");
         }
