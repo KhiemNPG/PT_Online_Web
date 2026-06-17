@@ -9,7 +9,7 @@ FROM tomcat:10.1-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Đẩy file PT_Online.war vừa build ở trên vào làm trang chủ của server Tomcat
-COPY --from=builder /deployServletProject/target/PT_Online.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /deployServletProject/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
