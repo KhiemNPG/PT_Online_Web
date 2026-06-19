@@ -30,6 +30,21 @@ public class AuthController extends HttpServlet {
         return BCrypt.checkpw(raw, hash);
     }
 
+    private String generateSignature(int accountId, String passwordHash) {
+        try {
+            String data = accountId + "SMART_PT_SECRET_KEY" + passwordHash;
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(data.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) { return null; }
+    }
+
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
@@ -199,18 +214,36 @@ public class AuthController extends HttpServlet {
 
         userDAO.insert(u);
 
-        //token verify
-        String token = java.util.UUID.randomUUID().toString();
+        // Stateless token verify
+        String token = generateSignature(newId, a.getPasswordHash());
 
         HttpSession session = request.getSession();
-        session.setAttribute("verifyToken", token);
-        session.setAttribute("verifyAccountId", newId);
 
-        String scheme = request.getScheme();
+        // ---Chống Chặn ---
+        String scheme = request.getHeader("X-Forwarded-Proto");
+        if (scheme == null) scheme = request.getScheme();
+        
         String serverName = request.getServerName();
         int serverPort = request.getServerPort();
         String contextPath = request.getContextPath();
-        String verifyLink = scheme + "://" + serverName + ":" + serverPort + contextPath + "/auth?action=verify&token=" + token;
+        
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(scheme).append("://").append(serverName);
+        
+        // Chỉ ghép thêm Port vào link nếu không phải là cổng mặc định (80, 443)
+        if (("http".equals(scheme) && serverPort != 80) || ("https".equals(scheme) && serverPort != 443)) {
+            String forwardedPort = request.getHeader("X-Forwarded-Port");
+            if (forwardedPort != null) {
+                if (!"80".equals(forwardedPort) && !"443".equals(forwardedPort)) {
+                    urlBuilder.append(":").append(forwardedPort);
+                }
+            } else {
+                urlBuilder.append(":").append(serverPort);
+            }
+        }
+        urlBuilder.append(contextPath);
+        String verifyLink = urlBuilder.toString() + "/auth?action=verify&id=" + newId + "&token=" + token;
+        // -----------------------------------------------------------------
 
         String subject = "Xác minh tài khoản Smart-PT";
 
@@ -503,22 +536,39 @@ public class AuthController extends HttpServlet {
             throws ServletException, IOException {
 
         String token = request.getParameter("token");
+        String idParam = request.getParameter("id");
 
-        HttpSession session = request.getSession();
-
-        String realToken = (String) session.getAttribute("verifyToken");
-        Integer accountId =
-                (Integer) session.getAttribute("verifyAccountId");
-
-        if (realToken == null || !realToken.equals(token)) {
-            response.getWriter().write("Link xác minh không hợp lệ.");
+        if (token == null || idParam == null) {
+            response.getWriter().write("Link xác minh không hợp lệ (Thiếu thông tin).");
             return;
         }
 
-        accountDAO.setActive(accountId, true);
+        int accountId;
+        try {
+            accountId = Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            response.getWriter().write("Link xác minh không hợp lệ (Sai định dạng ID).");
+            return;
+        }
 
-        session.removeAttribute("verifyToken");
-        session.removeAttribute("verifyAccountId");
+        try {
+            Account acc = accountDAO.findById(accountId);
+            if (acc == null || acc.isActive()) {
+                response.getWriter().write("Tài khoản không tồn tại hoặc đã được kích hoạt.");
+                return;
+            }
+
+            String expectedToken = generateSignature(accountId, acc.getPasswordHash());
+            if (!token.equals(expectedToken)) {
+                response.getWriter().write("Link xác minh đã hết hạn hoặc không hợp lệ.");
+                return;
+            }
+
+            accountDAO.setActive(accountId, true);
+        } catch (Exception e) {
+            response.getWriter().write("Lỗi hệ thống trong quá trình xác minh.");
+            return;
+        }
 
         response.sendRedirect(
                 request.getContextPath()
