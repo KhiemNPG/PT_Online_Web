@@ -165,7 +165,7 @@ public class TrainingWorkoutExerciseDAO {
         if (!rs.wasNull() && videoId > 0) {
             Video v = new Video(
                 videoId, 
-                rs.getNString("title"), 
+                rs.getString("title"), 
                 rs.getString("url"), 
                 rs.getString("thumbnailUrl"), 
                 rs.getInt("duration")
