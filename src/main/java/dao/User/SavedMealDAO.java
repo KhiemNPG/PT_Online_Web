@@ -7,28 +7,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavedMealDAO extends DBContext {
+public class SavedMealDAO {
 
     public List<SavedMeal> getAllByAccountId(int accountId) throws Exception {
         List<SavedMeal> list = new ArrayList<>();
         String sql = "SELECT * FROM SavedMeal WHERE accountId = ? ORDER BY createdAt DESC";
         
-        try (Connection con = getConnection();
+        // Sử dụng try-with-resources để tự động đóng Connection và PreparedStatement
+        try (Connection con = DBContext.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             
             ps.setInt(1, accountId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                SavedMeal m = new SavedMeal();
-                m.setId(rs.getInt("id"));
-                m.setAccountId(rs.getInt("accountId"));
-                m.setMealName(rs.getString("mealName"));
-                m.setCalories(rs.getFloat("calories"));
-                m.setRecipe(rs.getString("recipe"));
-                m.setImgSrc(rs.getString("imgSrc"));
-                m.setSuggestIdx(rs.getObject("suggestIdx") != null ? rs.getInt("suggestIdx") : null);
-                m.setCreatedAt(rs.getTimestamp("createdAt"));
-                list.add(m);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    SavedMeal m = new SavedMeal();
+                    m.setId(rs.getInt("id"));
+                    m.setAccountId(rs.getInt("accountId"));
+                    m.setMealName(rs.getString("mealName"));
+                    m.setCalories(rs.getFloat("calories"));
+                    m.setRecipe(rs.getString("recipe"));
+                    m.setImgSrc(rs.getString("imgSrc"));
+                    m.setSuggestIdx(rs.getObject("suggestIdx") != null ? rs.getInt("suggestIdx") : null);
+                    m.setCreatedAt(rs.getTimestamp("createdAt"));
+                    list.add(m);
+                }
             }
         }
         return list;
@@ -36,7 +38,8 @@ public class SavedMealDAO extends DBContext {
 
     public SavedMeal insert(SavedMeal m) throws Exception {
         String sql = "INSERT INTO SavedMeal (accountId, mealName, calories, recipe, imgSrc, suggestIdx) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection con = getConnection();
+        
+        try (Connection con = DBContext.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             ps.setInt(1, m.getAccountId());
@@ -51,9 +54,10 @@ public class SavedMealDAO extends DBContext {
             }
             
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                m.setId(rs.getInt(1));
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    m.setId(rs.getInt(1));
+                }
             }
         }
         return m;
@@ -61,8 +65,10 @@ public class SavedMealDAO extends DBContext {
 
     public boolean delete(int id, int accountId) throws Exception {
         String sql = "DELETE FROM SavedMeal WHERE id = ? AND accountId = ?";
-        try (Connection con = getConnection();
+        
+        try (Connection con = DBContext.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
+            
             ps.setInt(1, id);
             ps.setInt(2, accountId);
             return ps.executeUpdate() > 0;
