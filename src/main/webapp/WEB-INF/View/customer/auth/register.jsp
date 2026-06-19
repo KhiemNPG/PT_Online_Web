@@ -389,32 +389,31 @@
         <span class="material-icons icon">email</span>
 
         <input
-                name="email"
-                type="email"
-                placeholder="Email"
-                required
-                autocomplete="email"
-                value="<%= emailValue %>"
-<%--                ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$--%>
-                pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-                title="Vui lòng nhập email hợp lệ"
-        />
+          name="email"
+          type="email"
+          placeholder="Email"
+          required
+          autocomplete="email"
+          value="<%= emailValue %>"
+          pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"
+          title="Vui lòng nhập email hợp lệ"
+      />
       </div>
 
       <div class="field">
         <span class="material-icons icon">lock_outline</span>
 
         <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Mật khẩu"
-                required
-                minlength="8"
-                autocomplete="new-password"
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\[\]{};':\\|,.<>\/?-]).{8,}$"
-                title="Mật khẩu phải ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt."
-        />
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Mật khẩu"
+          required
+          minlength="8"
+          autocomplete="new-password"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\[\]{};':\\|,.<>\/?\-]).{8,}$"
+          title="Mật khẩu phải ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt."
+      />
 
         <button type="button" class="toggle" id="togglePw" aria-label="Hiện/ẩn mật khẩu">
           <span class="material-icons" id="pwEyeIcon">visibility</span>
