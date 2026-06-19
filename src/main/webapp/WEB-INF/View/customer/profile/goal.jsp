@@ -390,19 +390,19 @@
                     <div><h3>Giảm mỡ</h3><p>Ưu tiên đốt mỡ, cardio, thâm hụt calo.</p></div>
                     </button>
 
-                    <button class="card <%= "TANG_CO".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="TANG_CO" disabled>
+                    <button class="card <%= "TANG_CO".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="GIAM_MO">
                     <span class="material-icons checkmark">check_circle</span>
                     <div class="icon-box"><span class="material-icons icon">fitness_center</span></div>
                     <div><h3>Tăng cơ</h3><p>Phì đại cơ, tăng sức mạnh.</p></div>
                     </button>
 
-                    <button class="card <%= "DUY_TRI".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="DUY_TRI" disabled>
+                    <button class="card <%= "DUY_TRI".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="GIAM_MO">
                     <span class="material-icons checkmark">check_circle</span>
                     <div class="icon-box"><span class="material-icons icon">balance</span></div>
                     <div><h3>Duy trì</h3><p>Giữ dáng, cải thiện thể lực tổng thể.</p></div>
                     </button>
 
-<%--                    <button class="card <%= "SUC_BEN".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="SUC_BEN" disabled>--%>
+<%--                    <button class="card <%= "SUC_BEN".equals(currentGoal) ? "selected" : "" %>" type="button" data-goal="GIAM_MO">--%>
 <%--                        <span class="material-icons checkmark">check_circle</span>--%>
 <%--                        <div class="icon-box"><span class="material-icons icon">speed</span></div>--%>
 <%--                        <div><h3>Sức bền</h3><p>Ưu tiên tim mạch, tăng thể lực.</p></div>--%>
@@ -426,19 +426,19 @@
                     <div><h3>18–29</h3><p>Nhóm tuổi trẻ, dễ thích nghi.</p></div>
                     </button>
 
-                    <button class="card <%= "30-39".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="30-39" disabled>
+                    <button class="card <%= "30-39".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="18-29">
                     <span class="material-icons checkmark">check_circle</span>
                     <div class="icon-box"><span class="material-icons icon">timeline</span></div>
                     <div><h3>30-39</h3><p>Cân bằng công việc & tập luyện.</p></div>
                     </button>
 
-                    <button class="card <%= "40-49".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="40-49" disabled>
+                    <button class="card <%= "40-49".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="18-29">
                     <span class="material-icons checkmark">check_circle</span>
                     <div class="icon-box"><span class="material-icons icon">health_and_safety</span></div>
                     <div><h3>40-49</h3><p>Ưu tiên bền vững & an toàn khớp.</p></div>
                     </button>
 
-<%--                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="50+" disabled>--%>
+<%--                    <button class="card <%= "50+".equals(currentAgeRange) ? "selected" : "" %>" type="button" data-age="18-29">--%>
 <%--                    <span class="material-icons checkmark">check_circle</span>--%>
 <%--                    <div class="icon-box"><span class="material-icons icon">favorite</span></div>--%>
 <%--                    <div><h3>50+</h3><p>Ưu tiên sức khỏe & phục hồi.</p></div>--%>
@@ -462,13 +462,13 @@
                     <div><h3>Nam</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
 
-                    <button class="card <%= "Nữ".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Nữ" disabled>
+                    <button class="card <%= "Nữ".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Nam">
                     <span class="material-icons checkmark">check_circle</span>
                     <div class="icon-box"><span class="material-icons icon">woman</span></div>
                     <div><h3>Nữ</h3><p>Cá nhân hoá theo thể trạng.</p></div>
                     </button>
 
-<%--                    <button class="card <%= "Khác".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Khác" disabled>--% >
+<%--                    <button class="card <%= "Khác".equals(currentGender) ? "selected" : "" %>" type="button" data-gender="Nam">--% >
 <%--                        <span class="material-icons checkmark">check_circle</span>--%>
 <%--                        <div class="icon-box"><span class="material-icons icon">diversity_3</span></div>--%>
 <%--                        <div><h3>Khác</h3><p>Cá nhân hoá theo thể trạng.</p></div>--%>
