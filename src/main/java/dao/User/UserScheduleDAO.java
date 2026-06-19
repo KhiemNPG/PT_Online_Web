@@ -3,27 +3,27 @@ package dao.User;
 import model.tracking.UserSchedule;
 import utils.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserScheduleDAO extends DBContext {
+public class UserScheduleDAO {
 
     public List<UserSchedule> getUserSchedulesByUserId(int userId) {
-
         List<UserSchedule> list = new ArrayList<>();
+        String sql = "SELECT * FROM UserSchedule WHERE userId = ? ORDER BY startDate DESC";
 
-        String sql = "SELECT * FROM UserSchedule WHERE userId = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        // Sử dụng try-with-resources để lấy Connection và PreparedStatement
+        try (Connection con = DBContext.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
             ps.setInt(1, userId);
 
             try (ResultSet rs = ps.executeQuery()) {
-
                 while (rs.next()) {
-
                     UserSchedule us = new UserSchedule(
                             rs.getInt("userScheduleId"),
                             rs.getInt("userId"),
@@ -37,12 +37,11 @@ public class UserScheduleDAO extends DBContext {
                             rs.getDate("startDate"),
                             rs.getString("status")
                     );
-
                     list.add(us);
                 }
             }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            // Nên dùng logger trong dự án thực tế
             e.printStackTrace();
         }
 
