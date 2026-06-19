@@ -4,11 +4,12 @@ import model.training.Exercise;
 import model.training.Video;
 import utils.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ExerciseDAO extends DBContext {
+public class ExerciseDAO {
 
     public Exercise getExerciseByExerciseId(int exerciseId) {
         // Dùng JOIN để lấy luôn thông tin Video đi kèm
@@ -17,7 +18,10 @@ public class ExerciseDAO extends DBContext {
                 "LEFT JOIN Video v ON e.videoId = v.videoId " +
                 "WHERE e.exerciseId = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection con = DBContext.getConnection();
+        if (con == null) return null;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, exerciseId);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -60,8 +64,13 @@ public class ExerciseDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
-
 }
