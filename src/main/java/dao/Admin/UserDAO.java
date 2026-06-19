@@ -3,83 +3,86 @@ package dao.Admin;
 import model.entity.User;
 import utils.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO extends DBContext {
+public class UserDAO {
 
-    public List<User> allCustomerList(){
+    public List<User> allCustomerList() {
         List<User> userList = new ArrayList<>();
+        String sql = "SELECT u.* FROM [User] u " +
+                     "LEFT JOIN Account a ON u.accountId = a.accountId " +
+                     "WHERE a.role LIKE 'CUSTOMER%'";
 
-        String sql = "SELECT * FROM [User] u " +
-                "LEFT JOIN Account a ON u.accountId = a.accountId " +
-                "WHERE a.role LIKE 'CUSTOMER%'";
+        try (Connection con = DBContext.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                // Kiểm tra null bằng wasNull() để đảm bảo chính xác kiểu dữ liệu
+                int age = rs.getInt("age");
+                Integer ageVal = rs.wasNull() ? null : age;
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    // 1. Lấy dữ liệu dạng Object (dùng rs.getObject) để giữ nguyên giá trị NULL từ DB
-                    Integer ageVal = (rs.getObject("age") != null) ? rs.getInt("age") : null;
-                    Double heightVal = (rs.getObject("height") != null) ? rs.getDouble("height") : null;
-                    Double weightVal = (rs.getObject("weight") != null) ? rs.getDouble("weight") : null;
+                double height = rs.getDouble("height");
+                Double heightVal = rs.wasNull() ? null : height;
 
-                    // 2. Truyền các biến đã check NULL này vào Constructor
-                    User user = new User(
-                            rs.getInt("userId"),
-                            rs.getInt("accountId"),
-                            rs.getString("name"),
-                            ageVal,      // Trả về đúng Integer (có thể null)
-                            rs.getString("gender"),
-                            heightVal,   // Trả về đúng Double (có thể null)
-                            weightVal,   // Trả về đúng Double (có thể null)
-                            rs.getString("fitnessLevel"),
-                            rs.getInt("remainingTokens")
-                    );
-                    userList.add(user);
-                }
+                double weight = rs.getDouble("weight");
+                Double weightVal = rs.wasNull() ? null : weight;
+
+                User user = new User(
+                        rs.getInt("userId"),
+                        rs.getInt("accountId"),
+                        rs.getString("name"),
+                        ageVal,
+                        rs.getString("gender"),
+                        heightVal,
+                        weightVal,
+                        rs.getString("fitnessLevel"),
+                        rs.getInt("remainingTokens")
+                );
+                userList.add(user);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return userList;
     }
 
     public List<Integer> allAccountIdPro() {
         List<Integer> accountIdList = new ArrayList<>();
-
         String sql = "SELECT DISTINCT accountId FROM UserSubscription";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection con = DBContext.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+            
             while (rs.next()) {
                 accountIdList.add(rs.getInt("accountId"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return accountIdList;
     }
 
     public int countTotalProUsers() {
-        int count = 0;
         String sql = "SELECT COUNT(*) FROM UserSubscription WHERE planType = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, "PRO"); // Chỉ đếm những người dùng có plan là 'PRO'
-
+        try (Connection con = DBContext.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, "PRO");
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    count = rs.getInt(1); // Lấy kết quả từ cột đầu tiên
+                    return rs.getInt(1);
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count;
+        return 0;
     }
 }
