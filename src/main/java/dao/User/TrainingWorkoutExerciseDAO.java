@@ -167,8 +167,8 @@ public class TrainingWorkoutExerciseDAO {
                 videoId, 
                 rs.getString("title"), 
                 rs.getString("url"), 
-                rs.getString("thumbnailUrl"), 
-                rs.getInt("duration")
+                rs.getInt("duration"),
+                rs.getString("thumbnailUrl")
             );
             ex.setVideo(v);
         }
