@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đăng ký Tài khoản | Hardcore Gym</title>
+  <title>Đăng ký Tài khoản |  Smart PT</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -389,31 +389,32 @@
         <span class="material-icons icon">email</span>
 
         <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          autocomplete="email"
-          value="<%= emailValue %>"
-          pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"
-          title="Vui lòng nhập email hợp lệ"
-      />
+    name="email"
+    type="email"
+    placeholder="Email"
+    required
+    autocomplete="email"
+    value="<%= emailValue %>"
+    id="emailInput"
+    data-pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"
+    title="Vui lòng nhập email hợp lệ"
+/>
       </div>
 
       <div class="field">
         <span class="material-icons icon">lock_outline</span>
 
         <input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Mật khẩu"
-          required
-          minlength="8"
-          autocomplete="new-password"
-          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\[\]{};':\\|,.<>\/?\-]).{8,}$"
-          title="Mật khẩu phải ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt."
-      />
+    id="password"
+    name="password"
+    type="password"
+    placeholder="Mật khẩu"
+    required
+    minlength="8"
+    autocomplete="new-password"
+    data-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\[\]{};':\\|,.<>\/?\-]).{8,}$"
+    title="Mật khẩu phải ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt."
+/>
 
         <button type="button" class="toggle" id="togglePw" aria-label="Hiện/ẩn mật khẩu">
           <span class="material-icons" id="pwEyeIcon">visibility</span>
@@ -557,6 +558,13 @@
       (okPw ? cf : pw).focus();
     }
   });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const inputs = document.querySelectorAll("[data-pattern]");
+    inputs.forEach(input => {
+        input.setAttribute("pattern", input.getAttribute("data-pattern"));
+    });
+});
 </script>
 </body>
 </html>
