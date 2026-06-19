@@ -465,104 +465,87 @@
 </main>
 
 <script>
-  function hasLower(s){ return /[a-z]/.test(s); }
-  function hasUpper(s){ return /[A-Z]/.test(s); }
-  function hasNumber(s){ return /\d/.test(s); }
-  function hasSpecial(s){ return /[^A-Za-z\d]/.test(s); }
-  function hasLen(s){ return (s || "").length >= 8; }
-
-  function strengthPercent(pw){
-    let score = 0;
-    if (hasLen(pw)) score++;
-    if (hasLower(pw)) score++;
-    if (hasUpper(pw)) score++;
-    if (hasNumber(pw)) score++;
-    if (hasSpecial(pw)) score++;
-    return Math.round((score/5)*100);
-  }
-
-  const form = document.getElementById("registerForm");
-  const pw = document.getElementById("password");
-  const cf = document.getElementById("confirm");
-  const pwHint = document.getElementById("pwHint");
-  const cfHint = document.getElementById("cfHint");
-  const pwBar = document.getElementById("pwBar");
-
-  const togglePw = document.getElementById("togglePw");
-  const pwEyeIcon = document.getElementById("pwEyeIcon");
-  const toggleCf = document.getElementById("toggleCf");
-  const cfEyeIcon = document.getElementById("cfEyeIcon");
-
-  function toggleVisibility(input, iconEl){
-    const isPassword = input.type === "password";
-    input.type = isPassword ? "text" : "password";
-    iconEl.textContent = isPassword ? "visibility_off" : "visibility";
-    input.focus();
-    const len = input.value.length;
-    input.setSelectionRange(len, len);
-  }
-
-  togglePw.addEventListener("click", () => toggleVisibility(pw, pwEyeIcon));
-  toggleCf.addEventListener("click", () => toggleVisibility(cf, cfEyeIcon));
-
-  function renderPasswordState(){
-    const v = pw.value || "";
-    const ok = hasLen(v) && hasLower(v) && hasUpper(v) && hasNumber(v) && hasSpecial(v);
-
-    pwBar.style.width = strengthPercent(v) + "%";
-
-    if (!v){
-      pwHint.className = "hint";
-      pwHint.textContent = "Mật khẩu ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt";
-      return false;
-    }
-
-    if (ok){
-      pwHint.className = "hint ok";
-      pwHint.textContent = "Mật khẩu đạt yêu cầu";
-      return true;
-    } else {
-      pwHint.className = "hint bad";
-      pwHint.textContent = "Chưa đạt: cần ≥ 8 ký tự + hoa + thường + số + ký tự đặc biệt";
-      return false;
-    }
-  }
-
-  function renderConfirmState(){
-    const a = pw.value || "";
-    const b = cf.value || "";
-    if (!b){
-      cfHint.className = "hint";
-      cfHint.textContent = "Nhập lại mật khẩu cho khớp.";
-      return false;
-    }
-    if (a === b){
-      cfHint.className = "hint ok";
-      cfHint.textContent = "Mật khẩu khớp";
-      return true;
-    } else {
-      cfHint.className = "hint bad";
-      cfHint.textContent = "Mật khẩu không khớp";
-      return false;
-    }
-  }
-
-  pw.addEventListener("input", () => { renderPasswordState(); renderConfirmState(); });
-  cf.addEventListener("input", renderConfirmState);
-
-  form.addEventListener("submit", function(e){
-    const okPw = renderPasswordState();
-    const okCf = renderConfirmState();
-    if(!okPw || !okCf){
-      e.preventDefault();
-      (okPw ? cf : pw).focus();
-    }
-  });
-
 document.addEventListener("DOMContentLoaded", function() {
+    // 1. Gán pattern cho trình duyệt chặn submit
     const inputs = document.querySelectorAll("[data-pattern]");
     inputs.forEach(input => {
         input.setAttribute("pattern", input.getAttribute("data-pattern"));
+    });
+
+    // 2. Định nghĩa các hàm logic kiểm tra
+    function hasLower(s){ return /[a-z]/.test(s); }
+    function hasUpper(s){ return /[A-Z]/.test(s); }
+    function hasNumber(s){ return /\d/.test(s); }
+    function hasSpecial(s){ return /[^A-Za-z\d]/.test(s); }
+    function hasLen(s){ return (s || "").length >= 8; }
+
+    function strengthPercent(pw){
+        let score = 0;
+        if (hasLen(pw)) score++;
+        if (hasLower(pw)) score++;
+        if (hasUpper(pw)) score++;
+        if (hasNumber(pw)) score++;
+        if (hasSpecial(pw)) score++;
+        return Math.round((score/5)*100);
+    }
+
+    // 3. Khởi tạo các phần tử
+    const form = document.getElementById("registerForm");
+    const pw = document.getElementById("password");
+    const cf = document.getElementById("confirm");
+    const pwHint = document.getElementById("pwHint");
+    const cfHint = document.getElementById("cfHint");
+    const pwBar = document.getElementById("pwBar");
+    const togglePw = document.getElementById("togglePw");
+    const pwEyeIcon = document.getElementById("pwEyeIcon");
+    const toggleCf = document.getElementById("toggleCf");
+    const cfEyeIcon = document.getElementById("cfEyeIcon");
+
+    function toggleVisibility(input, iconEl){
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        iconEl.textContent = isPassword ? "visibility_off" : "visibility";
+    }
+
+    // 4. Gắn sự kiện
+    togglePw.addEventListener("click", () => toggleVisibility(pw, pwEyeIcon));
+    toggleCf.addEventListener("click", () => toggleVisibility(cf, cfEyeIcon));
+
+    function renderPasswordState(){
+        const v = pw.value || "";
+        const ok = hasLen(v) && hasLower(v) && hasUpper(v) && hasNumber(v) && hasSpecial(v);
+        pwBar.style.width = strengthPercent(v) + "%";
+        if (!v) {
+            pwHint.className = "hint";
+            pwHint.textContent = "Mật khẩu ≥ 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt";
+            return false;
+        }
+        if (ok) {
+            pwHint.className = "hint ok";
+            pwHint.textContent = "Mật khẩu đạt yêu cầu";
+            return true;
+        } else {
+            pwHint.className = "hint bad";
+            pwHint.textContent = "Chưa đạt: cần ≥ 8 ký tự + hoa + thường + số + ký tự đặc biệt";
+            return false;
+        }
+    }
+
+    function renderConfirmState(){
+        const a = pw.value || "";
+        const b = cf.value || "";
+        if (!b) { cfHint.className = "hint"; cfHint.textContent = "Nhập lại mật khẩu cho khớp."; return false; }
+        if (a === b) { cfHint.className = "hint ok"; cfHint.textContent = "Mật khẩu khớp"; return true; }
+        else { cfHint.className = "hint bad"; cfHint.textContent = "Mật khẩu không khớp"; return false; }
+    }
+
+    pw.addEventListener("input", () => { renderPasswordState(); renderConfirmState(); });
+    cf.addEventListener("input", renderConfirmState);
+
+    form.addEventListener("submit", function(e){
+        if(!renderPasswordState() || !renderConfirmState()){
+            e.preventDefault();
+        }
     });
 });
 </script>
