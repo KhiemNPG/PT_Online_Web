@@ -3,24 +3,26 @@ package dao.User;
 import model.tracking.MasterScheduleDetail;
 import utils.DBContext;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MasterScheduleDetailDAO extends DBContext {
+public class MasterScheduleDetailDAO {
 
     public MasterScheduleDetail getMasterScheduleDetailByMasterScheduleId(int masterScheduleId) {
         MasterScheduleDetail masterScheduleDetail = null;
         String sql = "SELECT * FROM MasterScheduleDetail WHERE masterScheduleId = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) { // Dùng try-with-resources để tự đóng ps
+        Connection con = DBContext.getConnection();
+        if (con == null) return null;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, masterScheduleId);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) { // Dùng if vì chỉ có 1 dòng dữ liệu
+                if (rs.next()) {
                     int masterScheduleDetailId = rs.getInt("masterDetailId");
                     int totalPlannedWorkouts = rs.getInt("totalPlannedWorkouts");
-
-                    // Sửa thành getDouble vì SQL là FLOAT
                     double totalPlannedCalories = rs.getDouble("totalPlannedCalories");
                     int totalPlannedMinutes = rs.getInt("totalPlannedMinutes");
                     double estimatedWeightLoss = rs.getDouble("estimatedWeightLoss");
@@ -37,27 +39,26 @@ public class MasterScheduleDetailDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try { if (con != null) con.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return masterScheduleDetail;
     }
-    //tracking
+
     public MasterScheduleDetail getMasterScheduleDetailForTracking(int masterScheduleId) {
-
         MasterScheduleDetail masterScheduleDetail = null;
-
         String sql = "SELECT masterDetailId, masterScheduleId, totalPlannedWorkouts, " +
-                "totalPlannedCalories, totalPlannedMinutes, estimatedWeightLoss " +
-                "FROM MasterScheduleDetail WHERE masterScheduleId = ?";
+                     "totalPlannedCalories, totalPlannedMinutes, estimatedWeightLoss " +
+                     "FROM MasterScheduleDetail WHERE masterScheduleId = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection con = DBContext.getConnection();
+        if (con == null) return null;
 
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, masterScheduleId);
-
             try (ResultSet rs = ps.executeQuery()) {
-
                 if (rs.next()) {
-
-                    int masterScheduleDetailId = rs.getInt("masterDetailId"); //
+                    int masterScheduleDetailId = rs.getInt("masterDetailId");
                     int totalPlannedWorkouts = rs.getInt("totalPlannedWorkouts");
                     double totalPlannedCalories = rs.getDouble("totalPlannedCalories");
                     int totalPlannedMinutes = rs.getInt("totalPlannedMinutes");
@@ -73,11 +74,11 @@ public class MasterScheduleDetailDAO extends DBContext {
                     );
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try { if (con != null) con.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
-
         return masterScheduleDetail;
     }
 }
