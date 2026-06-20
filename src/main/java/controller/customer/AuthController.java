@@ -231,15 +231,18 @@ public class AuthController extends HttpServlet {
         urlBuilder.append(scheme).append("://").append(serverName);
         
         // Chỉ ghép thêm Port vào link nếu không phải là cổng mặc định (80, 443)
-        if (("http".equals(scheme) && serverPort != 80) || ("https".equals(scheme) && serverPort != 443)) {
-            String forwardedPort = request.getHeader("X-Forwarded-Port");
-            if (forwardedPort != null) {
-                if (!"80".equals(forwardedPort) && !"443".equals(forwardedPort)) {
-                    urlBuilder.append(":").append(forwardedPort);
-                }
-            } else {
-                urlBuilder.append(":").append(serverPort);
-            }
+        int publicPort = serverPort;
+        String forwardedPort = request.getHeader("X-Forwarded-Port");
+        if (forwardedPort != null) {
+            try { publicPort = Integer.parseInt(forwardedPort); } catch(Exception ignored){}
+        } else if ("https".equalsIgnoreCase(scheme)) {
+            publicPort = 443; // Nếu proxy báo là https, mặc định cổng public là 443
+        } else if ("http".equalsIgnoreCase(scheme)) {
+            publicPort = 80;
+        }
+
+        if (("http".equalsIgnoreCase(scheme) && publicPort != 80) || ("https".equalsIgnoreCase(scheme) && publicPort != 443)) {
+            urlBuilder.append(":").append(publicPort);
         }
         urlBuilder.append(contextPath);
         String verifyLink = urlBuilder.toString() + "/auth?action=verify&id=" + newId + "&token=" + token;
