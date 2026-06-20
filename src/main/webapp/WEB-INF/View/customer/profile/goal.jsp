@@ -364,12 +364,12 @@
         model.entity.HealthProfile hp =
         (model.entity.HealthProfile) request.getAttribute("healthProfile");
 
-        String currentGoal = (tr != null && tr.getGoal() != null) ? tr.getGoal() : "";
+        String currentGoal = "GIAM_MO";
         String currentAvailableTime = (tr != null && tr.getAvailableTime() != null) ? tr.getAvailableTime() : "";
         String currentPreferredDays = (tr != null && tr.getPreferredDays() != null) ? tr.getPreferredDays() : "";
 
-        String currentAgeRange = (hp != null && hp.getAgeRange() != null) ? hp.getAgeRange() : "";
-        String currentGender   = (hp != null && hp.getGender() != null) ? hp.getGender() : "";
+        String currentAgeRange = "18-29";
+        String currentGender   = "Nam";
         String currentJoint    = (hp != null && hp.getJointIssues() != null) ? hp.getJointIssues() : "";
         %>
 
@@ -486,7 +486,7 @@
                 <h4>Bước 4: Vấn đề khớp</h4>
 
                 <div class="field">
-                    <label>Chọn vị trí đang có vấn đề (hoặc chọn “Không”) <span style="color:var(--primary)">*</span></label>
+                    <label>Chọn vị trí đang có vấn đề (hoặc chọn "Không") <span style="color:var(--primary)">*</span></label>
                     <div class="hint" style="margin-bottom:10px;">Chỉ chọn 1 mục.</div>
 
                     <div class="chip-wrap">
