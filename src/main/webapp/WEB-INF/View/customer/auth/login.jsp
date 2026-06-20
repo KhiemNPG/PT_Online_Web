@@ -262,6 +262,30 @@
     <%
       }
 
+      if ("check_email".equals(msg)) {
+    %>
+    <div style="margin:0 0 18px 0; padding:12px 14px; border-radius:14px;
+                border:1px solid rgba(0,255,160,0.35);
+                background: rgba(0,0,0,0.25);
+                color: rgba(255,255,255,0.92);
+                font-size:12px; line-height:1.35;">
+      Đăng ký thành công! Vui lòng kiểm tra Email để xác minh tài khoản.
+    </div>
+    <%
+      }
+
+      if ("email_verified".equals(msg)) {
+    %>
+    <div style="margin:0 0 18px 0; padding:12px 14px; border-radius:14px;
+                border:1px solid rgba(0,255,160,0.35);
+                background: rgba(0,0,0,0.25);
+                color: rgba(255,255,255,0.92);
+                font-size:12px; line-height:1.35;">
+      Xác minh Email thành công! Bạn có thể đăng nhập ngay bây giờ.
+    </div>
+    <%
+      }
+
       if ("reset_success".equals(msg)) {
     %>
     <div style="margin:0 0 18px 0; padding:12px 14px; border-radius:14px;
