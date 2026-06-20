@@ -542,7 +542,8 @@ public class AuthController extends HttpServlet {
         String idParam = request.getParameter("id");
 
         if (token == null || idParam == null) {
-            response.getWriter().write("Link xác minh không hợp lệ (Thiếu thông tin).");
+            request.setAttribute("error", "Link xác minh không hợp lệ (Thiếu thông tin).");
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
             return;
         }
 
@@ -550,26 +551,30 @@ public class AuthController extends HttpServlet {
         try {
             accountId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            response.getWriter().write("Link xác minh không hợp lệ (Sai định dạng ID).");
+            request.setAttribute("error", "Link xác minh không hợp lệ (Sai định dạng ID).");
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
             return;
         }
 
         try {
             Account acc = accountDAO.findById(accountId);
             if (acc == null || acc.isActive()) {
-                response.getWriter().write("Tài khoản không tồn tại hoặc đã được kích hoạt.");
+                request.setAttribute("error", "Tài khoản không tồn tại hoặc đã được kích hoạt.");
+                request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
                 return;
             }
 
             String expectedToken = generateSignature(accountId, acc.getPasswordHash());
             if (!token.equals(expectedToken)) {
-                response.getWriter().write("Link xác minh đã hết hạn hoặc không hợp lệ.");
+                request.setAttribute("error", "Link xác minh đã hết hạn hoặc không hợp lệ.");
+                request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
                 return;
             }
 
             accountDAO.setActive(accountId, true);
         } catch (Exception e) {
-            response.getWriter().write("Lỗi hệ thống trong quá trình xác minh.");
+            request.setAttribute("error", "Lỗi hệ thống trong quá trình xác minh.");
+            request.getRequestDispatcher("/WEB-INF/View/customer/auth/login.jsp").forward(request, response);
             return;
         }
 
