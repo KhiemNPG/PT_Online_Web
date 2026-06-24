@@ -13,7 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class GeminiAIService {
-    private static final String API_KEY = "AIzaSyBav5pVAOPx7AJh4_HgjUC4hK9IFasyjL8";
+    private static final String API_KEY = "AQ.Ab8RN6JCgmz7FKsx5rnDMC-fWMMP19zeGNZOV0CkSHZD0mumkQ";
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY;
 
     private static final String SYSTEM_INSTRUCTION = "You are an advanced Cyber AI Nutrition Scanner. Analyze the food described by the user or shown in the image. " +
