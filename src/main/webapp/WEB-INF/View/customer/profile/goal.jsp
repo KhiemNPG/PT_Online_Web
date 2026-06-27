@@ -358,18 +358,18 @@
             <p class="subtitle">Tiến độ tính theo từng mục (mỗi bước = 1 mục).</p>
         </header>
 
-        <%
+         <%
         model.entity.TrainingRequirement tr =
         (model.entity.TrainingRequirement) request.getAttribute("trainingRequirement");
         model.entity.HealthProfile hp =
         (model.entity.HealthProfile) request.getAttribute("healthProfile");
 
-        String currentGoal = "GIAM_MO";
+        String currentGoal = (tr != null && tr.getGoal() != null) ? tr.getGoal() : "";
         String currentAvailableTime = (tr != null && tr.getAvailableTime() != null) ? tr.getAvailableTime() : "";
         String currentPreferredDays = (tr != null && tr.getPreferredDays() != null) ? tr.getPreferredDays() : "";
 
-        String currentAgeRange = "18-29";
-        String currentGender   = "Nam";
+        String currentAgeRange = (hp != null && hp.getAgeRange() != null) ? hp.getAgeRange() : "";
+        String currentGender   = (hp != null && hp.getGender() != null) ? hp.getGender() : "";
         String currentJoint    = (hp != null && hp.getJointIssues() != null) ? hp.getJointIssues() : "";
         %>
 
