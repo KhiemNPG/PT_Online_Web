@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class GeminiAIService {
     private static final String API_KEY = System.getenv("GEMINI_API_KEY");
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=" + API_KEY;
 
     private static final String SYSTEM_INSTRUCTION = "You are an advanced Cyber AI Nutrition Scanner. Analyze the food described by the user or shown in the image. " +
             "Provide the estimated nutrition facts. " +
