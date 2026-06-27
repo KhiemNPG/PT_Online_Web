@@ -843,7 +843,7 @@
             goalCards.forEach(card =>
                 card.addEventListener("click", () => {
                     if (LOCK_CREATE) return;
-                    //goalInput.value = card.dataset.goal;
+                    goalInput.value = card.dataset.goal;
                     goalCards.forEach(c =>
                         c.classList.toggle("selected", c.dataset.goal === card.dataset.goal)
                     );
@@ -855,7 +855,7 @@
             ageCards.forEach(card =>
                 card.addEventListener("click", () => {
                     if (LOCK_CREATE) return;
-                    //ageInput.value = card.dataset.age;
+                    ageInput.value = card.dataset.age;
                     ageCards.forEach(c =>
                         c.classList.toggle("selected", c.dataset.age === card.dataset.age)
                     );
@@ -867,7 +867,7 @@
             genderCards.forEach(card =>
                 card.addEventListener("click", () => {
                     if (LOCK_CREATE) return;
-                    //genderInput.value = card.dataset.gender;
+                    genderInput.value = card.dataset.gender;
                     genderCards.forEach(c =>
                         c.classList.toggle("selected", c.dataset.gender === card.dataset.gender)
                     );
