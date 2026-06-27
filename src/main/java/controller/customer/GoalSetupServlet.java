@@ -126,7 +126,11 @@ public class GoalSetupServlet extends HttpServlet {
 
             TrainingRequirement trainingRequirement= trainingRequirementDAO.getTrainingRequirementByUserId(user.getUserId());
             HealthProfile healthProfile = healthProfileDAO.getHealthProfileByUserId(user.getUserId());
-            TrainingSchedule trainingSchedule = trainingScheduleDAO.getOneTrainingScheduleFromTemplate(trainingRequirement.getGoal(), healthProfile.getGender(), healthProfile.getAgeRange());
+            TrainingSchedule trainingSchedule = trainingScheduleDAO.getOneTrainingScheduleFromTemplate("GIAM_MO", "Nam", "18-29");
+
+            if (trainingSchedule == null) {
+                throw new Exception("Chưa thiết lập vô database!");
+            }
 
             int userScheduleId = trainingScheduleDAO.createTrainingSchedule(trainingSchedule, user.getUserId());
 
