@@ -22,6 +22,13 @@ public class AuthFilter implements Filter {
         boolean loggedIn = (session != null && session.getAttribute("accountId") != null);
 
         String uri = req.getRequestURI();
+        String contextPath = req.getContextPath();
+
+        //home
+        if (uri.equals(contextPath) || uri.equals(contextPath + "/")) {
+            res.sendRedirect(contextPath + "/home");
+            return;
+        }
 
         boolean authRequest = uri.contains("/auth");
 
