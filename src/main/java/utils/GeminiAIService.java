@@ -126,10 +126,11 @@ public class GeminiAIService {
                 } else if (errorStr.contains("400")) {
                     userFriendlyError = "Dữ liệu gửi lên không hợp lệ hoặc kích thước ảnh quá lớn.";
                 }
-                
                 System.err.println("Gemini API Error: " + errorStr);
                 // CÁCH NHANH GỌN NHẤT: Khi AI chết/hết hạn mức, trả về dữ liệu GIẢ LẬP (Fake Data) thay vì báo lỗi đỏ rực
-                return "{ \"foods\": [{\"name\": \"MÓN ĂN (CHẾ ĐỘ OFFLINE)\", \"weight\": \"250g\"}], \"calories\": \"450\", \"protein\": \"30\", \"carbs\": \"45\", \"fat\": \"15\", \"insight\": \"⚠️ AI đang bảo trì. Đây là thông số ước tính tiêu chuẩn cho một bữa ăn lành mạnh!\" }";
+                // DEBUG: In thẳng lỗi của Google ra màn hình để xem bị gì
+                String safeError = errorStr.replace("\"", "'").replace("\n", " ");
+                return "{ \"foods\": [{\"name\": \"MÓN ĂN (CHẾ ĐỘ OFFLINE)\", \"weight\": \"250g\"}], \"calories\": \"450\", \"protein\": \"30\", \"carbs\": \"45\", \"fat\": \"15\", \"insight\": \"⚠️ Google báo lỗi: " + safeError + "\" }";
             }
         } catch (Exception e) {
             e.printStackTrace();
